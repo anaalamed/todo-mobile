@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const todos_slice = createSlice({
   name: "todos",
   initialState: {
-    todo: [],
+    todo: [{ title: 'aaaa', completed: false, id: 'a' }, { title: 'bbb', completed: false, id: 'b' }],
     is_loading: false,
     error_msg: "",
   },
@@ -29,4 +29,4 @@ const todos_slice = createSlice({
 });
 
 export default todos_slice.reducer;
-export const {getTodos, addTodo, deleteTodo, toggleComplete, updateTodo} = todos_slice.actions;
+export const { getTodos, addTodo, deleteTodo, toggleComplete, updateTodo } = todos_slice.actions;

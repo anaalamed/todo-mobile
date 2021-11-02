@@ -9,16 +9,16 @@ import {
 const store = configureStore({
   reducer: rootReducer,
   // preloadedState: get_local_state(),
-  middleware: [...getDefaultMiddleware(), logger, save_state_locally],
+  // middleware: [...getDefaultMiddleware(), logger, save_state_locally],
   devTools: process.env.NODE_ENV !== "production"
 });
 
 // setAuthToken(localStorage.jwtToken);
 
 // Enable Webpack hot module replacement for reducers
-if (process.env.NODE_ENV !== "production" && module.hot) {
-  module.hot.accept("./root.reducer", () => {
-    store.replaceReducer(rootReducer);
-  });
-}
+// if (process.env.NODE_ENV !== "production" && module.hot) {
+//   module.hot.accept("./root.reducer", () => {
+//     store.replaceReducer(rootReducer);
+//   });
+// }
 export default store;

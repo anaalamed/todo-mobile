@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-// import { useSelector, useDispatch } from "react-redux";
-import { getFirestore, collection, getDocs, getDoc, query, where } from 'firebase/firestore'
+import { useSelector, useDispatch } from "react-redux";
+// import { getFirestore, collection, getDocs, getDoc, query, where } from 'firebase/firestore'
 import styled from 'styled-components/native';
 
 import EditScreenInfo from '../components/EditScreenInfo';
@@ -9,35 +9,23 @@ import Todo from '../components/Todo';
 
 
 import { Text, View } from '../components/Themed';
+import { RootState } from '../state/root.reducer';
 
 export default function TodosScreen() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const { todo, is_loading, error_msg } = useSelector((state: RootState) => state.todos);
+  console.log(todo);
 
-  // useEffect(() => {
-  //   const func = async () => {
-  //     const db = getFirestore();
-  //     const q = query(collection(db, "todos"), where("user", "==", me.uid));
-
-  //     const querySnapshot = await getDocs(q);
-  //     console.log(querySnapshot);
-  //     let arr = [];
-  //     querySnapshot.forEach((doc) => {
-  //       arr.push({ id: doc.id, ...doc.data() });
-  //     });
-  //     dispatch(getTodos(arr));
-  //   }
-  //   func();
-  // }, [])
-
-  const todos = [{ title: 'aaaa', completed: false }, { title: 'bbb', completed: false },];
 
   return (
     <Box >
       <Title >Todos</Title>
       <AddTodo />
 
-      {/* <Separator /> */}
-      {todos.map(todo => (<Todo todo={todo}></Todo>))}
+      <Separator />
+      <Section>
+        {todo.map((todo, i) => (<Todo key={i} todo={todo}></Todo>))}
+      </Section>
     </Box>
   );
 }
@@ -54,9 +42,19 @@ const Title = styled.Text`
   font-weight: bold;
 `;
 
+const Section = styled.View`
+  background: greenyellow;
+  width: 80%;
+  padding: 10px;
+  margin: 10px;
+`;
+
 const Separator = styled.View`
-  margin-top: 30px;
-  height: 10px;
+  margin-top: 10px;
+  height: 1px;
   width: 80%;
   color: black;
+  background: #7c7a7aaa;
 `;
+
+
