@@ -1,11 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+interface User {
+  uid: string
+  name: string
+  email: string
+}
+
+interface UserState {
+  me: User
+  loggedIn: boolean
+}
+
+
+const initialState: UserState = {
+  me: { uid: 'e5Qm9sr3qaRv9c1nlGPOnnRUAht1', name: 'ana', email: "aaaa@gmail.com" },
+  loggedIn: false
+}
+
 const users_slice = createSlice({
   name: "profile",
-  initialState: {
-    me: { uid: 'e5Qm9sr3qaRv9c1nlGPOnnRUAht1', name: 'ana' },
-    loggedIn: false
-  },
+  initialState,
   reducers: {
     loggedIn: (state, action) => {
       state.me = action.payload;

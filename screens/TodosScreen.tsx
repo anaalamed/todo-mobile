@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { getFirestore, collection, getDocs, getDoc, query, where } from 'firebase/firestore'
 import styled from 'styled-components/native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import AddTodo from '../components/AddTodo';
 import Todo from '../components/Todo';
 import { getTodos } from '../state/slices/todos.slice';
@@ -31,7 +30,7 @@ export default function TodosScreen() {
       dispatch(getTodos(arr));
     }
     func();
-  }, [todos])
+  }, [])
 
   return (
     <Box >
