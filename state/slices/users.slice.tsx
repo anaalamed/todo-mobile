@@ -1,9 +1,9 @@
-import {  createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const users_slice = createSlice({
   name: "profile",
   initialState: {
-    me: {},
+    me: { uid: 'e5Qm9sr3qaRv9c1nlGPOnnRUAht1', name: 'ana' },
     loggedIn: false
   },
   reducers: {
@@ -12,14 +12,14 @@ const users_slice = createSlice({
       state.loggedIn = true;
     },
     loggedOut: (state) => {
-      state.me = {};
+      // state.me = {};
       state.loggedIn = false;
     }
   }
 });
 
 export default users_slice.reducer;
-export const {loggedIn, loggedOut} = users_slice.actions;
+export const { loggedIn, loggedOut } = users_slice.actions;
 
 
 

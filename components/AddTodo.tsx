@@ -3,19 +3,32 @@ import React, { useState } from 'react';
 import { TouchableOpacity, TextInput } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
 import styled from 'styled-components/native';
+import { getFirestore, collection, addDoc } from "firebase/firestore";
+
 
 import Colors from '../constants/Colors';
 import { Text, View } from './Themed';
 import { addTodo } from '../state/slices/todos.slice';
+import { RootState } from '../state/root.reducer';
+
 
 
 export default function AddTodo() {
   const [text, setText] = useState('');
+  const { me } = useSelector((state: RootState) => state.users);
   const dispatch = useDispatch();
 
-  const handleAddTodo = () => {
-    const todo = { title: text, completed: true, user: 'aaaa' };
-    dispatch(addTodo(todo));
+  const handleAddTodo = async () => {
+    try {
+      const db = getFirestore();
+      const todo = { title: text, completed: true, userId: me.uid };
+
+      const docRef = await addDoc(collection(db, "todos"), todo);
+      dispatch(addTodo(todo));
+      console.log("Document written with ID: ", docRef.id);
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
     setText('');
   }
 

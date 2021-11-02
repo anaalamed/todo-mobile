@@ -4,6 +4,7 @@ import { TouchableOpacity, TextInput } from 'react-native';
 import styled from 'styled-components/native';
 import { useDispatch } from "react-redux";
 import { Checkbox } from 'react-native-paper';
+import { getFirestore, doc, deleteDoc, updateDoc } from "firebase/firestore";
 
 import Colors from '../constants/Colors';
 import { Text, View } from './Themed';
@@ -14,19 +15,26 @@ interface Todo {
     id: string
     title: string
     completed: boolean
+    userId: string
 }
 
 export default function Todo({ todo }: { todo: Todo }) {
     const dispatch = useDispatch();
     const [text, setText] = useState('');
+    const db = getFirestore();
 
-    const handleDelete = () => {
-        console.log(todo.id);
+
+    const handleDelete = async () => {
+        // console.log(todo.id);
+        await deleteDoc(doc(db, "todos", todo.id));
         dispatch(deleteTodo(todo.id));
     }
 
-    const handleToggleComplete = () => {
-        console.log(todo.id);
+    const handleToggleComplete = async () => {
+        // console.log(todo.id);
+        await updateDoc(doc(db, "todos", todo.id), {
+            completed: !todo.completed
+        });
         dispatch(toggleComplete({ id: todo.id, completed: !todo.completed }));
     }
 
@@ -45,8 +53,8 @@ export default function Todo({ todo }: { todo: Todo }) {
                     />
                 </IsDoneBox>
 
-                <Text>{todo.title} - </Text>
-                <Text>{todo.id} - </Text>
+                <Text>{todo.title} </Text>
+                {/* <Text>{todo.userId} - </Text> */}
                 <Text>{todo.completed ? "done" : "need to do"}</Text>
             </>
 
