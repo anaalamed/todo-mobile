@@ -5,6 +5,8 @@ import styled from 'styled-components/native';
 import { useDispatch, useSelector } from "react-redux";
 import { getAuth, signOut, updateProfile } from "firebase/auth";
 import { loggedOut } from "../state/slices/users.slice";
+import { removeTodos } from "../state/slices/todos.slice";
+
 
 interface Props {
     setProfile(data: boolean): void
@@ -26,6 +28,7 @@ const Profile: React.FC<Props> = ({ setProfile, setStart }) => {
     const handleLogOut = () => {
         signOut(auth).then(() => {
             dispatch(loggedOut());
+            dispatch(removeTodos());
             setProfile(false);
             setStart(true);
         }).catch((error) => {

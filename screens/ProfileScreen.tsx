@@ -6,11 +6,10 @@ import styled from 'styled-components/native';
 import Profile from '../components/Profile';
 import SignUp from '../components/SignUp';
 import LogIn from '../components/LogIn';
-
+import HelloUser from '../components/HelloUser';
 
 import { Text, View } from '../components/Themed';
 import { RootState } from '../state/root.reducer';
-
 
 export default function ProfileScreen() {
   const dispatch = useDispatch();
@@ -25,7 +24,16 @@ export default function ProfileScreen() {
 
   return (
     <Box >
-      <Title>Hi, {me?.displayName ? me.displayName : 'guest'}</Title>
+      <HelloUser></HelloUser>
+
+      {(profile || signUp || logIn) ? (
+        <Button onPress={() => {
+          setStart(true);
+          setLogIn(false);
+          setProfile(false);
+          setSignUp(false);
+        }} ><Text>Home</Text></Button>
+      ) : null}
 
       <Start display={start}>
         <Title >My Profile</Title>

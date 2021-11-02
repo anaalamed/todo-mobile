@@ -5,6 +5,7 @@ import styled from 'styled-components/native';
 
 import AddTodo from '../components/AddTodo';
 import Todo from '../components/Todo';
+import HelloUser from '../components/HelloUser';
 import { getTodos } from '../state/slices/todos.slice';
 
 import { Text, View } from '../components/Themed';
@@ -20,26 +21,32 @@ export default function TodosScreen() {
   useEffect(() => {
     const func = async () => {
       const db = getFirestore();
-      const q = query(collection(db, "todos"), where("userId", "==", me.email));
+      if (me.email) {
+        const q = query(collection(db, "todos"), where("userId", "==", me.email));
 
-      const querySnapshot = await getDocs(q);
-      let arr: any = [];
-      querySnapshot.forEach((doc) => {
-        arr.push({ id: doc.id, ...doc.data() });
-      });
-      dispatch(getTodos(arr));
+        const querySnapshot = await getDocs(q);
+        let arr: any = [];
+        querySnapshot.forEach((doc) => {
+          arr.push({ id: doc.id, ...doc.data() });
+        });
+        dispatch(getTodos(arr));
+      }
+      func();
     }
-    func();
   }, [me])
 
   return (
     <Box >
+      <HelloUser></HelloUser>
       <Title >Todos</Title>
-      <AddTodo />
+      {me.email !== undefined ? <AddTodo></AddTodo> : null}
 
       <Separator />
       <Section>
-        {todos.map((todo, i) => (<Todo key={i} todo={todo}></Todo>))}
+        {me.email ?
+          (todos.map((todo, i) => (<Todo key={i} todo={todo}></Todo>))) :
+          (<Text>Please log in to see your todos here! </Text>)
+        }
       </Section>
     </Box>
   );

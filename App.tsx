@@ -5,7 +5,6 @@ import store from "./state/configure.store";
 import { Provider } from "react-redux";
 import { initializeApp } from 'firebase/app';
 
-
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
