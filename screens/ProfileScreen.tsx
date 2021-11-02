@@ -25,6 +25,8 @@ export default function ProfileScreen() {
 
   return (
     <Box >
+      <Title>Hi, {me?.displayName ? me.displayName : 'guest'}</Title>
+
       <Start display={start}>
         <Title >My Profile</Title>
         <Separator />
@@ -45,11 +47,9 @@ export default function ProfileScreen() {
 
 
       <Section>
-        {/* {me ? <Profile></Profile> : null} */}
-        {/* <Profile></Profile> */}
-        {signUp ? <SignUp></SignUp> : null}
-        {logIn ? <LogIn></LogIn> : null}
-
+        {profile ? <Profile setProfile={setProfile} setStart={setStart}></Profile> : null}
+        {signUp ? <SignUp setSignUp={setSignUp} setLogIn={setLogIn}></SignUp> : null}
+        {logIn ? <LogIn setLogIn={setLogIn} setProfile={setProfile}></LogIn> : null}
       </Section>
     </Box>
   );

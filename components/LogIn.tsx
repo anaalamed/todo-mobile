@@ -7,8 +7,13 @@ import { useDispatch } from "react-redux";
 
 import { loggedIn } from '../state/slices/users.slice'
 
+interface Props {
+    setLogIn(data: boolean): void
+    setProfile(data: boolean): void
+}
 
-export default function LogIn() {
+const LogIn: React.FC<Props> = ({ setLogIn, setProfile }) => {
+
     const dispatch = useDispatch();
     const { control, handleSubmit, formState: { errors } } = useForm();
 
@@ -19,6 +24,8 @@ export default function LogIn() {
                 const user = userCredential.user;
                 console.log(user.providerData)
                 dispatch(loggedIn(user.providerData[0]));
+                setLogIn(false);
+                setProfile(true);
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -77,6 +84,7 @@ export default function LogIn() {
     );
 }
 
+export default LogIn;
 
 const Box = styled.View`
   display: flex;

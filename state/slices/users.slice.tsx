@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface User {
-  uid: string
-  name: string
-  email: string
+  uid?: string
+  email?: string
+  displayName?: string
+  phoneNumber?: string
 }
 
 interface UserState {
@@ -13,7 +14,8 @@ interface UserState {
 
 
 const initialState: UserState = {
-  me: { uid: 'e5Qm9sr3qaRv9c1nlGPOnnRUAht1', name: 'ana', email: "aaaa@gmail.com" },
+  // me: { uid: 'e5Qm9sr3qaRv9c1nlGPOnnRUAht1', name: 'ana', email: "aaaa@gmail.com" },
+  me: {},
   loggedIn: false
 }
 
@@ -26,7 +28,7 @@ const users_slice = createSlice({
       state.loggedIn = true;
     },
     loggedOut: (state) => {
-      // state.me = {};
+      state.me = {};
       state.loggedIn = false;
     }
   }

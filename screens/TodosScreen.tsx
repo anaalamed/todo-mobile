@@ -20,7 +20,7 @@ export default function TodosScreen() {
   useEffect(() => {
     const func = async () => {
       const db = getFirestore();
-      const q = query(collection(db, "todos"), where("userId", "==", me.uid));
+      const q = query(collection(db, "todos"), where("userId", "==", me.email));
 
       const querySnapshot = await getDocs(q);
       let arr: any = [];
@@ -30,7 +30,7 @@ export default function TodosScreen() {
       dispatch(getTodos(arr));
     }
     func();
-  }, [])
+  }, [me])
 
   return (
     <Box >
