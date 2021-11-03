@@ -18,8 +18,6 @@ export default function TodosScreen() {
   const { todos, is_loading, error_msg } = useSelector((state: RootState) => state.todos);
   const { me } = useSelector((state: RootState) => state.users);
 
-  console.log(todos);
-
   useEffect(() => {
     const func = async () => {
       if (me.email) {

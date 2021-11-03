@@ -1,15 +1,11 @@
-import * as WebBrowser from 'expo-web-browser';
-import React, { useState } from 'react';
-import { TouchableOpacity, TextInput } from 'react-native';
+import React from 'react';
 import styled from 'styled-components/native';
 import { useDispatch } from "react-redux";
-import { Checkbox } from 'react-native-paper';
 import { getFirestore, doc, deleteDoc, updateDoc } from "firebase/firestore";
+import { FontAwesome } from '@expo/vector-icons';
 
-import Colors from '../constants/Colors';
-import { Text, View } from './Themed';
+
 import { deleteTodo, toggleComplete, updateTodo } from "../state/slices/todos.slice";
-
 
 interface Todo {
     id: string
@@ -20,46 +16,33 @@ interface Todo {
 
 export default function Todo({ todo }: { todo: Todo }) {
     const dispatch = useDispatch();
-    const [text, setText] = useState('');
     const db = getFirestore();
 
-
     const handleDelete = async () => {
-        // console.log(todo.id);
         await deleteDoc(doc(db, "todos", todo.id));
         dispatch(deleteTodo(todo.id));
     }
 
     const handleToggleComplete = async () => {
-        // console.log(todo.id);
         await updateDoc(doc(db, "todos", todo.id), {
             completed: !todo.completed
         });
         dispatch(toggleComplete({ id: todo.id, completed: !todo.completed }));
     }
 
-    const [checked, setChecked] = React.useState(false);
-
     return (
         <Box>
-            <>
-                <IsDoneBox>
-                    <Checkbox
-                        status={checked ? 'checked' : 'unchecked'}
-                        onPress={() => {
-                            setChecked(!checked);
-                            handleToggleComplete();
-                        }}
-                    />
+            <Main>
+                <IsDoneBox done={todo.completed} onPress={handleToggleComplete}>
+                    {todo.completed ? (<BtnText><FontAwesome name='check' /> </BtnText>) : null}
                 </IsDoneBox>
 
                 <TodoText>{todo.title} </TodoText>
-                {/* <Text>{todo.userId} - </Text> */}
-                <TodoText>{todo.completed ? "done" : "to do"}</TodoText>
-            </>
+            </Main>
 
             <Tools>
-                <Button onPress={handleDelete}><Text>X</Text></Button>
+                {/* <Button onPress={handleDelete}><BtnText><FontAwesome name='pencil' /> </BtnText></Button> */}
+                <Button onPress={handleDelete}><BtnText><FontAwesome name='trash' /> </BtnText></Button>
             </Tools>
         </Box>
     );
@@ -68,10 +51,12 @@ export default function Todo({ todo }: { todo: Todo }) {
 const Box = styled.View`
   color: white;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   background: #49499c;
   width: 100%;
   padding: 10px;
+  padding-left: 20px;
+  padding-right: 15px;
   margin-bottom: 5px;
 
   border-top-right-radius: 10px;
@@ -80,31 +65,38 @@ const Box = styled.View`
   border-bottom-left-radius: 10px;
 `;
 
-const Input = styled.TextInput`
-  background: greenyellow;
-  color: white;
-  padding: 20px;
+const IsDoneBox = styled.TouchableOpacity`
+  background: ${props => (props.done ? "lightgreen" : "white")};
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  margin-right: 8px;
 `;
 
-const IsDoneBox = styled.View`
-  background: white;
-  width: 30px;
-  height: 30px;
-  border-radius: 10px;
+const BtnText = styled.Text`
+  color: navy;
+  font-weight: bold;
+  text-align: center;
+`;
+
+const Main = styled.View`
+  flex-direction: row;
 `;
 
 const Tools = styled.View`
+  flex-direction: row;
 `;
 
 const Button = styled.TouchableOpacity`
   background: greenyellow;
   padding: 2px;
   border-radius: 10px;
+  width: 20px;
+  margin-right: 5px;
 `;
 
 const TodoText = styled.Text`
   color: greenyellow;
   font-size: 20px;
- 
 `;
 
