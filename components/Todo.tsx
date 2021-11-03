@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { useDispatch } from "react-redux";
 import { getFirestore, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { FontAwesome } from '@expo/vector-icons';
 
-
 import { deleteTodo, toggleComplete, updateTodo } from "../state/slices/todos.slice";
+import UpdateTodo from '../components/UpdateTodo';
 
 interface Todo {
     id: string
@@ -17,6 +17,7 @@ interface Todo {
 export default function Todo({ todo }: { todo: Todo }) {
     const dispatch = useDispatch();
     const db = getFirestore();
+    const [update, setUpdate] = useState(false);
 
     const handleDelete = async () => {
         await deleteDoc(doc(db, "todos", todo.id));
@@ -30,21 +31,29 @@ export default function Todo({ todo }: { todo: Todo }) {
         dispatch(toggleComplete({ id: todo.id, completed: !todo.completed }));
     }
 
+
+
     return (
-        <Box>
-            <Main>
-                <IsDoneBox done={todo.completed} onPress={handleToggleComplete}>
-                    {todo.completed ? (<BtnText><FontAwesome name='check' /> </BtnText>) : null}
-                </IsDoneBox>
+        <>
+            {update ? (<UpdateTodo id={todo.id} setUpdate={setUpdate}></UpdateTodo>) : (
+                <Box>
+                    <Main>
+                        <IsDoneBox done={todo.completed} onPress={handleToggleComplete}>
+                            {todo.completed ? (<BtnText><FontAwesome name='check' /> </BtnText>) : null}
+                        </IsDoneBox>
 
-                <TodoText>{todo.title} </TodoText>
-            </Main>
+                        <TodoText>{todo.title} </TodoText>
+                    </Main>
 
-            <Tools>
-                {/* <Button onPress={handleDelete}><BtnText><FontAwesome name='pencil' /> </BtnText></Button> */}
-                <Button onPress={handleDelete}><BtnText><FontAwesome name='trash' /> </BtnText></Button>
-            </Tools>
-        </Box>
+                    <Tools>
+                        <Button onPress={() => setUpdate(true)}><BtnText><FontAwesome name='pencil' /> </BtnText></Button>
+                        <Button onPress={handleDelete}><BtnText><FontAwesome name='trash' /> </BtnText></Button>
+                    </Tools>
+
+                </Box>
+
+            )}
+        </>
     );
 }
 
@@ -65,6 +74,10 @@ const Box = styled.View`
   border-bottom-left-radius: 10px;
 `;
 
+const Main = styled.View`
+  flex-direction: row;
+`;
+
 const IsDoneBox = styled.TouchableOpacity`
   background: ${props => (props.done ? "lightgreen" : "white")};
   width: 20px;
@@ -73,14 +86,15 @@ const IsDoneBox = styled.TouchableOpacity`
   margin-right: 8px;
 `;
 
+const TodoText = styled.Text`
+  color: greenyellow;
+  font-size: 20px;
+`;
+
 const BtnText = styled.Text`
   color: navy;
   font-weight: bold;
   text-align: center;
-`;
-
-const Main = styled.View`
-  flex-direction: row;
 `;
 
 const Tools = styled.View`
@@ -95,8 +109,5 @@ const Button = styled.TouchableOpacity`
   margin-right: 5px;
 `;
 
-const TodoText = styled.Text`
-  color: greenyellow;
-  font-size: 20px;
-`;
+
 

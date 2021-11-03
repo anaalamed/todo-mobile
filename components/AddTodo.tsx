@@ -1,17 +1,10 @@
-import * as WebBrowser from 'expo-web-browser';
 import React, { useState } from 'react';
-import { TouchableOpacity, TextInput } from 'react-native';
 import { useSelector, useDispatch } from "react-redux";
 import styled from 'styled-components/native';
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 
-
-import Colors from '../constants/Colors';
-import { Text, View } from './Themed';
 import { addTodo } from '../state/slices/todos.slice';
 import { RootState } from '../state/root.reducer';
-
-
 
 export default function AddTodo() {
   const [text, setText] = useState('');
@@ -23,7 +16,6 @@ export default function AddTodo() {
       const db = getFirestore();
       const todo = { title: text, completed: false, userId: me.uid };
       const docRef = await addDoc(collection(db, "todos"), todo);
-      // console.log("Document written with ID: ", docRef);
       dispatch(addTodo({ id: docRef.id, ...todo }));
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -56,7 +48,6 @@ const Input = styled.TextInput`
   color: navy;
   padding: 20px;
   width: 70%;
-
 
   border-top-left-radius: 50px;
   border-bottom-left-radius: 20px;

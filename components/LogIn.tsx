@@ -82,7 +82,7 @@ const LogIn: React.FC<Props> = ({ setLogIn, setProfile }) => {
 
             <ButtonForm title="Submit" onPress={handleSubmit(onSubmit)} ><ButtonFormText>Log In</ButtonFormText></ButtonForm>
 
-            <Text>ana@gmail.com</Text>
+            <Text>ana@gmail.com - 123456</Text>
         </Box >
     );
 }
