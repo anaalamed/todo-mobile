@@ -22,10 +22,9 @@ export default function AddTodo() {
     try {
       const db = getFirestore();
       const todo = { title: text, completed: false, userId: me.uid };
-
       const docRef = await addDoc(collection(db, "todos"), todo);
-      dispatch(addTodo(todo));
-      // console.log("Document written with ID: ", docRef.id);
+      // console.log("Document written with ID: ", docRef);
+      dispatch(addTodo({ id: docRef.id, ...todo }));
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -41,7 +40,7 @@ export default function AddTodo() {
 
       />
       <Button onPress={handleAddTodo} >
-        <Text>Add</Text>
+        <BtnText>Add</BtnText>
       </Button>
     </Box>
   );
@@ -64,10 +63,16 @@ const Input = styled.TextInput`
 `;
 
 const Button = styled.TouchableOpacity`
-  background: green;
+  background: #6CBF40;
   padding: 20px;
 
   border-top-right-radius: 20px;
   border-bottom-right-radius: 50px;
+`;
+
+const BtnText = styled.Text`
+  color: navy;
+  font-weight: bold;
+  font-size: 18px;
 `;
 

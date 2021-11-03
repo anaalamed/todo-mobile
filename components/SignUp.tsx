@@ -100,7 +100,7 @@ const SignUp: React.FC<Props> = ({ setLogIn, setSignUp }) => {
             {errors.password && <Text>This is not valid.</Text>}
 
 
-            <ButtonForm title="Submit" onPress={handleSubmit(onSubmit)} ><ButtonFormText>Log In</ButtonFormText></ButtonForm>
+            <ButtonForm title="Submit" onPress={handleSubmit(onSubmit)} ><ButtonFormText>Sign Up</ButtonFormText></ButtonForm>
 
         </Box>
     );

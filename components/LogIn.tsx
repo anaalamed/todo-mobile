@@ -61,7 +61,6 @@ const LogIn: React.FC<Props> = ({ setLogIn, setProfile }) => {
             />
             {errors.email && <Text>This is not valid.</Text>}
 
-
             <Controller
                 control={control}
                 rules={{
@@ -82,6 +81,8 @@ const LogIn: React.FC<Props> = ({ setLogIn, setProfile }) => {
 
 
             <ButtonForm title="Submit" onPress={handleSubmit(onSubmit)} ><ButtonFormText>Log In</ButtonFormText></ButtonForm>
+
+            <Text>ana@gmail.com</Text>
         </Box >
     );
 }

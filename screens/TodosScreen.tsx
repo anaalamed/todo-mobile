@@ -18,19 +18,23 @@ export default function TodosScreen() {
   const { todos, is_loading, error_msg } = useSelector((state: RootState) => state.todos);
   const { me } = useSelector((state: RootState) => state.users);
 
-  // useEffect(() => {
-  //   const func = async () => {
-  //     const db = getFirestore();
-  //     const q = query(collection(db, "todos"), where("userId", "==", me.email));
-  //     const querySnapshot = await getDocs(q);
-  //     let arr: any = [];
-  //     querySnapshot.forEach((doc) => {
-  //       arr.push({ id: doc.id, ...doc.data() });
-  //     });
-  //     dispatch(getTodos(arr));
-  //   }
-  //   func();
-  // }, []);
+  console.log(todos);
+
+  useEffect(() => {
+    const func = async () => {
+      if (me.email) {
+        const db = getFirestore();
+        const q = query(collection(db, "todos"), where("userId", "==", me.email));
+        const querySnapshot = await getDocs(q);
+        let arr: any = [];
+        querySnapshot.forEach((doc) => {
+          arr.push({ id: doc.id, ...doc.data() });
+        });
+        dispatch(getTodos(arr));
+      }
+    }
+    func();
+  }, [me]);
 
   return (
     <ScrollView style={{ backgroundColor: 'navy' }}
@@ -45,9 +49,17 @@ export default function TodosScreen() {
         <Separator />
         <Section>
           {me.email ?
-            (todos?.map((todo, i) => (<Todo key={i} todo={todo}></Todo>))) :
-            (<Text>Please log in to see your todos here! </Text>)}
+            (
+              <>
+                {todos.filter(todo => todo.completed === false).map((todo, i) => (<Todo key={i} todo={todo}></Todo>))}
+                {todos.filter(todo => todo.completed === true).map((todo, i) => (<Todo key={i} todo={todo}></Todo>))}
+              </>
+            ) :
+            (<MyText>Please log in to see your todos here! </MyText>)}
+
+          {me.email && todos.length === 0 ? <MyText>There is no to do yet... Please add!</MyText> : null}
         </Section>
+
         <Image source={require('../assets/images/todo.png')} />
       </Box>
     </ScrollView>
@@ -56,11 +68,9 @@ export default function TodosScreen() {
 
 const Box = styled.View`
   display: flex;
-  /* flex: 1; */
   align-items: center;
   justify-content: center;
   background: navy;
-  /* height: 100%; */
 `;
 
 const Section = styled.View`
@@ -74,3 +84,10 @@ const Section = styled.View`
   border-top-left-radius: 50px;
   border-bottom-left-radius: 10px;
 `;
+
+const MyText = styled.Text`
+  text-align: center;
+  color: navy;
+  font-weight: bold;
+`;
+
