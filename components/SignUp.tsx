@@ -3,6 +3,7 @@ import { Text, View, TextInput, Button, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import styled from 'styled-components/native';
 import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { ButtonForm, ButtonFormText, Input } from '../constants/StyledComponents';
 
 interface Props {
     setLogIn(data: boolean): void
@@ -16,11 +17,6 @@ const SignUp: React.FC<Props> = ({ setLogIn, setSignUp }) => {
         console.log(data);
         const auth = getAuth();
         createUserWithEmailAndPassword(auth, data.email, data.password)
-            // .then((userCredential) => {
-            //     const user = userCredential.user;
-            //     setLogIn(true);
-            //     setSignUp(false);
-            // })
             .then((userCredential) => {
                 const user = userCredential.user;
 
@@ -47,7 +43,6 @@ const SignUp: React.FC<Props> = ({ setLogIn, setSignUp }) => {
     return (
         <Box>
             <Title>Sign Up</Title>
-
             <Controller
                 control={control}
                 rules={{
@@ -105,7 +100,8 @@ const SignUp: React.FC<Props> = ({ setLogIn, setSignUp }) => {
             {errors.password && <Text>This is not valid.</Text>}
 
 
-            <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+            <ButtonForm title="Submit" onPress={handleSubmit(onSubmit)} ><ButtonFormText>Log In</ButtonFormText></ButtonForm>
+
         </Box>
     );
 }
@@ -124,10 +120,3 @@ const Title = styled.Text`
   font-weight: bold;
 `;
 
-const Input = styled.TextInput`
-  background: gray;
-  color: white;
-  padding: 20px;
-  width: 85%;
-  margin: 10px;
-`;

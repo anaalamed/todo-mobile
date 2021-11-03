@@ -21,7 +21,7 @@ export default function AddTodo() {
   const handleAddTodo = async () => {
     try {
       const db = getFirestore();
-      const todo = { title: text, completed: true, userId: me.uid };
+      const todo = { title: text, completed: false, userId: me.uid };
 
       const docRef = await addDoc(collection(db, "todos"), todo);
       dispatch(addTodo(todo));
@@ -38,6 +38,7 @@ export default function AddTodo() {
         placeholder="Type here your new todo!"
         onChangeText={text => setText(text)}
         defaultValue={text}
+
       />
       <Button onPress={handleAddTodo} >
         <Text>Add</Text>
@@ -53,13 +54,20 @@ const Box = styled.View`
 
 const Input = styled.TextInput`
   background: greenyellow;
-  color: white;
+  color: navy;
   padding: 20px;
   width: 70%;
+
+
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 20px;
 `;
 
 const Button = styled.TouchableOpacity`
   background: green;
   padding: 20px;
+
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 50px;
 `;
 

@@ -1,6 +1,8 @@
 import React from 'react';
 import { useSelector } from "react-redux";
 import styled from 'styled-components/native';
+import { Title } from '../constants/StyledComponents';
+
 
 import { Text, View } from './Themed';
 import { RootState } from '../state/root.reducer';
@@ -19,12 +21,5 @@ const Box = styled.View`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 100px;
+  margin: 20px;
 `;
-
-const Title = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
-`;
-
-

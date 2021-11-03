@@ -53,9 +53,9 @@ export default function Todo({ todo }: { todo: Todo }) {
                     />
                 </IsDoneBox>
 
-                <Text>{todo.title} </Text>
+                <TodoText>{todo.title} </TodoText>
                 {/* <Text>{todo.userId} - </Text> */}
-                <Text>{todo.completed ? "done" : "need to do"}</Text>
+                <TodoText>{todo.completed ? "done" : "to do"}</TodoText>
             </>
 
             <Tools>
@@ -68,11 +68,16 @@ export default function Todo({ todo }: { todo: Todo }) {
 const Box = styled.View`
   color: white;
   flex-direction: row;
-  justify-content: space-between;
-  background: grey;
+  justify-content: space-around;
+  background: #49499c;
   width: 100%;
   padding: 10px;
   margin-bottom: 5px;
+
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 50px;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 10px;
 `;
 
 const Input = styled.TextInput`
@@ -85,13 +90,21 @@ const IsDoneBox = styled.View`
   background: white;
   width: 30px;
   height: 30px;
+  border-radius: 10px;
 `;
 
 const Tools = styled.View`
 `;
 
 const Button = styled.TouchableOpacity`
-  background: green;
+  background: greenyellow;
   padding: 2px;
+  border-radius: 10px;
+`;
+
+const TodoText = styled.Text`
+  color: greenyellow;
+  font-size: 20px;
+ 
 `;
 

@@ -1,11 +1,13 @@
 import React from "react";
-import { Text, View, TextInput, Button, Alert } from "react-native";
+import { Text, View, TextInput, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import styled from 'styled-components/native';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useDispatch } from "react-redux";
 
 import { loggedIn } from '../state/slices/users.slice'
+import { ButtonForm, ButtonFormText, Input } from '../constants/StyledComponents';
+
 
 interface Props {
     setLogIn(data: boolean): void
@@ -79,8 +81,8 @@ const LogIn: React.FC<Props> = ({ setLogIn, setProfile }) => {
             {errors.password && <Text>This is not valid.</Text>}
 
 
-            <Button title="Submit" onPress={handleSubmit(onSubmit)} />
-        </Box>
+            <ButtonForm title="Submit" onPress={handleSubmit(onSubmit)} ><ButtonFormText>Log In</ButtonFormText></ButtonForm>
+        </Box >
     );
 }
 
@@ -95,12 +97,4 @@ const Box = styled.View`
 const Title = styled.Text`
   font-size: 20px;
   font-weight: bold;
-`;
-
-const Input = styled.TextInput`
-  background: grey;
-  color: white;
-  padding: 20px;
-  width: 85%;
-  margin: 10px;
 `;

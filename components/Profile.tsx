@@ -6,6 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAuth, signOut, updateProfile } from "firebase/auth";
 import { loggedOut } from "../state/slices/users.slice";
 import { removeTodos } from "../state/slices/todos.slice";
+import { ButtonForm, ButtonFormText } from '../constants/StyledComponents';
+
 
 
 interface Props {
@@ -36,14 +38,21 @@ const Profile: React.FC<Props> = ({ setProfile, setStart }) => {
         });
     }
 
+    const handleUpdateProfile = () => {
+
+    }
+
     return (
         <Box>
             <Text>Name: {me.displayName}</Text>
             <Text>Email: {me.email}</Text>
             <Text>Phone: {me.phoneNumber}</Text>
 
+            <Buttons>
 
-            <Button title="Log Out" onPress={handleLogOut} />
+                {/* <ButtonForm disabled={true} onPress={handleUpdateProfile} ><ButtonFormText>Update</ButtonFormText></ButtonForm> */}
+                <ButtonForm onPress={handleLogOut} ><ButtonFormText>Log Out</ButtonFormText></ButtonForm>
+            </Buttons>
 
         </Box>
     );
@@ -54,10 +63,16 @@ export default Profile;
 const Box = styled.View`
   color: white;
   justify-content: space-between;
-  background: grey;
+  align-items: center;
   width: 100%;
   padding: 10px;
   margin-bottom: 5px;
+  border-radius: 10px;
 `;
 
+const Buttons = styled.View`
+  flex-direction: row;
+  width: 90%;
+  justify-content: space-around;
+`;
 
