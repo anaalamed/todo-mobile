@@ -58,8 +58,14 @@ export const Input = styled.TextInput`
   background: #d5f6c6;
   border: 1px solid navy ;
   color: navy;
-  padding: 20px;
+  padding: 15px;
+  padding-left: 25px;
   width: 85%;
   margin: 10px;
   border-radius: 10px;
+
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 50px;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 10px;
 `;

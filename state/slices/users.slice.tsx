@@ -5,6 +5,7 @@ interface User {
   email?: string
   displayName?: string
   phoneNumber?: string
+  photoURL?: string
 }
 
 interface UserState {

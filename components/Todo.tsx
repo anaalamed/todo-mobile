@@ -8,59 +8,60 @@ import { deleteTodo, toggleComplete, updateTodo } from "../state/slices/todos.sl
 import UpdateTodo from '../components/UpdateTodo';
 
 interface Todo {
-    id: string
-    title: string
-    completed: boolean
-    userId: string
+  id: string
+  title: string
+  completed: boolean
+  userId: string
 }
 
 export default function Todo({ todo }: { todo: Todo }) {
-    const dispatch = useDispatch();
-    const db = getFirestore();
-    const [update, setUpdate] = useState(false);
+  const dispatch = useDispatch();
+  const db = getFirestore();
+  const [update, setUpdate] = useState(false);
 
-    const handleDelete = async () => {
-        await deleteDoc(doc(db, "todos", todo.id));
-        dispatch(deleteTodo(todo.id));
-    }
+  const handleDelete = async () => {
+    await deleteDoc(doc(db, "todos", todo.id));
+    dispatch(deleteTodo(todo.id));
+  }
 
-    const handleToggleComplete = async () => {
-        await updateDoc(doc(db, "todos", todo.id), {
-            completed: !todo.completed
-        });
-        dispatch(toggleComplete({ id: todo.id, completed: !todo.completed }));
-    }
+  const handleToggleComplete = async () => {
+    await updateDoc(doc(db, "todos", todo.id), {
+      completed: !todo.completed
+    });
+    dispatch(toggleComplete({ id: todo.id, completed: !todo.completed }));
+  }
 
 
 
-    return (
-        <>
-            {update ? (<UpdateTodo id={todo.id} setUpdate={setUpdate}></UpdateTodo>) : (
-                <Box>
-                    <Main>
-                        <IsDoneBox done={todo.completed} onPress={handleToggleComplete}>
-                            {todo.completed ? (<BtnText><FontAwesome name='check' /> </BtnText>) : null}
-                        </IsDoneBox>
+  return (
+    <>
+      {update ? (<UpdateTodo id={todo.id} setUpdate={setUpdate}></UpdateTodo>) : (
+        <Box>
+          <Main>
+            <IsDoneBox done={todo.completed} onPress={handleToggleComplete}>
+              {todo.completed ? (<BtnText><FontAwesome name='check' /> </BtnText>) : null}
+            </IsDoneBox>
 
-                        <TodoText>{todo.title} </TodoText>
-                    </Main>
+            <TodoText>{todo.title} </TodoText>
+          </Main>
 
-                    <Tools>
-                        <Button onPress={() => setUpdate(true)}><BtnText><FontAwesome name='pencil' /> </BtnText></Button>
-                        <Button onPress={handleDelete}><BtnText><FontAwesome name='trash' /> </BtnText></Button>
-                    </Tools>
+          <Tools>
+            <Button onPress={() => setUpdate(true)}><BtnText><FontAwesome name='pencil' /> </BtnText></Button>
+            <Button onPress={handleDelete}><BtnText><FontAwesome name='trash' /> </BtnText></Button>
+          </Tools>
 
-                </Box>
+        </Box>
 
-            )}
-        </>
-    );
+      )}
+    </>
+  );
 }
 
 const Box = styled.View`
   color: white;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   background: #49499c;
   width: 100%;
   padding: 10px;
@@ -76,6 +77,7 @@ const Box = styled.View`
 
 const Main = styled.View`
   flex-direction: row;
+  align-items: center;
 `;
 
 const IsDoneBox = styled.TouchableOpacity`
@@ -89,6 +91,7 @@ const IsDoneBox = styled.TouchableOpacity`
 const TodoText = styled.Text`
   color: greenyellow;
   font-size: 20px;
+  width: 70%;
 `;
 
 const BtnText = styled.Text`

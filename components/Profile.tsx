@@ -9,22 +9,17 @@ import { removeTodos } from "../state/slices/todos.slice";
 import { ButtonForm, ButtonFormText } from '../constants/StyledComponents';
 
 
-
 interface Props {
     setProfile(data: boolean): void
     setStart(data: boolean): void
+    setUpdateProfile(data: boolean): void
 }
 
-import { Text, View } from './Themed';
 import { RootState } from '../state/root.reducer';
-import ProfileScreen from '../screens/ProfileScreen';
 
-const Profile: React.FC<Props> = ({ setProfile, setStart }) => {
-
+const Profile: React.FC<Props> = ({ setProfile, setStart, setUpdateProfile }) => {
     const dispatch = useDispatch();
-
     const { me } = useSelector((state: RootState) => state.users);
-
     const auth = getAuth();
 
     const handleLogOut = () => {
@@ -38,22 +33,19 @@ const Profile: React.FC<Props> = ({ setProfile, setStart }) => {
         });
     }
 
-    const handleUpdateProfile = () => {
-
-    }
-
     return (
         <Box>
-            <Text>Name: {me.displayName}</Text>
-            <Text>Email: {me.email}</Text>
-            <Text>Phone: {me.phoneNumber}</Text>
+            <Field>Name: <ValueField>{me.displayName}</ValueField> </Field>
+            <Field>Email: <ValueField>{me.email}</ValueField> </Field>
+            <Field>Phone: {me.phoneNumber}</Field>
 
             <Buttons>
-
-                {/* <ButtonForm disabled={true} onPress={handleUpdateProfile} ><ButtonFormText>Update</ButtonFormText></ButtonForm> */}
+                {/* <ButtonForm onPress={() => {
+                    setUpdateProfile(true)
+                    setProfile(false)
+                }} ><ButtonFormText>Update</ButtonFormText></ButtonForm> */}
                 <ButtonForm onPress={handleLogOut} ><ButtonFormText>Log Out</ButtonFormText></ButtonForm>
             </Buttons>
-
         </Box>
     );
 }
@@ -74,5 +66,13 @@ const Buttons = styled.View`
   flex-direction: row;
   width: 90%;
   justify-content: space-around;
+`;
+
+const Field = styled.Text`
+  color: navy;
+`;
+
+const ValueField = styled.Text`
+  font-size: 25px;
 `;
 

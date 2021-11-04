@@ -10,7 +10,7 @@
     "splash": {
       "image": "./assets/images/todo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000080"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -19,7 +19,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anaalamed.todo"
     },
     "android": {
       "adaptiveIcon": {
@@ -30,6 +31,6 @@
     "web": {
       "favicon": "./assets/images/todo.png"
     },
-    "description": ""
+    "description": "My to do mobile app"
   }
 }

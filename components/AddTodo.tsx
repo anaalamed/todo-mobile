@@ -29,7 +29,7 @@ export default function AddTodo() {
         placeholder="Type here your new todo!"
         onChangeText={text => setText(text)}
         defaultValue={text}
-
+        onSubmitEditing={handleAddTodo}
       />
       <Button onPress={handleAddTodo} >
         <BtnText>Add</BtnText>

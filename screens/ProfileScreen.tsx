@@ -7,33 +7,39 @@ import Profile from '../components/Profile';
 import SignUp from '../components/SignUp';
 import LogIn from '../components/LogIn';
 import HelloUser from '../components/HelloUser';
+import UpdateProfile from '../components/UpdateProfile';
+
 
 import { Text } from '../components/Themed'; // learn about it ! 
 import { RootState } from '../state/root.reducer';
 import { Title, Button, ButtonText, Separator } from '../constants/StyledComponents';
 import { loggedOut } from '../state/slices/users.slice';
+import { FontAwesome } from '@expo/vector-icons';
+
 
 export default function ProfileScreen() {
   const { me } = useSelector((state: RootState) => state.users);
 
+  // set display components 
   const [start, setStart] = useState(true);
   const [signUp, setSignUp] = useState(false);
   const [logIn, setLogIn] = useState(false);
   const [profile, setProfile] = useState(false);
-
+  const [updateProfile, setUpdateProfile] = useState(false);
 
   return (
     <Box >
       <HelloUser></HelloUser>
+      {/* <Button onPress={() => setProfile(true)} ><ButtonText>Profile</ButtonText></Button> */}
 
       {(signUp || logIn) ? (
-        <Button style={{ alignSelf: "start" }}
+        <BtnBack style={{ alignSelf: "start" }}
           onPress={() => {
             setStart(true);
             setLogIn(false);
             setProfile(false);
             setSignUp(false);
-          }} ><ButtonText>Home</ButtonText></Button>
+          }} ><ButtonText><FontAwesome name='arrow-left' /></ButtonText></BtnBack>
       ) : null}
 
       <Start display={start}>
@@ -56,11 +62,11 @@ export default function ProfileScreen() {
         )}
       </Start>
 
-
       <Section>
-        {me.email ? <Profile setProfile={setProfile} setStart={setStart}></Profile> : null}
+        {me.email && profile ? <Profile setProfile={setProfile} setStart={setStart} setUpdateProfile={setUpdateProfile}></Profile> : null}
         {signUp ? <SignUp setSignUp={setSignUp} setLogIn={setLogIn}></SignUp> : null}
         {logIn ? <LogIn setLogIn={setLogIn} setProfile={setProfile}></LogIn> : null}
+        {updateProfile ? (<UpdateProfile setProfile={setProfile} setUpdateProfile={setUpdateProfile}></UpdateProfile>) : null}
       </Section>
 
       <Image source={require('../assets/images/todo.png')} />
@@ -74,6 +80,11 @@ const Box = styled.View`
   align-items: center;
   justify-content: center;
   background: navy;
+`;
+
+const BtnBack = styled(Button)`
+  width: 30px;
+  margin-left: 10px;
 `;
 
 const Start = styled.View`
