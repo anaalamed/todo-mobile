@@ -2,10 +2,11 @@ import React from "react";
 import { Text, View, TextInput, Button, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import styled from 'styled-components/native';
-import { getAuth, createUserWithEmailAndPassword, updateProfile, updateEmail, updatePhoneNumber } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, updateEmail, updatePhoneNumber } from "firebase/auth";
 import { ButtonForm, ButtonFormText, Input } from '../constants/StyledComponents';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/root.reducer";
+import { loggedIn, updatedProfile } from "../state/slices/users.slice";
 
 interface Props {
     setProfile(data: boolean): void
@@ -13,6 +14,7 @@ interface Props {
 }
 
 const SignUp: React.FC<Props> = ({ setProfile, setUpdateProfile }) => {
+    const dispatch = useDispatch();
     const { control, handleSubmit, formState: { errors } } = useForm();
     const { me } = useSelector((state: RootState) => state.users);
 
@@ -22,19 +24,23 @@ const SignUp: React.FC<Props> = ({ setProfile, setUpdateProfile }) => {
     const urlRegex = /^(https?:\/\/)?[0-9a-zA-Z]+\.[-_0-9a-zA-Z]+\.[0-9a-zA-Z]+$/;
 
     const onSubmit = (data) => {
-        console.log(data);
+        console.log('onsubmit', data);
         const auth = getAuth();
         if (auth.currentUser) {
-            // if (data.displayName !== me.displayName || data.avatarUrl !== me.photoURL) {
-            updateProfile(auth.currentUser, {
-                displayName: data.name,
-                photoURL: data.avatarUrl
-            }).then(() => {
-                console.log("updated");
-            }).catch((error) => {
-                alert("something went wrong");
-            })
-            // }
+            if (data.displayName !== me.displayName || data.avatarUrl !== me.photoURL) {
+                updateProfile(auth.currentUser, {
+                    displayName: data.name,
+                    photoURL: data.avatarUrl
+                }).then(() => {
+                    console.log("updated");
+                    alert('updated');
+                    dispatch(updatedProfile(data));
+                }).catch(() => {
+                    // alert("something went wrong update");
+                })
+            }
+
+            // updateProfile()
 
             // if (data.email !== me.email) {
             //     updateEmail(auth.currentUser, data.email)
@@ -49,10 +55,23 @@ const SignUp: React.FC<Props> = ({ setProfile, setUpdateProfile }) => {
             //         .then(() => {
             //             console.log('then')
             //         }).catch((error) => {
-            //             alert("something went wrong");
+            //             alert("something went wrong phone");
             //         })
             // }
         }
+
+        // ------------------- testing update ------------------------------
+        signInWithEmailAndPassword(auth, data.email, '123456')
+            .then((userCredential) => {
+                const user = userCredential.user;
+                dispatch(loggedIn(user.providerData[0]));
+            })
+            .catch((error) => {
+                alert('something went wrong log in');
+            });
+        // ------------------- testing update ------------------------------
+
+
         setProfile(true);
         setUpdateProfile(false);
     }

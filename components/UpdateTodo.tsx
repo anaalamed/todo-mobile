@@ -9,11 +9,12 @@ import { RootState } from '../state/root.reducer';
 
 interface Props {
   id: string
+  title: string
   setUpdate(data: boolean): void
 }
 
-const UpdateTodo: React.FC<Props> = ({ id, setUpdate }) => {
-  const [text, setText] = useState('');
+const UpdateTodo: React.FC<Props> = ({ id, title, setUpdate }) => {
+  const [text, setText] = useState(title);
   const dispatch = useDispatch();
 
   const handleUpdate = async () => {
@@ -31,9 +32,11 @@ const UpdateTodo: React.FC<Props> = ({ id, setUpdate }) => {
       <Input
         placeholder="Type here your new todo!"
         onChangeText={text => setText(text)}
-        defaultValue={text}
+        defaultValue={title}
+        onSubmitEditing={handleUpdate}
       />
-      <Button onPress={handleUpdate} >
+      <Button onPress={handleUpdate}
+      >
         <BtnText><FontAwesome name='pencil' /> </BtnText>
       </Button>
     </Box>

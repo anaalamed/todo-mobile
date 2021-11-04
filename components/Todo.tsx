@@ -35,7 +35,7 @@ export default function Todo({ todo }: { todo: Todo }) {
 
   return (
     <>
-      {update ? (<UpdateTodo id={todo.id} setUpdate={setUpdate}></UpdateTodo>) : (
+      {update ? (<UpdateTodo id={todo.id} title={todo.title} setUpdate={setUpdate}></UpdateTodo>) : (
         <Box>
           <Main>
             <IsDoneBox done={todo.completed} onPress={handleToggleComplete}>

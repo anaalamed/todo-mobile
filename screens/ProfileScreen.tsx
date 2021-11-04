@@ -32,6 +32,7 @@ export default function ProfileScreen() {
       <HelloUser></HelloUser>
       {/* <Button onPress={() => setProfile(true)} ><ButtonText>Profile</ButtonText></Button> */}
 
+      {/* back button */}
       {(signUp || logIn) ? (
         <BtnBack style={{ alignSelf: "start" }}
           onPress={() => {
@@ -42,6 +43,7 @@ export default function ProfileScreen() {
           }} ><ButtonText><FontAwesome name='arrow-left' /></ButtonText></BtnBack>
       ) : null}
 
+      {/* log in/sign up buttons */}
       <Start display={start}>
         <Title >My Profile</Title>
         <Separator />
@@ -69,7 +71,7 @@ export default function ProfileScreen() {
         {updateProfile ? (<UpdateProfile setProfile={setProfile} setUpdateProfile={setUpdateProfile}></UpdateProfile>) : null}
       </Section>
 
-      <Image source={require('../assets/images/todo.png')} />
+      {/* <Image source={require('../assets/images/todo.png')} /> */}
     </Box>
   );
 }

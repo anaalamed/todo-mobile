@@ -38,6 +38,7 @@ const Profile: React.FC<Props> = ({ setProfile, setStart, setUpdateProfile }) =>
             <Field>Name: <ValueField>{me.displayName}</ValueField> </Field>
             <Field>Email: <ValueField>{me.email}</ValueField> </Field>
             <Field>Phone: {me.phoneNumber}</Field>
+            <Field>Avatar: {me.photoURL}</Field>
 
             <Buttons>
                 {/* <ButtonForm onPress={() => {

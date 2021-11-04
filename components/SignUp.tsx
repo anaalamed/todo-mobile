@@ -46,7 +46,7 @@ const SignUp: React.FC<Props> = ({ setLogIn, setSignUp }) => {
             <Controller
                 control={control}
                 rules={{
-                    required: true,
+                    // required: true,
                 }}
                 render={({ field: { onChange, value } }) => (
                     <Input
@@ -63,9 +63,9 @@ const SignUp: React.FC<Props> = ({ setLogIn, setSignUp }) => {
             <Controller
                 control={control}
                 rules={{
-                    required: true,
-                    minLength: 8,
-                    pattern: emailRegex
+                    // required: true,
+                    // minLength: 8,
+                    // pattern: emailRegex
                 }}
                 render={({ field: { onChange, value } }) => (
                     <Input
@@ -83,8 +83,8 @@ const SignUp: React.FC<Props> = ({ setLogIn, setSignUp }) => {
             <Controller
                 control={control}
                 rules={{
-                    required: true,
-                    maxLength: 100,
+                    // required: true,
+                    // maxLength: 100,
                     // pattern: passwordRegex
                 }}
                 render={({ field: { onChange, value } }) => (

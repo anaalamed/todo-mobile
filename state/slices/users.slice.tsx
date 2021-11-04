@@ -27,16 +27,21 @@ const users_slice = createSlice({
     loggedIn: (state, action) => {
       state.me = action.payload;
       state.loggedIn = true;
+      console.log('loged in new user') // testing
     },
     loggedOut: (state) => {
       state.me = {};
       state.loggedIn = false;
+    },
+    updatedProfile: (state, action) => {
+      console.log('slice', action.payload);
+      // state.me = ;
     }
   }
 });
 
 export default users_slice.reducer;
-export const { loggedIn, loggedOut } = users_slice.actions;
+export const { loggedIn, loggedOut, updatedProfile } = users_slice.actions;
 
 
 

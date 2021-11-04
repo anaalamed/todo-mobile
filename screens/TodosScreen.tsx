@@ -7,11 +7,12 @@ import { ScrollView, Image } from 'react-native';
 import AddTodo from '../components/AddTodo';
 import Todo from '../components/Todo';
 import HelloUser from '../components/HelloUser';
-import { getTodos } from '../state/slices/todos.slice';
+import Alert from '../components/Alert';
 
-import { Text, View } from '../components/Themed';
-import { RootState } from '../state/root.reducer';
 import { Title, Separator } from '../constants/StyledComponents';
+
+import { getTodos } from '../state/slices/todos.slice';
+import { RootState } from '../state/root.reducer';
 
 export default function TodosScreen() {
   const dispatch = useDispatch();
@@ -57,6 +58,8 @@ export default function TodosScreen() {
 
           {me.email && todos.length === 0 ? <MyText>There is no to do yet... Please add!</MyText> : null}
         </Section>
+
+        {/* <Alert></Alert> */}
 
         <Image source={require('../assets/images/todo.png')} />
       </Box>

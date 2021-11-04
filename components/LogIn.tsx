@@ -24,7 +24,6 @@ const LogIn: React.FC<Props> = ({ setLogIn, setProfile }) => {
         signInWithEmailAndPassword(auth, data.email, data.password)
             .then((userCredential) => {
                 const user = userCredential.user;
-                console.log(user.providerData)
                 dispatch(loggedIn(user.providerData[0]));
                 setLogIn(false);
                 setProfile(true);
