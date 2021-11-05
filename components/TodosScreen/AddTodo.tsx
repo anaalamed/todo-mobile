@@ -33,7 +33,7 @@ export default function AddTodo() {
         onSubmitEditing={handleAddTodo}
       />
       <Button onPress={handleAddTodo} >
-        <BtnText><FontAwesome name='plus' /></BtnText>
+        <BtnText><FontAwesome name='plus' style={{ fontSize: 30 }} /></BtnText>
       </Button>
     </Box>
   );
@@ -56,7 +56,7 @@ const Input = styled.TextInput`
 
 const Button = styled.TouchableOpacity`
   background: #6CBF40;
-  padding: 20px;
+  padding: 13px;
 
   border-top-right-radius: 20px;
   border-bottom-right-radius: 50px;
@@ -65,6 +65,5 @@ const Button = styled.TouchableOpacity`
 const BtnText = styled.Text`
   color: navy;
   font-weight: bold;
-  font-size: 18px;
 `;
 

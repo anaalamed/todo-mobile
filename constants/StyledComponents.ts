@@ -69,3 +69,10 @@ export const Input = styled.TextInput`
   border-top-left-radius: 50px;
   border-bottom-left-radius: 10px;
 `;
+
+export const StyledText = styled.Text`
+  font-weight: bold;
+  color: navy;
+  text-align: center;
+  padding-bottom: 10px;
+`;

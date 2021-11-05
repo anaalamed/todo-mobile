@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import styled from 'styled-components/native';
 import { getFirestore, collection, updateDoc, doc } from "firebase/firestore";
@@ -17,7 +17,7 @@ const UpdateTodo: React.FC<Props> = ({ id, title, setUpdate }) => {
   const [text, setText] = useState(title);
   const dispatch = useDispatch();
 
-  const handleUpdate = async () => {
+  let handleUpdate = async () => {
     const db = getFirestore();
     await updateDoc(doc(db, "todos", id), {
       title: text
@@ -26,6 +26,13 @@ const UpdateTodo: React.FC<Props> = ({ id, title, setUpdate }) => {
     setUpdate(false);
     setText("");
   }
+
+  // prevent warning - Can't perform a React state update on an unmounted component. 
+  useEffect(() => {
+    return () => {
+      handleUpdate
+    }
+  }, [])
 
   return (
     <Box>

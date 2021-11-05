@@ -7,7 +7,6 @@ import { ScrollView, Image } from 'react-native';
 import AddTodo from '../components/TodosScreen/AddTodo';
 import Todo from '../components/TodosScreen/Todo';
 import HelloUser from '../components/HelloUser';
-import Alert from '../components/TodosScreen/Alert';
 
 import { Title, Separator } from '../constants/StyledComponents';
 
@@ -58,8 +57,6 @@ export default function TodosScreen() {
 
           {me.email && todos.length === 0 ? <MyText>There is no to do yet... Please add!</MyText> : null}
         </Section>
-
-        {/* <Alert></Alert> */}
 
         <Image source={require('../assets/images/todo.png')} />
       </Box>

@@ -6,6 +6,7 @@ import { FontAwesome } from '@expo/vector-icons';
 
 import { deleteTodo, toggleComplete, updateTodo } from "../../state/slices/todos.slice";
 import UpdateTodo from './UpdateTodo';
+import ModalDelete from './ModalDeleteTodo';
 
 interface Todo {
   id: string
@@ -18,6 +19,7 @@ export default function Todo({ todo }: { todo: Todo }) {
   const dispatch = useDispatch();
   const db = getFirestore();
   const [update, setUpdate] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const handleDelete = async () => {
     await deleteDoc(doc(db, "todos", todo.id));
@@ -30,8 +32,6 @@ export default function Todo({ todo }: { todo: Todo }) {
     });
     dispatch(toggleComplete({ id: todo.id, completed: !todo.completed }));
   }
-
-
 
   return (
     <>
@@ -47,8 +47,10 @@ export default function Todo({ todo }: { todo: Todo }) {
 
           <Tools>
             <Button onPress={() => setUpdate(true)}><BtnText><FontAwesome name='pencil' /> </BtnText></Button>
-            <Button onPress={handleDelete}><BtnText><FontAwesome name='trash' /> </BtnText></Button>
+            <Button onPress={() => setModalVisible(true)}><BtnText><FontAwesome name='trash' /> </BtnText></Button>
           </Tools>
+
+          {isModalVisible ? <ModalDelete isModalVisible={isModalVisible} setModalVisible={setModalVisible} handleDelete={handleDelete} title={todo.title}></ModalDelete> : null}
 
         </Box>
 
