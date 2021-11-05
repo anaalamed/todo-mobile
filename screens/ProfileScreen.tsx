@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSelector } from "react-redux";
+import { ScrollView, Image } from 'react-native';
 import styled from 'styled-components/native';
-import { Image } from "react-native";
+import { FontAwesome } from '@expo/vector-icons';
 
 import Profile from '../components/ProfileScreen/Profile';
 import SignUp from '../components/ProfileScreen/SignUp';
 import LogIn from '../components/ProfileScreen/LogIn';
 import HelloUser from '../components/HelloUser';
 import UpdateProfile from '../components/ProfileScreen/UpdateProfile';
-
-
-import { Text } from '../components/Themed'; // learn about it ! 
-import { RootState } from '../state/root.reducer';
 import { Title, Button, ButtonText, Separator } from '../constants/StyledComponents';
-import { loggedOut } from '../state/slices/users.slice';
-import { FontAwesome } from '@expo/vector-icons';
+
+import { RootState } from '../state/root.reducer';
+import { Text } from '../components/Themed'; // learn about it ! 
 
 
 export default function ProfileScreen() {
@@ -28,51 +26,54 @@ export default function ProfileScreen() {
   const [updateProfile, setUpdateProfile] = useState(false);
 
   return (
-    <Box >
-      <HelloUser></HelloUser>
-      {/* <Button onPress={() => setProfile(true)} ><ButtonText>Profile</ButtonText></Button> */}
+    <ScrollView style={{ backgroundColor: 'navy' }}
+      centerContent={true}
+    >
+      <Box >
+        {/* <Button onPress={() => setProfile(true)} ><ButtonText>Profile</ButtonText></Button> */}
 
-      {/* back button */}
-      {(signUp || logIn) ? (
-        <BtnBack style={{ alignSelf: "start" }}
-          onPress={() => {
-            setStart(true);
-            setLogIn(false);
-            setProfile(false);
-            setSignUp(false);
-          }} ><ButtonText><FontAwesome name='arrow-left' /></ButtonText></BtnBack>
-      ) : null}
+        {/* back button */}
+        {(signUp || logIn) ? (
+          <BtnBack style={{ alignSelf: "start" }}
+            onPress={() => {
+              setStart(true);
+              setLogIn(false);
+              setProfile(false);
+              setSignUp(false);
+            }} ><ButtonText><FontAwesome name='arrow-left' /></ButtonText></BtnBack>
+        ) : null}
 
-      {/* log in/sign up buttons */}
-      <Start display={start}>
-        <Title >My Profile</Title>
-        <Separator />
+        {/* log in/sign up buttons */}
+        <Start display={start}>
+          <Title >My Profile</Title>
+          <Separator />
 
-        {me.email ? null : (
-          <Buttons>
-            <Button onPress={() => {
-              setStart(false)
-              setSignUp(true)
-            }}
-            ><ButtonText>Sign Up</ButtonText></Button>
+          {me.email ? null : (
+            <Buttons>
+              <Button onPress={() => {
+                setStart(false)
+                setSignUp(true)
+              }}
+              ><ButtonText>Sign Up</ButtonText></Button>
 
-            <Button onPress={() => {
-              setStart(false)
-              setLogIn(true)
-            }} ><ButtonText>Log In</ButtonText></Button>
-          </Buttons>
-        )}
-      </Start>
+              <Button onPress={() => {
+                setStart(false)
+                setLogIn(true)
+              }} ><ButtonText>Log In</ButtonText></Button>
+            </Buttons>
+          )}
+        </Start>
 
-      <Section>
-        {me.email && profile ? <Profile setProfile={setProfile} setStart={setStart} setUpdateProfile={setUpdateProfile}></Profile> : null}
-        {signUp ? <SignUp setSignUp={setSignUp} setLogIn={setLogIn}></SignUp> : null}
-        {logIn ? <LogIn setLogIn={setLogIn} setProfile={setProfile}></LogIn> : null}
-        {updateProfile ? (<UpdateProfile setProfile={setProfile} setUpdateProfile={setUpdateProfile}></UpdateProfile>) : null}
-      </Section>
+        <Section>
+          {me.email && profile ? <Profile setProfile={setProfile} setStart={setStart} setUpdateProfile={setUpdateProfile}></Profile> : null}
+          {signUp ? <SignUp setSignUp={setSignUp} setLogIn={setLogIn}></SignUp> : null}
+          {logIn ? <LogIn setLogIn={setLogIn} setProfile={setProfile}></LogIn> : null}
+          {updateProfile ? (<UpdateProfile setProfile={setProfile} setUpdateProfile={setUpdateProfile}></UpdateProfile>) : null}
+        </Section>
 
-      {/* <Image source={require('../assets/images/todo.png')} /> */}
-    </Box>
+        <Image source={require('../assets/images/todo.png')} />
+      </Box>
+    </ScrollView>
   );
 }
 

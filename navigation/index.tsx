@@ -8,7 +8,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName, Pressable } from 'react-native';
+import { ColorSchemeName, Pressable, Image } from 'react-native';
 
 import useColorScheme from '../hooks/useColorScheme';
 import NotFoundScreen from '../screens/NotFoundScreen';
@@ -16,6 +16,12 @@ import ProfileScreen from '../screens/ProfileScreen';
 import TodosScreen from '../screens/TodosScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+
+import { RootState } from '../state/root.reducer';
+import { useSelector } from 'react-redux';
+import HelloUser from '../components/HelloUser';
+
+
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -50,10 +56,12 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
+  const { me } = useSelector((state: RootState) => state.users);
+
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="Profile"
       screenOptions={{
         tabBarActiveTintColor: "navy",
         tabBarInactiveTintColor: "gray",
@@ -62,47 +70,69 @@ function BottomTabNavigator() {
       }}>
 
       <BottomTab.Screen
-        name="TabOne"
+        name="Profile"
         component={ProfileScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
+        options={({ navigation }: RootTabScreenProps<'Profile'>) => ({
           title: 'Profile',
           headerStyle: { backgroundColor: 'greenyellow' },
           tabBarIcon: ({ }) => <TabBarIcon name="user" color='navy' />,
-          // headerRight: () => (
-          //   <Pressable
-          //     onPress={() => navigation.navigate('TabOne')}
-          //     style={({ pressed }) => ({
-          //       opacity: pressed ? 0.5 : 1,
-          //     })}>
-          //     <FontAwesome
-          //       name="home"
-          //       size={25}
-          //       style={{ marginRight: 15 }}
-          //     />
-          //   </Pressable>
-          // ),
+          headerTitle: '',
+
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate('Profile')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+                flexDirection: 'row'
+              })}>
+              <HelloUser></HelloUser>
+              {me.photoURL ? (
+                <Image style={{ width: 30, height: 30, borderRadius: 50, margin: 10 }} source={{ uri: me.photoURL }} />
+              ) : (
+                  <FontAwesome
+                    name="user-circle"
+                    size={25}
+                    style={{ marginLeft: 15 }}
+                  />
+                )}
+            </Pressable>
+          ),
+
+          headerLeft: () => (
+            <Image style={{ width: 30, height: 30, borderRadius: 50, margin: 10 }} source={require('../assets/images/todo.png')} />
+          )
         })}
+
       />
       <BottomTab.Screen
-        name="TabTwo"
+        name="Todos"
         component={TodosScreen}
-        options={({ navigation }: RootTabScreenProps<'TabTwo'>) => ({
+        options={({ navigation }: RootTabScreenProps<'Todos'>) => ({
           title: 'Todos',
+          headerTitle: '',
           headerStyle: { backgroundColor: 'greenyellow' },
           tabBarIcon: ({ }) => <TabBarIcon name="list" color='navy' />,
-          // headerRight: () => (
-          //   <Pressable
-          //     onPress={() => navigation.navigate('TabOne')}
-          //     style={({ pressed }) => ({
-          //       opacity: pressed ? 0.5 : 1,
-          //     })}>
-          //     <FontAwesome
-          //       name="home"
-          //       size={25}
-          //       style={{ marginRight: 15 }}
-          //     />
-          //   </Pressable>
-          // ),
+
+          headerLeft: () => (
+            <Pressable
+              onPress={() => navigation.navigate('Profile')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+                flexDirection: 'row'
+              })}>
+              {me.photoURL ? (
+                <Image style={{ width: 30, height: 30, borderRadius: 50, margin: 10 }} source={{ uri: me.photoURL }} />
+              ) : (
+                  <FontAwesome
+                    name="user-circle"
+                    size={25}
+                    style={{ marginLeft: 15 }}
+                  />
+                )}
+              <HelloUser></HelloUser>
+            </Pressable>
+          ),
+
         })}
       />
     </BottomTab.Navigator >

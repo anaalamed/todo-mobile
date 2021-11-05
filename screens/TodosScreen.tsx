@@ -40,7 +40,6 @@ export default function TodosScreen() {
     >
 
       <Box >
-        <HelloUser></HelloUser>
         <Title >Todos</Title>
         {me.email !== undefined ? <AddTodo></AddTodo> : null}
 
