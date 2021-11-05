@@ -1,13 +1,13 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import store from "./state/configure.store";
 import { Provider } from "react-redux";
+import { StatusBar } from 'expo-status-bar';
 import { initializeApp } from 'firebase/app';
+import Navigation from './navigation';
 
 import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
+import store from "./state/configure.store";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCbtjWerogpa2Xm2JGLZRE6yLh_7Hz7tTo",
@@ -32,7 +32,7 @@ export default function App() {
       <SafeAreaProvider>
         <Provider store={store}>
           <Navigation colorScheme={colorScheme} />
-          <StatusBar />
+          <StatusBar style="dark" />
         </Provider>
       </SafeAreaProvider>
     );

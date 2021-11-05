@@ -1,9 +1,9 @@
 import * as WebBrowser from 'expo-web-browser';
 import React, { useState } from 'react';
-import { TouchableOpacity, TextInput, Button } from 'react-native';
+import { TouchableOpacity, TextInput, Button, Image, View } from 'react-native';
 import styled from 'styled-components/native';
 import { useDispatch, useSelector } from "react-redux";
-import { getAuth, signOut, updateProfile } from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
 import { loggedOut } from "../../state/slices/users.slice";
 import { removeTodos } from "../../state/slices/todos.slice";
 import { ButtonForm, ButtonFormText } from '../../constants/StyledComponents';
@@ -21,6 +21,7 @@ const Profile: React.FC<Props> = ({ setProfile, setStart, setUpdateProfile }) =>
     const dispatch = useDispatch();
     const { me } = useSelector((state: RootState) => state.users);
     const auth = getAuth();
+    const defaultProfileImage = 'https://sharedigitalcard.com/user/uploads/user.png';
 
     const handleLogOut = () => {
         signOut(auth).then(() => {
@@ -33,12 +34,16 @@ const Profile: React.FC<Props> = ({ setProfile, setStart, setUpdateProfile }) =>
         });
     }
 
+
+
     return (
         <Box>
+            <StyledImage source={{ uri: me.photoURL || defaultProfileImage }} />
+
             <Field>Name: <ValueField>{me.displayName}</ValueField> </Field>
             <Field>Email: <ValueField>{me.email}</ValueField> </Field>
             <Field>Phone: {me.phoneNumber}</Field>
-            <Field>Avatar: {me.photoURL}</Field>
+            {/* <Field>Avatar: {me.photoURL}</Field> */}
 
             <Buttons>
                 {/* <ButtonForm onPress={() => {
@@ -63,10 +68,11 @@ const Box = styled.View`
   border-radius: 10px;
 `;
 
-const Buttons = styled.View`
-  flex-direction: row;
-  width: 90%;
-  justify-content: space-around;
+const StyledImage = styled.Image`
+  height: 100px;
+  width: 100px;
+  margin-bottom: 10px;
+  border-radius: 50;
 `;
 
 const Field = styled.Text`
@@ -77,3 +83,8 @@ const ValueField = styled.Text`
   font-size: 25px;
 `;
 
+const Buttons = styled.View`
+  flex-direction: row;
+  width: 90%;
+  justify-content: space-around;
+`;

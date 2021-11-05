@@ -12,7 +12,7 @@ export default function HelloUser() {
 
   return (
     <Box >
-      <Title>Hi, {me?.displayName ? me.displayName : 'guest'}</Title>
+      <Title style={{ fontSize: 30 }}>Hi, {me?.displayName ? me.displayName : 'guest'}</Title>
     </Box>
   );
 }
@@ -23,3 +23,5 @@ const Box = styled.View`
   justify-content: center;
   margin: 20px;
 `;
+
+
