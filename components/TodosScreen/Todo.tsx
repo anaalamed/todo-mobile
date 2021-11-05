@@ -4,8 +4,8 @@ import { useDispatch } from "react-redux";
 import { getFirestore, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { FontAwesome } from '@expo/vector-icons';
 
-import { deleteTodo, toggleComplete, updateTodo } from "../state/slices/todos.slice";
-import UpdateTodo from '../components/UpdateTodo';
+import { deleteTodo, toggleComplete, updateTodo } from "../../state/slices/todos.slice";
+import UpdateTodo from './UpdateTodo';
 
 interface Todo {
   id: string

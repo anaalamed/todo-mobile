@@ -3,11 +3,11 @@ import { useSelector } from "react-redux";
 import styled from 'styled-components/native';
 import { Image } from "react-native";
 
-import Profile from '../components/Profile';
-import SignUp from '../components/SignUp';
-import LogIn from '../components/LogIn';
+import Profile from '../components/ProfileScreen/Profile';
+import SignUp from '../components/ProfileScreen/SignUp';
+import LogIn from '../components/ProfileScreen/LogIn';
 import HelloUser from '../components/HelloUser';
-import UpdateProfile from '../components/UpdateProfile';
+import UpdateProfile from '../components/ProfileScreen/UpdateProfile';
 
 
 import { Text } from '../components/Themed'; // learn about it ! 

@@ -1,71 +1,52 @@
 import React from "react";
-import { Text, View, TextInput, Button, Alert } from "react-native";
+import { Text, View, TextInput, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import styled from 'styled-components/native';
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { ButtonForm, ButtonFormText, Input } from '../constants/StyledComponents';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useDispatch } from "react-redux";
+
+import { loggedIn } from '../../state/slices/users.slice'
+import { ButtonForm, ButtonFormText, Input } from '../../constants/StyledComponents';
+
 
 interface Props {
     setLogIn(data: boolean): void
-    setSignUp(data: boolean): void
+    setProfile(data: boolean): void
 }
 
-const SignUp: React.FC<Props> = ({ setLogIn, setSignUp }) => {
+const LogIn: React.FC<Props> = ({ setLogIn, setProfile }) => {
+
+    const dispatch = useDispatch();
     const { control, handleSubmit, formState: { errors } } = useForm();
 
     const onSubmit = (data) => {
-        console.log(data);
         const auth = getAuth();
-        createUserWithEmailAndPassword(auth, data.email, data.password)
+        signInWithEmailAndPassword(auth, data.email, data.password)
             .then((userCredential) => {
                 const user = userCredential.user;
-
-                updateProfile(user, { displayName: data.name }).
-                    then(() => {
-                        setLogIn(true);
-                        setSignUp(false);
-                    })
-                    .catch((error) => {
-                        alert("something went wrong");
-                    })
+                dispatch(loggedIn(user.providerData[0]));
+                setLogIn(false);
+                setProfile(true);
             })
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
                 alert('something went wrong');
             });
-
     }
 
     const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
 
     return (
         <Box>
-            <Title>Sign Up</Title>
-            <Controller
-                control={control}
-                rules={{
-                    // required: true,
-                }}
-                render={({ field: { onChange, value } }) => (
-                    <Input
-                        onChangeText={onChange}
-                        value={value}
-                        placeholder='name'
-                    />
-                )}
-                name="name"
-                defaultValue=""
-            />
-            {errors.name && <Text>This is not valid.</Text>}
+            <Title>Log In</Title>
 
             <Controller
                 control={control}
                 rules={{
-                    // required: true,
-                    // minLength: 8,
-                    // pattern: emailRegex
+                    required: true,
+                    minLength: 8,
+                    pattern: emailRegex
                 }}
                 render={({ field: { onChange, value } }) => (
                     <Input
@@ -79,13 +60,11 @@ const SignUp: React.FC<Props> = ({ setLogIn, setSignUp }) => {
             />
             {errors.email && <Text>This is not valid.</Text>}
 
-
             <Controller
                 control={control}
                 rules={{
-                    // required: true,
-                    // maxLength: 100,
-                    // pattern: passwordRegex
+                    required: true,
+                    maxLength: 100,
                 }}
                 render={({ field: { onChange, value } }) => (
                     <Input
@@ -100,14 +79,15 @@ const SignUp: React.FC<Props> = ({ setLogIn, setSignUp }) => {
             {errors.password && <Text>This is not valid.</Text>}
 
 
-            <ButtonForm title="Submit" onPress={handleSubmit(onSubmit)} ><ButtonFormText>Sign Up</ButtonFormText></ButtonForm>
+            <ButtonForm title="Submit" onPress={handleSubmit(onSubmit)} ><ButtonFormText>Log In</ButtonFormText></ButtonForm>
 
-        </Box>
+            <Text>ana@gmail.com</Text>
+            <Text>123456</Text>
+        </Box >
     );
 }
 
-export default SignUp;
-
+export default LogIn;
 
 const Box = styled.View`
   display: flex;
@@ -119,4 +99,3 @@ const Title = styled.Text`
   font-size: 20px;
   font-weight: bold;
 `;
-

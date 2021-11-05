@@ -4,8 +4,8 @@ import styled from 'styled-components/native';
 import { getFirestore, collection, addDoc } from "firebase/firestore";
 import { FontAwesome } from '@expo/vector-icons';
 
-import { addTodo } from '../state/slices/todos.slice';
-import { RootState } from '../state/root.reducer';
+import { addTodo } from '../../state/slices/todos.slice';
+import { RootState } from '../../state/root.reducer';
 
 export default function AddTodo() {
   const [text, setText] = useState('');

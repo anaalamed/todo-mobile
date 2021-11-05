@@ -4,8 +4,8 @@ import styled from 'styled-components/native';
 import { getFirestore, collection, updateDoc, doc } from "firebase/firestore";
 import { FontAwesome } from '@expo/vector-icons';
 
-import { updateTodo } from '../state/slices/todos.slice';
-import { RootState } from '../state/root.reducer';
+import { updateTodo } from '../../state/slices/todos.slice';
+import { RootState } from '../../state/root.reducer';
 
 interface Props {
   id: string

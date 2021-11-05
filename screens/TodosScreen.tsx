@@ -4,10 +4,10 @@ import { getFirestore, collection, getDocs, getDoc, query, where } from 'firebas
 import styled from 'styled-components/native';
 import { ScrollView, Image } from 'react-native';
 
-import AddTodo from '../components/AddTodo';
-import Todo from '../components/Todo';
+import AddTodo from '../components/TodosScreen/AddTodo';
+import Todo from '../components/TodosScreen/Todo';
 import HelloUser from '../components/HelloUser';
-import Alert from '../components/Alert';
+import Alert from '../components/TodosScreen/Alert';
 
 import { Title, Separator } from '../constants/StyledComponents';
 

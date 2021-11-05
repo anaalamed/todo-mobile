@@ -3,10 +3,10 @@ import { Text, View, TextInput, Button, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import styled from 'styled-components/native';
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, updateEmail, updatePhoneNumber } from "firebase/auth";
-import { ButtonForm, ButtonFormText, Input } from '../constants/StyledComponents';
+import { ButtonForm, ButtonFormText, Input } from '../../constants/StyledComponents';
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../state/root.reducer";
-import { loggedIn, updatedProfile } from "../state/slices/users.slice";
+import { RootState } from "../../state/root.reducer";
+import { loggedIn, updatedProfile } from "../../state/slices/users.slice";
 
 interface Props {
     setProfile(data: boolean): void

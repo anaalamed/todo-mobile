@@ -4,9 +4,9 @@ import { TouchableOpacity, TextInput, Button } from 'react-native';
 import styled from 'styled-components/native';
 import { useDispatch, useSelector } from "react-redux";
 import { getAuth, signOut, updateProfile } from "firebase/auth";
-import { loggedOut } from "../state/slices/users.slice";
-import { removeTodos } from "../state/slices/todos.slice";
-import { ButtonForm, ButtonFormText } from '../constants/StyledComponents';
+import { loggedOut } from "../../state/slices/users.slice";
+import { removeTodos } from "../../state/slices/todos.slice";
+import { ButtonForm, ButtonFormText } from '../../constants/StyledComponents';
 
 
 interface Props {
@@ -15,7 +15,7 @@ interface Props {
     setUpdateProfile(data: boolean): void
 }
 
-import { RootState } from '../state/root.reducer';
+import { RootState } from '../../state/root.reducer';
 
 const Profile: React.FC<Props> = ({ setProfile, setStart, setUpdateProfile }) => {
     const dispatch = useDispatch();
