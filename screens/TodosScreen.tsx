@@ -1,16 +1,14 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { getFirestore, collection, getDocs, getDoc, query, where } from 'firebase/firestore'
 import styled from 'styled-components/native';
 import { ScrollView, Image } from 'react-native';
 
 import AddTodo from '../components/TodosScreen/AddTodo';
 import Todo from '../components/TodosScreen/Todo';
-import HelloUser from '../components/HelloUser';
-
 import { Title, Separator } from '../constants/StyledComponents';
 
 import { getTodos } from '../state/slices/todos.slice';
+import { getTodosFunc } from '../initializeApp';
 import { RootState } from '../state/root.reducer';
 
 export default function TodosScreen() {
@@ -19,20 +17,18 @@ export default function TodosScreen() {
   const { me } = useSelector((state: RootState) => state.users);
 
   useEffect(() => {
-    const func = async () => {
-      if (me.email) {
-        const db = getFirestore();
-        const q = query(collection(db, "todos"), where("userId", "==", me.email));
-        const querySnapshot = await getDocs(q);
-        let arr: any = [];
-        querySnapshot.forEach((doc) => {
-          arr.push({ id: doc.id, ...doc.data() });
+    const handleGet = () => {
+      getTodosFunc(me)
+        .then(res => {
+          dispatch(getTodos(res.data));
+        })
+        .catch((error) => {
+          console.log('error', error);
         });
-        dispatch(getTodos(arr));
-      }
     }
-    func();
+    handleGet();
   }, [me]);
+
 
   return (
     <ScrollView style={{ backgroundColor: 'navy' }}

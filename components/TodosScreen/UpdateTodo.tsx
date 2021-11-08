@@ -6,6 +6,8 @@ import { FontAwesome } from '@expo/vector-icons';
 
 import { updateTodo } from '../../state/slices/todos.slice';
 import { RootState } from '../../state/root.reducer';
+import { updateTodoFunc } from '../../initializeApp'
+
 
 interface Props {
   id: string
@@ -18,11 +20,16 @@ const UpdateTodo: React.FC<Props> = ({ id, title, setUpdate }) => {
   const dispatch = useDispatch();
 
   let handleUpdate = async () => {
-    const db = getFirestore();
-    await updateDoc(doc(db, "todos", id), {
-      title: text
-    });
-    dispatch(updateTodo({ id: id, title: text }))
+
+    updateTodoFunc({ id: id, title: text })
+      .then(res => {
+        console.log("update");
+        dispatch(updateTodo({ id: id, title: text }))
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     setUpdate(false);
     setText("");
   }

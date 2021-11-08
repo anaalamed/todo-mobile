@@ -22,28 +22,78 @@ admin.initializeApp();
 // });
 
 // http callable func (add req)
-exports.addTodo = functions.https.onCall((data, context) => {
-  // console.log(context.auth?.uid);
-  //   console.log(data);
 
+
+
+exports.getTodos = functions.https.onRequest(async (req, res) => {
+  const email = req.body.data.email;
+  console.log(email);
+  const snapshot = await admin.firestore().collection("todos").where("userId", "==", email).get();
+  const arr: any = [];
+
+  snapshot.forEach((doc) => {
+    arr.push({ id: doc.id, ...doc.data() });
+  });
+  res.send({ data: arr });
+});
+
+exports.addTodo = functions.https.onCall((data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError(
-        "unauthenticated",
-        "only authenticated users can add requests"
+      "unauthenticated",
+      "only authenticated users can add requests"
     );
   }
 
   if (data.title.length > 30) {
     throw new functions.https.HttpsError(
-        "invalid-argument",
-        "request must be no more than 30 characters long"
+      "invalid-argument",
+      "request must be no more than 30 characters long"
     );
   }
 
   return admin.firestore().collection("todos").add({
     title: data.title,
     completed: false,
-    userId: context.auth.uid,
+    // userId: context.auth.uid,
+    userId: data.userId,
+  });
+});
+
+exports.deleteTodo = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+      "unauthenticated",
+      "only authenticated users can delete todos"
+    );
+  }
+
+  return admin.firestore().collection("todos").doc(data.id).delete();
+});
+
+exports.updateTodo = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+      "unauthenticated",
+      "only authenticated users can update todos"
+    );
+  }
+
+  return admin.firestore().collection("todos").doc(data.id).update({
+    title: data.title,
+  });
+});
+
+exports.toggleCompleteTodo = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+      "unauthenticated",
+      "only authenticated users can toggle todos"
+    );
+  }
+
+  return admin.firestore().collection("todos").doc(data.id).update({
+    completed: !data.completed,
   });
 });
 

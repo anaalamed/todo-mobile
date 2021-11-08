@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { useDispatch } from "react-redux";
-import { getFirestore, doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { FontAwesome } from '@expo/vector-icons';
 
-import { deleteTodo, toggleComplete, updateTodo } from "../../state/slices/todos.slice";
 import UpdateTodo from './UpdateTodo';
 import ModalDelete from './ModalDeleteTodo';
+import { deleteTodo, toggleComplete } from "../../state/slices/todos.slice";
+import { deleteTodoFunc, toggleCompleteTodoFunc } from '../../initializeApp';
 
 interface Todo {
   id: string
@@ -17,20 +17,27 @@ interface Todo {
 
 export default function Todo({ todo }: { todo: Todo }) {
   const dispatch = useDispatch();
-  const db = getFirestore();
   const [update, setUpdate] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
 
-  const handleDelete = async () => {
-    await deleteDoc(doc(db, "todos", todo.id));
-    dispatch(deleteTodo(todo.id));
+  const handleDelete = () => {
+    deleteTodoFunc(todo)
+      .then(res => {
+        dispatch(deleteTodo(todo.id));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   const handleToggleComplete = async () => {
-    await updateDoc(doc(db, "todos", todo.id), {
-      completed: !todo.completed
-    });
-    dispatch(toggleComplete({ id: todo.id, completed: !todo.completed }));
+    toggleCompleteTodoFunc(todo)
+      .then(res => {
+        dispatch(toggleComplete({ id: todo.id, completed: !todo.completed }));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   return (
