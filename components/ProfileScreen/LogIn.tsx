@@ -31,7 +31,9 @@ const LogIn: React.FC<Props> = ({ setLogIn, setProfile }) => {
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
+                alert(errorMessage);
                 alert('something went wrong');
+                console.log(error);
             });
     }
 

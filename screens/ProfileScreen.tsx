@@ -83,6 +83,7 @@ const Box = styled.View`
   align-items: center;
   justify-content: center;
   background: navy;
+  /* margin: 100px; */
 `;
 
 const BtnBack = styled(Button)`

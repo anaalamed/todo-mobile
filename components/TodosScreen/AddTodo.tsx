@@ -6,21 +6,38 @@ import { FontAwesome } from '@expo/vector-icons';
 
 import { addTodo } from '../../state/slices/todos.slice';
 import { RootState } from '../../state/root.reducer';
+import { getFunctions, httpsCallable } from 'firebase/functions';
 
 export default function AddTodo() {
   const [text, setText] = useState('');
   const { me } = useSelector((state: RootState) => state.users);
   const dispatch = useDispatch();
 
-  const handleAddTodo = async () => {
-    try {
-      const db = getFirestore();
-      const todo = { title: text, completed: false, userId: me.uid };
-      const docRef = await addDoc(collection(db, "todos"), todo);
-      dispatch(addTodo({ id: docRef.id, ...todo }));
-    } catch (e) {
-      console.error("Error adding document: ", e);
-    }
+  // const handleAddTodo = async () => {
+  //   try {
+  //     const db = getFirestore();
+  //     const todo = { title: text, completed: false, userId: me.uid };
+  //     const docRef = await addDoc(collection(db, "todos"), todo);
+  //     dispatch(addTodo({ id: docRef.id, ...todo }));
+  //   } catch (e) {
+  //     console.error("Error adding document: ", e);
+  //   }
+  //   setText('');
+  // }
+
+  const handleAddTodo = () => {
+    const todo = { title: text, completed: false, userId: me.uid };
+    const functions = getFunctions();
+    const addTodoFunc = httpsCallable(functions, 'addTodo');
+
+    addTodoFunc(todo)
+      .then(res => {
+        const id = res.data._path.segments[1];
+        dispatch(addTodo({ id: id, ...todo }));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     setText('');
   }
 

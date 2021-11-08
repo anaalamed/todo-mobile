@@ -14,6 +14,11 @@ web-build/
 .DS_Store
 
 .firebaserc
+.firebase
 .vscode
 .idea
+ui-debug.log
+firestore-debug.log
+
+
 
