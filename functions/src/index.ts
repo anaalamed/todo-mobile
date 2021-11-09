@@ -1,29 +1,64 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 
-
 admin.initializeApp();
 
-// // auth trigger - sign up
-// exports.signUp = functions.auth.user().onCreate((user) => {
-//     console.log("user created", user);
-//     return admin.firestore().collection("users").doc(user.uid).set({
-//         email: user.email,
-//         name: user.displayName,
-//         upvotedOn: [],
-//     });
-// });
+// ------------------------------ Auth Functions ----------------------------------
 
-// // auth trigger - delete
-// exports.userDeleted = functions.auth.user().onDelete((user) => {
-//     console.log("user deleted", user);
-//     const doc = admin.firestore().collection("users").doc(user.uid);
-//     return doc.delete();
-// });
+exports.register = functions.https.onCall((data, context) => {
 
-// http callable func (add req)
+  const { email, password, name } = data;
+  // console.log("register")
+
+  return admin.auth().createUser({ email, password, displayName: name })
+    .then(userRecord => {
+      console.log({ userRecord });
+      return { id: userRecord.uid };
+    })
+    .catch(error => {
+      return { error: error.message };
+    });
+});
+
+// auth trigger - sign up
+exports.userJoined = functions.auth.user().onCreate((user) => {
+  console.log("user created", user);
+  return admin.firestore().collection("users").doc(user.uid).set({
+    email: user.email,
+    name: user.displayName,
+  });
+});
+
+exports.getUser = functions.https.onRequest(async (req, res) => {
+  const email = req.body.data;
+
+  const doc = await admin.firestore().collection("users").where("email", "==", email).get();
+  let user = {}
+  doc.forEach((doc) => {
+    user = { id: doc.id, ...doc.data() }
+  });
+  res.send({ data: user });
+});
+
+exports.updateUser = functions.https.onCall((data, context) => {
+  console.log("update profile");
+  console.log(data);
+
+  const { id, name, phoneNumber, photoURL } = data;
+
+  return admin.firestore().collection("users").doc(id).update({
+    name: name,
+    phoneNumber: phoneNumber,
+    photoURL: photoURL
+  });
+});
 
 
+
+
+
+
+// ------------------------------ Todos Functions ----------------------------------
 
 exports.getTodos = functions.https.onRequest(async (req, res) => {
   const email = req.body.data.email;
@@ -96,6 +131,14 @@ exports.toggleCompleteTodo = functions.https.onCall(async (data, context) => {
     completed: !data.completed,
   });
 });
+
+
+// // auth trigger - delete
+// exports.userDeleted = functions.auth.user().onDelete((user) => {
+//     console.log("user deleted", user);
+//     const doc = admin.firestore().collection("users").doc(user.uid);
+//     return doc.delete();
+// });
 
 
 // exports.addMessage = functions.https.onRequest(async (req, res) => {
