@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 
-
 export const Title = styled.Text`
   font-size: 25px;
   font-weight: bold;
@@ -27,7 +26,7 @@ export const ButtonText = styled.Text`
 `;
 
 export const ButtonForm = styled.TouchableOpacity`
-  background: navy;
+  background: greenyellow;
   padding: 10px;
   border-radius: 10px;
   width: 80px;
@@ -41,7 +40,7 @@ export const ButtonForm = styled.TouchableOpacity`
 
 export const ButtonFormText = styled.Text`
   align-items: center;
-  color: greenyellow;
+  color: navy;
   text-align: center;
   font-weight: bold;
 `;

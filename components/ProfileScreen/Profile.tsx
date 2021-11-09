@@ -1,6 +1,4 @@
-import * as WebBrowser from 'expo-web-browser';
-import React, { useState } from 'react';
-import { TouchableOpacity, TextInput, Button, Image, View } from 'react-native';
+import React from 'react';
 import styled from 'styled-components/native';
 import { useDispatch, useSelector } from "react-redux";
 import { getAuth, signOut } from "firebase/auth";
@@ -11,12 +9,11 @@ import { RootState } from '../../state/root.reducer';
 import { ButtonForm, ButtonFormText } from '../../constants/StyledComponents';
 
 interface Props {
-  setProfile(data: boolean): void
-  setStart(data: boolean): void
-  setUpdateProfile(data: boolean): void
+  navigation: any
 }
 
-const Profile: React.FC<Props> = ({ setProfile, setStart, setUpdateProfile }) => {
+const Profile: React.FC<Props> = ({ navigation }) => {
+
   const dispatch = useDispatch();
   const { me } = useSelector((state: RootState) => state.users);
   const auth = getAuth();
@@ -26,8 +23,6 @@ const Profile: React.FC<Props> = ({ setProfile, setStart, setUpdateProfile }) =>
     signOut(auth).then(() => {
       dispatch(loggedOut());
       dispatch(removeTodos());
-      setProfile(false);
-      setStart(true);
     }).catch((error) => {
       console.log(error);
     });
@@ -39,15 +34,11 @@ const Profile: React.FC<Props> = ({ setProfile, setStart, setUpdateProfile }) =>
 
       <Field>Name: <ValueField>{me.name}</ValueField> </Field>
       <Field>Email: <ValueField>{me.email}</ValueField> </Field>
-      <Field>Phone: {me.phoneNumber}</Field>
-      <Field>Avatar: {me.photoURL}</Field>
+      <Field>Phone: <ValueField>{me.phoneNumber}</ValueField></Field>
 
       <Buttons>
-        <ButtonForm onPress={() => {
-          setUpdateProfile(true)
-          setProfile(false)
-        }} ><ButtonFormText>Update</ButtonFormText></ButtonForm>
-        <ButtonForm onPress={handleLogOut} ><ButtonFormText>Log Out</ButtonFormText></ButtonForm>
+        <Button onPress={() => { navigation.push('UpdateProfile') }} ><ButtonTxt>Update</ButtonTxt></Button>
+        <Button onPress={handleLogOut} ><ButtonTxt>Log Out</ButtonTxt></Button>
       </Buttons>
     </Box>
   );
@@ -84,4 +75,12 @@ const Buttons = styled.View`
   flex-direction: row;
   width: 90%;
   justify-content: space-around;
+`;
+
+const Button = styled(ButtonForm)`
+  background: navy;
+`;
+
+const ButtonTxt = styled(ButtonFormText)`
+  color: yellowgreen;
 `;

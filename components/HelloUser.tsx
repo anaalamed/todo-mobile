@@ -12,7 +12,7 @@ export default function HelloUser() {
 
   return (
     <Box >
-      <Title style={{ fontSize: 15, color: "navy" }}>Hi, {me?.name ? me.name : 'guest'}</Title>
+      <Title style={{ fontSize: 15, color: "navy", margin: 0 }}>Hi, {me?.name ? me.name : 'guest'}</Title>
     </Box>
   );
 }

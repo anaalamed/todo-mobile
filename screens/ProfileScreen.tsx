@@ -1,79 +1,40 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector } from "react-redux";
 import { ScrollView, Image } from 'react-native';
 import styled from 'styled-components/native';
-import { FontAwesome } from '@expo/vector-icons';
 
 import Profile from '../components/ProfileScreen/Profile';
-import SignUp from '../components/ProfileScreen/SignUp';
-import LogIn from '../components/ProfileScreen/LogIn';
-import HelloUser from '../components/HelloUser';
-import UpdateProfile from '../components/ProfileScreen/UpdateProfile';
 import { Title, Button, ButtonText, Separator } from '../constants/StyledComponents';
 
 import { RootState } from '../state/root.reducer';
 import { Text } from '../components/Themed'; // learn about it ! 
 
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }) {
   const { me } = useSelector((state: RootState) => state.users);
-
-  // set display components 
-  const [start, setStart] = useState(true);
-  const [signUp, setSignUp] = useState(false);
-  const [logIn, setLogIn] = useState(false);
-  const [profile, setProfile] = useState(false);
-  const [updateProfile, setUpdateProfile] = useState(false);
 
   return (
     <ScrollView style={{ backgroundColor: 'navy' }}
       centerContent={true}
     >
       <Box >
-        <Button onPress={() => setProfile(true)} ><ButtonText>Profile</ButtonText></Button>
+        <Title style={{ marginTop: 20 }}>My Profile</Title>
+        <Separator />
 
-        {/* back button */}
-        {(signUp || logIn || UpdateProfile) ? (
-          <BtnBack style={{ alignSelf: "start" }}
-            onPress={() => {
-              setStart(true);
-              setLogIn(false);
-              setProfile(false);
-              setSignUp(false);
-            }} ><ButtonText><FontAwesome name='arrow-left' /></ButtonText></BtnBack>
-        ) : null}
-
-        {/* log in/sign up buttons */}
-        <Start display={start}>
-          <Title >My Profile</Title>
-          <Separator />
-
-          {me.email ? null : (
-            <Buttons>
-              <Button onPress={() => {
-                setStart(false)
-                setSignUp(true)
-              }}
-              ><ButtonText>Sign Up</ButtonText></Button>
-
-              <Button onPress={() => {
-                setStart(false)
-                setLogIn(true)
-              }} ><ButtonText>Log In</ButtonText></Button>
-            </Buttons>
-          )}
+        <Start display={!me.email}>
+          <Buttons>
+            <Button onPress={() => navigation.push('SignUp')} ><ButtonText>Sign Up</ButtonText></Button>
+            <Button onPress={() => navigation.push('LogIn')} ><ButtonText>Log In</ButtonText></Button>
+          </Buttons>
         </Start>
 
-        <Section>
-          {profile ? <Profile setProfile={setProfile} setStart={setStart} setUpdateProfile={setUpdateProfile}></Profile> : null}
-          {signUp ? <SignUp setSignUp={setSignUp} setLogIn={setLogIn}></SignUp> : null}
-          {logIn ? <LogIn setLogIn={setLogIn} setProfile={setProfile}></LogIn> : null}
-          {updateProfile ? (<UpdateProfile setProfile={setProfile} setUpdateProfile={setUpdateProfile}></UpdateProfile>) : null}
+        <Section display={me.email}>
+          <Profile navigation={navigation}></Profile>
         </Section>
 
         <Image source={require('../assets/images/todo.png')} />
       </Box>
-    </ScrollView>
+    </ScrollView >
   );
 }
 
@@ -84,11 +45,6 @@ const Box = styled.View`
   justify-content: center;
   background: navy;
   /* margin: 100px; */
-`;
-
-const BtnBack = styled(Button)`
-  width: 30px;
-  margin-left: 10px;
 `;
 
 const Start = styled.View`
@@ -109,6 +65,7 @@ const Buttons = styled.View`
 
 const Section = styled.View`
   background: greenyellow;
+  display: ${props => (props.display ? "flex" : "none")};
   /* border-radius: 10px; */
   width: 80%;
   margin: 10px;

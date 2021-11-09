@@ -18,6 +18,7 @@ const linking: LinkingOptions<RootStackParamList> = {
           Profile: {
             screens: {
               TabOneScreen: 'one',
+              // LogIn: 'LogIn'
             },
           },
           Todos: {

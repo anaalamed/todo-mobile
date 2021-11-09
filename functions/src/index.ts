@@ -34,10 +34,13 @@ exports.getUser = functions.https.onRequest(async (req, res) => {
   const email = req.body.data;
 
   const doc = await admin.firestore().collection("users").where("email", "==", email).get();
+  // console.log(doc);
+
   let user = {};
   doc.forEach((doc) => {
     user = { id: doc.id, ...doc.data() };
   });
+  console.log(user);
   res.send({ data: user });
 });
 
