@@ -2,7 +2,7 @@ import React from "react";
 import { Text, View, TextInput, Button, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import styled from 'styled-components/native';
-import { ButtonForm, ButtonFormText, Input } from '../constants/StyledComponents';
+import { ButtonForm, ButtonFormText, Input, InputContainer, InputIcon } from '../constants/StyledComponents';
 import { registerFunc } from '../initializeApp'
 
 export default function SignupScreen({ navigation }) {
@@ -29,23 +29,29 @@ export default function SignupScreen({ navigation }) {
         <Box>
             <Form>
                 <Controller
+                    name="name"
+                    defaultValue=""
                     control={control}
                     rules={{
                         // required: true,
                     }}
                     render={({ field: { onChange, value } }) => (
-                        <Input
-                            onChangeText={onChange}
-                            value={value}
-                            placeholder='name'
-                        />
+                        <InputContainer>
+                            <InputIcon name='user' style={{ fontSize: 23 }} />
+                            <Input
+                                onChangeText={onChange}
+                                value={value}
+                                placeholder='name'
+                            />
+                        </InputContainer>
                     )}
-                    name="name"
-                    defaultValue=""
+
                 />
                 {errors.name && <Text>This is not valid.</Text>}
 
                 <Controller
+                    name="email"
+                    defaultValue=""
                     control={control}
                     rules={{
                         // required: true,
@@ -53,18 +59,22 @@ export default function SignupScreen({ navigation }) {
                         // pattern: emailRegex
                     }}
                     render={({ field: { onChange, value } }) => (
-                        <Input
-                            onChangeText={onChange}
-                            value={value}
-                            placeholder='email'
-                        />
+                        <InputContainer>
+                            <InputIcon name='envelope' />
+                            <Input
+                                onChangeText={onChange}
+                                value={value}
+                                placeholder='email'
+                            />
+                        </InputContainer>
                     )}
-                    name="email"
-                    defaultValue=""
+
                 />
                 {errors.email && <Text>This is not valid.</Text>}
 
                 <Controller
+                    name="password"
+                    defaultValue=""
                     control={control}
                     rules={{
                         // required: true,
@@ -72,14 +82,16 @@ export default function SignupScreen({ navigation }) {
                         // pattern: passwordRegex
                     }}
                     render={({ field: { onChange, value } }) => (
-                        <Input
-                            onChangeText={onChange}
-                            value={value}
-                            placeholder='password'
-                        />
+                        <InputContainer>
+                            <InputIcon name='lock' style={{ fontSize: 25 }} />
+                            <Input
+                                onChangeText={onChange}
+                                value={value}
+                                placeholder='password'
+                            />
+                        </InputContainer>
                     )}
-                    name="password"
-                    defaultValue=""
+
                 />
                 {errors.password && <Text>This is not valid.</Text>}
 

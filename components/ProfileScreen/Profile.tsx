@@ -79,6 +79,7 @@ const Buttons = styled.View`
 
 const Button = styled(ButtonForm)`
   background: navy;
+  width: 40%;
 `;
 
 const ButtonTxt = styled(ButtonFormText)`

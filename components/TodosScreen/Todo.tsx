@@ -15,10 +15,19 @@ interface Todo {
   userId: string
 }
 
-export default function Todo({ todo }: { todo: Todo }) {
+interface Props {
+  todo: Todo
+  order: number
+}
+
+const Profile: React.FC<Props> = ({ todo, order }) => {
+
   const dispatch = useDispatch();
   const [update, setUpdate] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
+
+  // console.log(order);
+  const color = order % 2 ? "blueviolet" : "coral"
 
   const handleDelete = () => {
     deleteTodoFunc(todo)
@@ -43,7 +52,7 @@ export default function Todo({ todo }: { todo: Todo }) {
   return (
     <>
       {update ? (<UpdateTodo id={todo.id} title={todo.title} setUpdate={setUpdate}></UpdateTodo>) : (
-        <Box>
+        <Box color={color}>
           <Main>
             <IsDoneBox done={todo.completed} onPress={handleToggleComplete}>
               {todo.completed ? (<BtnText><FontAwesome name='check' /> </BtnText>) : null}
@@ -66,12 +75,16 @@ export default function Todo({ todo }: { todo: Todo }) {
   );
 }
 
+export default Profile;
+
 const Box = styled.View`
   color: white;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   background: #49499c;
+  background: ${props => props.color};
+
   width: 100%;
   padding: 10px;
   padding-left: 20px;

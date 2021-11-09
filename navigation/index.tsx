@@ -118,7 +118,7 @@ function BottomTabNavigator() {
                   <FontAwesome
                     name="user-circle"
                     size={25}
-                    style={{ marginLeft: 15 }}
+                    style={{ marginRight: 15, marginLeft: 10 }}
                   />
                 )}
             </Pressable>
@@ -153,7 +153,7 @@ function BottomTabNavigator() {
                   <FontAwesome
                     name="user-circle"
                     size={25}
-                    style={{ marginLeft: 15 }}
+                    style={{ marginRight: 15, marginLeft: 10 }}
                   />
                 )}
             </Pressable>

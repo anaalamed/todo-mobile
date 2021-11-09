@@ -6,8 +6,9 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useDispatch } from "react-redux";
 
 import { loggedIn } from '../state/slices/users.slice'
-import { ButtonForm, ButtonFormText, Input } from '../constants/StyledComponents';
+import { ButtonForm, ButtonFormText, Input, InputContainer, InputIcon } from '../constants/StyledComponents';
 import { getUserFunc } from '../initializeApp'
+import { FontAwesome } from "@expo/vector-icons";
 
 export default function LoginScreen({ navigation }) {
 
@@ -41,6 +42,8 @@ export default function LoginScreen({ navigation }) {
             <Form>
 
                 <Controller
+                    name="email"
+                    defaultValue=""
                     control={control}
                     rules={{
                         required: true,
@@ -48,32 +51,36 @@ export default function LoginScreen({ navigation }) {
                         pattern: emailRegex
                     }}
                     render={({ field: { onChange, value } }) => (
-                        <Input
-                            onChangeText={onChange}
-                            value={value}
-                            placeholder='email'
-                        />
+                        <InputContainer>
+                            <InputIcon name='envelope' />
+                            <Input
+                                onChangeText={onChange}
+                                value={value}
+                                placeholder='email'
+                            />
+                        </InputContainer>
                     )}
-                    name="email"
-                    defaultValue=""
                 />
                 {errors.email && <Text>This is not valid.</Text>}
 
                 <Controller
+                    name="password"
+                    defaultValue=""
                     control={control}
                     rules={{
                         required: true,
                         maxLength: 100,
                     }}
                     render={({ field: { onChange, value } }) => (
-                        <Input
-                            onChangeText={onChange}
-                            value={value}
-                            placeholder='password'
-                        />
+                        <InputContainer>
+                            <InputIcon name='lock' style={{ fontSize: 30 }} />
+                            <Input
+                                onChangeText={onChange}
+                                value={value}
+                                placeholder='password'
+                            />
+                        </InputContainer>
                     )}
-                    name="password"
-                    defaultValue=""
                 />
                 {errors.password && <Text>This is not valid.</Text>}
 
@@ -97,9 +104,4 @@ const Form = styled.View`
   margin-top: 100px;
   width: 90%;
   align-items: center;
-`;
-
-const Title = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
 `;

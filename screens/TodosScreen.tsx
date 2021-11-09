@@ -46,9 +46,9 @@ export default function TodosScreen() {
           {me.email ?
             (
               <>
-                {todos.filter(todo => todo.completed === false).map((todo, i) => (<Todo key={i} todo={todo}></Todo>))}
+                {todos.filter(todo => todo.completed === false).map((todo, i) => (<Todo key={i} order={i} todo={todo}></Todo>))}
                 {todos.length === 0 ? null : <Separator></Separator>}
-                {todos.filter(todo => todo.completed === true).map((todo, i) => (<Todo key={i} todo={todo}></Todo>))}
+                {todos.filter(todo => todo.completed === true).map((todo, i) => (<Todo key={i} order={i} todo={todo}></Todo>))}
               </>
             ) :
             (<MyText>Please log in to see your todos here! </MyText>)}
