@@ -25,20 +25,18 @@ const LogIn: React.FC<Props> = ({ setLogIn, setProfile }) => {
         signInWithEmailAndPassword(auth, data.email, data.password)
             .then((userCredential) => {
                 const email = userCredential.user.providerData[0].email;
-                console.log(email);
                 getUserFunc(email)
                     .then(res => {
-                        console.log(res.data);
-                        dispatch(loggedIn(res.data));
+                        dispatch(loggedIn({ email: email, ...res.data }));
                         setLogIn(false);
                         setProfile(true);
                     })
                     .catch((error) => {
-                        alert('something went wrong');
+                        alert('something went wrong1');
                     });
             })
             .catch((error) => {
-                alert('something went wrong');
+                alert('something went wrong2');
             });
     }
 

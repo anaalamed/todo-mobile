@@ -20,6 +20,8 @@ import LinkingConfiguration from './LinkingConfiguration';
 import { RootState } from '../state/root.reducer';
 import { useSelector } from 'react-redux';
 import HelloUser from '../components/HelloUser';
+import { ButtonText } from '../constants/StyledComponents';
+// import {setT} '../screens/ProfileScreen'
 
 
 
@@ -99,7 +101,21 @@ function BottomTabNavigator() {
           ),
 
           headerLeft: () => (
-            <Image style={{ width: 30, height: 30, borderRadius: 50, margin: 10 }} source={require('../assets/images/todo.png')} />
+            // <Image style={{ width: 30, height: 30, borderRadius: 50, margin: 10 }} source={require('../assets/images/todo.png')} />
+
+            <Pressable
+              onPress={() => {
+                setStart(true);
+                setLogIn(false);
+                setProfile(false);
+                setSignUp(false);
+              }}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+                flexDirection: 'row'
+              })}>
+              <ButtonText style={{ marginLeft: 10 }}><FontAwesome name='arrow-left' /></ButtonText>
+            </Pressable>
           )
         })}
 

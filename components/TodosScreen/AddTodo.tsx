@@ -13,7 +13,7 @@ export default function AddTodo() {
   const dispatch = useDispatch();
 
   const handleAddTodo = () => {
-    const todo = { title: text, completed: false, userId: me.uid };
+    const todo = { title: text, completed: false, userId: me.email };
 
     addTodoFunc(todo)
       .then(res => {

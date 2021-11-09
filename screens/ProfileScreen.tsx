@@ -65,7 +65,7 @@ export default function ProfileScreen() {
         </Start>
 
         <Section>
-          {me.email && profile ? <Profile setProfile={setProfile} setStart={setStart} setUpdateProfile={setUpdateProfile}></Profile> : null}
+          {profile ? <Profile setProfile={setProfile} setStart={setStart} setUpdateProfile={setUpdateProfile}></Profile> : null}
           {signUp ? <SignUp setSignUp={setSignUp} setLogIn={setLogIn}></SignUp> : null}
           {logIn ? <LogIn setLogIn={setLogIn} setProfile={setProfile}></LogIn> : null}
           {updateProfile ? (<UpdateProfile setProfile={setProfile} setUpdateProfile={setUpdateProfile}></UpdateProfile>) : null}

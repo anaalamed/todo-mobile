@@ -17,16 +17,18 @@ export default function TodosScreen() {
   const { me } = useSelector((state: RootState) => state.users);
 
   useEffect(() => {
-    const handleGet = () => {
-      getTodosFunc(me)
-        .then(res => {
-          dispatch(getTodos(res.data));
-        })
-        .catch((error) => {
-          console.log('error', error);
-        });
+    if (me.email) {
+      const handleGet = () => {
+        getTodosFunc(me)
+          .then(res => {
+            dispatch(getTodos(res.data));
+          })
+          .catch((error) => {
+            console.log('error', error);
+          });
+      }
+      handleGet();
     }
-    handleGet();
   }, [me]);
 
 
@@ -45,6 +47,7 @@ export default function TodosScreen() {
             (
               <>
                 {todos.filter(todo => todo.completed === false).map((todo, i) => (<Todo key={i} todo={todo}></Todo>))}
+                {todos.length === 0 ? null : <Separator></Separator>}
                 {todos.filter(todo => todo.completed === true).map((todo, i) => (<Todo key={i} todo={todo}></Todo>))}
               </>
             ) :

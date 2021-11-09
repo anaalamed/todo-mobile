@@ -25,27 +25,18 @@ const SignUp: React.FC<Props> = ({ setProfile, setUpdateProfile }) => {
     const phoneRegex = /^[0-9()-]+$/;
     const urlRegex = /^(https?:\/\/)?[0-9a-zA-Z]+\.[-_0-9a-zA-Z]+\.[0-9a-zA-Z]+$/;
 
-
-
-    console.log(me.id);
-
     const onSubmit = (data) => {
-        console.log('onsubmit', data);
         const auth = getAuth();
-        console.log(me.id);
 
         updateUserFunc({ id: me.id, ...data })
             .then(res => {
-                console.log("update");
-                // console.log(res);
-                dispatch(updatedProfile({ id: me.id, ...data }))
+                dispatch(updatedProfile({ id: me.id, email: me.email, ...data }))
+                setUpdateProfile(false);
+                setProfile(true);
             })
             .catch((error) => {
                 console.log(error);
             });
-
-        setProfile(true);
-        setUpdateProfile(false);
     }
 
     return (
@@ -121,7 +112,7 @@ const SignUp: React.FC<Props> = ({ setProfile, setUpdateProfile }) => {
                 name="photoURL"
                 defaultValue={me.photoURL}
             />
-            {errors.avatarUrl && <Text>This is not valid.</Text>}
+            {errors.photoURL && <Text>This is not valid.</Text>}
 
             <ButtonForm title="Submit" onPress={handleSubmit(onSubmit)} ><ButtonFormText>Update</ButtonFormText></ButtonForm>
 

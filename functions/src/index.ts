@@ -6,16 +6,15 @@ admin.initializeApp();
 // ------------------------------ Auth Functions ----------------------------------
 
 exports.register = functions.https.onCall((data, context) => {
-
   const { email, password, name } = data;
   // console.log("register")
 
   return admin.auth().createUser({ email, password, displayName: name })
-    .then(userRecord => {
+    .then((userRecord) => {
       console.log({ userRecord });
       return { id: userRecord.uid };
     })
-    .catch(error => {
+    .catch((error) => {
       return { error: error.message };
     });
 });
@@ -30,12 +29,14 @@ exports.userJoined = functions.auth.user().onCreate((user) => {
 });
 
 exports.getUser = functions.https.onRequest(async (req, res) => {
+  console.log("get user");
+
   const email = req.body.data;
 
   const doc = await admin.firestore().collection("users").where("email", "==", email).get();
-  let user = {}
+  let user = {};
   doc.forEach((doc) => {
-    user = { id: doc.id, ...doc.data() }
+    user = { id: doc.id, ...doc.data() };
   });
   res.send({ data: user });
 });
@@ -49,13 +50,9 @@ exports.updateUser = functions.https.onCall((data, context) => {
   return admin.firestore().collection("users").doc(id).update({
     name: name,
     phoneNumber: phoneNumber,
-    photoURL: photoURL
+    photoURL: photoURL,
   });
 });
-
-
-
-
 
 
 // ------------------------------ Todos Functions ----------------------------------
@@ -86,7 +83,7 @@ exports.addTodo = functions.https.onCall((data, context) => {
       "request must be no more than 30 characters long"
     );
   }
-
+  console.log(data);
   return admin.firestore().collection("todos").add({
     title: data.title,
     completed: false,
@@ -140,17 +137,3 @@ exports.toggleCompleteTodo = functions.https.onCall(async (data, context) => {
 //     return doc.delete();
 // });
 
-
-// exports.addMessage = functions.https.onRequest(async (req, res) => {
-//     const original = req.query.text;
-//     const result = await admin.firestore().collection("messages").add({ original });
-//     res.json({ result: `Message with ID: ${result.id} added.` });
-// });
-
-// exports.makeUppercase = functions.firestore.document("/messages/{documentId}")
-//     .onCreate((snap, context) => {
-//         const original = snap.data().original;
-//         functions.logger.log("Uppercasing", context.params.documentId, original);
-//         const uppercase = original.toUpperCase();
-//         return snap.ref.set({ uppercase }, { merge: true });
-//     });

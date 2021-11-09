@@ -19,8 +19,8 @@ const SignUp: React.FC<Props> = ({ setLogIn, setSignUp }) => {
         registerFunc(data)
             .then(res => {
                 console.log(res);
-                // setLogIn(true);
-                // setSignUp(false);
+                setLogIn(true);
+                setSignUp(false);
             })
             .catch((error) => {
                 alert('something went wrong');

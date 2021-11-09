@@ -15,7 +15,6 @@ interface UserState {
 
 
 const initialState: UserState = {
-  // me: { uid: 'e5Qm9sr3qaRv9c1nlGPOnnRUAht1', name: 'ana', email: "aaaa@gmail.com" },
   me: {},
   loggedIn: false
 }
@@ -27,14 +26,12 @@ const users_slice = createSlice({
     loggedIn: (state, action) => {
       state.me = action.payload;
       state.loggedIn = true;
-      // console.log('loged in new user') // testing
     },
     loggedOut: (state) => {
       state.me = {};
       state.loggedIn = false;
     },
     updatedProfile: (state, action) => {
-      // console.log('slice', action.payload);
       state.me = action.payload;
     }
   }

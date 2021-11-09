@@ -47,7 +47,7 @@ export const ButtonFormText = styled.Text`
 `;
 
 export const Separator = styled.View`
-  margin-top: 10px;
+  margin: 10px;
   height: 1px;
   width: 80%;
   color: black;
