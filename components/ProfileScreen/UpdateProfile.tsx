@@ -2,11 +2,13 @@ import React from "react";
 import { Text, View, TextInput, Button, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import styled from 'styled-components/native';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, updateEmail, updatePhoneNumber } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { ButtonForm, ButtonFormText, Input } from '../../constants/StyledComponents';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../state/root.reducer";
 import { loggedIn, updatedProfile } from "../../state/slices/users.slice";
+import { updateUserFunc } from '../../initializeApp'
+
 
 interface Props {
     setProfile(data: boolean): void
@@ -23,54 +25,24 @@ const SignUp: React.FC<Props> = ({ setProfile, setUpdateProfile }) => {
     const phoneRegex = /^[0-9()-]+$/;
     const urlRegex = /^(https?:\/\/)?[0-9a-zA-Z]+\.[-_0-9a-zA-Z]+\.[0-9a-zA-Z]+$/;
 
+
+
+    console.log(me.id);
+
     const onSubmit = (data) => {
         console.log('onsubmit', data);
         const auth = getAuth();
-        if (auth.currentUser) {
-            if (data.displayName !== me.displayName || data.avatarUrl !== me.photoURL) {
-                updateProfile(auth.currentUser, {
-                    displayName: data.name,
-                    photoURL: data.avatarUrl
-                }).then(() => {
-                    console.log("updated");
-                    alert('updated');
-                    dispatch(updatedProfile(data));
-                }).catch(() => {
-                    // alert("something went wrong update");
-                })
-            }
+        console.log(me.id);
 
-            // updateProfile()
-
-            // if (data.email !== me.email) {
-            //     updateEmail(auth.currentUser, data.email)
-            //         .then(() => {
-            //         }).catch((error) => {
-            //             alert("something went wrong");
-            //         })
-            // }
-
-            // if (data.phoneNumber !== me.phoneNumber) {
-            //     updatePhoneNumber(auth.currentUser, data.phoneNumber)
-            //         .then(() => {
-            //             console.log('then')
-            //         }).catch((error) => {
-            //             alert("something went wrong phone");
-            //         })
-            // }
-        }
-
-        // ------------------- testing update ------------------------------
-        signInWithEmailAndPassword(auth, data.email, '123456')
-            .then((userCredential) => {
-                const user = userCredential.user;
-                dispatch(loggedIn(user.providerData[0]));
+        updateUserFunc({ id: me.id, ...data })
+            .then(res => {
+                console.log("update");
+                // console.log(res);
+                dispatch(updatedProfile({ id: me.id, ...data }))
             })
             .catch((error) => {
-                alert('something went wrong log in');
+                console.log(error);
             });
-        // ------------------- testing update ------------------------------
-
 
         setProfile(true);
         setUpdateProfile(false);
@@ -92,11 +64,11 @@ const SignUp: React.FC<Props> = ({ setProfile, setUpdateProfile }) => {
                     />
                 )}
                 name="name"
-                defaultValue={me.displayName}
+                defaultValue={me.name}
             />
             {errors.name && <Text>This is not valid.</Text>}
 
-            <Controller
+            {/* <Controller
                 control={control}
                 rules={{
                     required: true,
@@ -113,7 +85,7 @@ const SignUp: React.FC<Props> = ({ setProfile, setUpdateProfile }) => {
                 name="email"
                 defaultValue={me.email}
             />
-            {errors.email && <Text>This is not valid.</Text>}
+            {errors.email && <Text>This is not valid.</Text>} */}
 
             <Controller
                 control={control}
@@ -146,7 +118,7 @@ const SignUp: React.FC<Props> = ({ setProfile, setUpdateProfile }) => {
                         placeholder='avatar url'
                     />
                 )}
-                name="avatarUrl"
+                name="photoURL"
                 defaultValue={me.photoURL}
             />
             {errors.avatarUrl && <Text>This is not valid.</Text>}

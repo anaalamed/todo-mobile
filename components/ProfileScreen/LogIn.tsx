@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 
 import { loggedIn } from '../../state/slices/users.slice'
 import { ButtonForm, ButtonFormText, Input } from '../../constants/StyledComponents';
+import { getUserFunc } from '../../initializeApp'
 
 
 interface Props {
@@ -23,17 +24,21 @@ const LogIn: React.FC<Props> = ({ setLogIn, setProfile }) => {
         const auth = getAuth();
         signInWithEmailAndPassword(auth, data.email, data.password)
             .then((userCredential) => {
-                const user = userCredential.user;
-                dispatch(loggedIn(user.providerData[0]));
-                setLogIn(false);
-                setProfile(true);
+                const email = userCredential.user.providerData[0].email;
+                console.log(email);
+                getUserFunc(email)
+                    .then(res => {
+                        console.log(res.data);
+                        dispatch(loggedIn(res.data));
+                        setLogIn(false);
+                        setProfile(true);
+                    })
+                    .catch((error) => {
+                        alert('something went wrong');
+                    });
             })
             .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                alert(errorMessage);
                 alert('something went wrong');
-                console.log(error);
             });
     }
 

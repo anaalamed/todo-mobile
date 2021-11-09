@@ -30,10 +30,10 @@ export default function ProfileScreen() {
       centerContent={true}
     >
       <Box >
-        {/* <Button onPress={() => setProfile(true)} ><ButtonText>Profile</ButtonText></Button> */}
+        <Button onPress={() => setProfile(true)} ><ButtonText>Profile</ButtonText></Button>
 
         {/* back button */}
-        {(signUp || logIn) ? (
+        {(signUp || logIn || UpdateProfile) ? (
           <BtnBack style={{ alignSelf: "start" }}
             onPress={() => {
               setStart(true);

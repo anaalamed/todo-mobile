@@ -37,16 +37,16 @@ const Profile: React.FC<Props> = ({ setProfile, setStart, setUpdateProfile }) =>
     <Box>
       <StyledImage source={{ uri: me.photoURL || defaultProfileImage }} />
 
-      <Field>Name: <ValueField>{me.displayName}</ValueField> </Field>
+      <Field>Name: <ValueField>{me.name}</ValueField> </Field>
       <Field>Email: <ValueField>{me.email}</ValueField> </Field>
       <Field>Phone: {me.phoneNumber}</Field>
-      {/* <Field>Avatar: {me.photoURL}</Field> */}
+      <Field>Avatar: {me.photoURL}</Field>
 
       <Buttons>
-        {/* <ButtonForm onPress={() => {
-                    setUpdateProfile(true)
-                    setProfile(false)
-                }} ><ButtonFormText>Update</ButtonFormText></ButtonForm> */}
+        <ButtonForm onPress={() => {
+          setUpdateProfile(true)
+          setProfile(false)
+        }} ><ButtonFormText>Update</ButtonFormText></ButtonForm>
         <ButtonForm onPress={handleLogOut} ><ButtonFormText>Log Out</ButtonFormText></ButtonForm>
       </Buttons>
     </Box>

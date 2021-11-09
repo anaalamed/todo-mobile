@@ -2,8 +2,9 @@ import React from "react";
 import { Text, View, TextInput, Button, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import styled from 'styled-components/native';
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { ButtonForm, ButtonFormText, Input } from '../../constants/StyledComponents';
+import { registerFunc } from '../../initializeApp'
+
 
 interface Props {
     setLogIn(data: boolean): void
@@ -15,26 +16,15 @@ const SignUp: React.FC<Props> = ({ setLogIn, setSignUp }) => {
 
     const onSubmit = (data) => {
         console.log(data);
-        const auth = getAuth();
-        createUserWithEmailAndPassword(auth, data.email, data.password)
-            .then((userCredential) => {
-                const user = userCredential.user;
-
-                updateProfile(user, { displayName: data.name }).
-                    then(() => {
-                        setLogIn(true);
-                        setSignUp(false);
-                    })
-                    .catch((error) => {
-                        alert("something went wrong");
-                    })
+        registerFunc(data)
+            .then(res => {
+                console.log(res);
+                // setLogIn(true);
+                // setSignUp(false);
             })
             .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
                 alert('something went wrong');
             });
-
     }
 
     const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

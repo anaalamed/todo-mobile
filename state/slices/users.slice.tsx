@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface User {
-  uid?: string
+  id?: string
   email?: string
-  displayName?: string
+  name?: string
   phoneNumber?: string
   photoURL?: string
 }
@@ -27,15 +27,15 @@ const users_slice = createSlice({
     loggedIn: (state, action) => {
       state.me = action.payload;
       state.loggedIn = true;
-      console.log('loged in new user') // testing
+      // console.log('loged in new user') // testing
     },
     loggedOut: (state) => {
       state.me = {};
       state.loggedIn = false;
     },
     updatedProfile: (state, action) => {
-      console.log('slice', action.payload);
-      // state.me = ;
+      // console.log('slice', action.payload);
+      state.me = action.payload;
     }
   }
 });
