@@ -72,27 +72,30 @@ exports.getTodos = functions.https.onRequest(async (req, res) => {
   res.send({ data: arr });
 });
 
-exports.addTodo = functions.https.onCall((data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "unauthenticated",
-      "only authenticated users can add requests"
-    );
+
+exports.addTodo = functions.https.onRequest(async (req, res) => {
+  const { title, description, userId } = req.body.data;
+
+  console.log(title);
+
+  const todo = {
+    title: title,
+    description: description,
+    userId: userId,
+    completed: false,
+    createdAt: new Date()
   }
 
-  if (data.title.length > 30) {
-    throw new functions.https.HttpsError(
-      "invalid-argument",
-      "request must be no more than 30 characters long"
-    );
-  }
-  console.log(data);
-  return admin.firestore().collection("todos").add({
-    title: data.title,
-    completed: false,
-    // userId: context.auth.uid,
-    userId: data.userId,
-  });
+  admin.firestore().collection("todos").add(todo)
+    .then(resp => {
+      console.log(resp.id);
+      const newTodo = { id: resp.id, ...todo };
+      res.send({ data: newTodo });
+    })
+    .catch(error => {
+      res.send({ message: 'something went wrong' });
+    })
+
 });
 
 exports.deleteTodo = functions.https.onCall(async (data, context) => {

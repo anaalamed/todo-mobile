@@ -5,6 +5,9 @@ interface Todo {
   title: string
   completed: boolean
   userId: string
+  description?: string
+  createdAt: Date
+  updatedAt?: Date
 }
 
 interface TodosState {

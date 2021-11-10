@@ -23,8 +23,8 @@ const ModalDeleteTodo: React.FC<Props> = ({ isModalVisible, setModalVisible, han
                         <StyledText>Are you sure you want to delete this todo: {title}?</StyledText>
 
                         <Buttons>
-                            <ButtonForm onPress={() => { handleDelete(), setModalVisible(false) }} ><ButtonFormText>Yes</ButtonFormText></ButtonForm>
-                            <ButtonForm onPress={() => setModalVisible(false)} ><ButtonFormText>No</ButtonFormText></ButtonForm>
+                            <ButtonForm style={{ width: 90 }} onPress={() => { handleDelete(), setModalVisible(false) }} ><ButtonFormText>Yes</ButtonFormText></ButtonForm>
+                            <ButtonForm style={{ width: 90 }} onPress={() => { setModalVisible(false) }} ><ButtonFormText>No</ButtonFormText></ButtonForm>
                         </Buttons>
 
                     </ModalView>

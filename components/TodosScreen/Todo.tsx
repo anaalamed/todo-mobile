@@ -5,14 +5,20 @@ import { FontAwesome } from '@expo/vector-icons';
 
 import UpdateTodo from './UpdateTodo';
 import ModalDelete from './ModalDeleteTodo';
+import MenuTodo from './MenuTodo';
+
 import { deleteTodo, toggleComplete } from "../../state/slices/todos.slice";
 import { deleteTodoFunc, toggleCompleteTodoFunc } from '../../initializeApp';
+import ModalTodoDetails from './ModalTodoDetails';
 
 interface Todo {
   id: string
   title: string
   completed: boolean
   userId: string
+  description?: string
+  createdAt: Date
+  updatedAt?: Date
 }
 
 interface Props {
@@ -25,24 +31,17 @@ const Profile: React.FC<Props> = ({ todo, order }) => {
   const dispatch = useDispatch();
   const [update, setUpdate] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isMenuVisible, setMenuVisible] = useState(false);
+
 
   // console.log(order);
-  const color = order % 2 ? "blueviolet" : "coral"
-
-  const handleDelete = () => {
-    deleteTodoFunc(todo)
-      .then(res => {
-        dispatch(deleteTodo(todo.id));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
+  const color = order % 2 ? "gainsboro" : "lightcyan"
 
   const handleToggleComplete = async () => {
     toggleCompleteTodoFunc(todo)
       .then(res => {
         dispatch(toggleComplete({ id: todo.id, completed: !todo.completed }));
+        setMenuVisible(false)
       })
       .catch((error) => {
         console.log(error);
@@ -51,26 +50,22 @@ const Profile: React.FC<Props> = ({ todo, order }) => {
 
   return (
     <>
-      {update ? (<UpdateTodo id={todo.id} title={todo.title} setUpdate={setUpdate}></UpdateTodo>) : (
-        <Box color={color}>
-          <Main>
-            <IsDoneBox done={todo.completed} onPress={handleToggleComplete}>
-              {todo.completed ? (<BtnText><FontAwesome name='check' /> </BtnText>) : null}
-            </IsDoneBox>
+      <Box color={color}>
+        <Main>
+          <IsDoneBox done={todo.completed} onPress={handleToggleComplete}>
+            {todo.completed ? (<BtnText><FontAwesome name='check' /> </BtnText>) : null}
+          </IsDoneBox>
 
-            <TodoText>{todo.title} </TodoText>
-          </Main>
+          <TodoText onPress={setModalVisible}>{todo.title} </TodoText>
+        </Main>
 
-          <Tools>
-            <Button onPress={() => setUpdate(true)}><BtnText><FontAwesome name='pencil' /> </BtnText></Button>
-            <Button onPress={() => setModalVisible(true)}><BtnText><FontAwesome name='trash' /> </BtnText></Button>
-          </Tools>
+        {isModalVisible ? <ModalTodoDetails todo={todo} setModalVisible={setModalVisible}></ModalTodoDetails> : null}
 
-          {isModalVisible ? <ModalDelete isModalVisible={isModalVisible} setModalVisible={setModalVisible} handleDelete={handleDelete} title={todo.title}></ModalDelete> : null}
 
-        </Box>
+        {isMenuVisible ? <MenuTodo todo={todo} isMenuVisible={isMenuVisible} setMenuVisible={setMenuVisible} handleToggleComplete={handleToggleComplete}></MenuTodo> : null}
+        <Button style={{ position: "absolute", right: 0, top: 3 }} onPress={() => setMenuVisible(!isMenuVisible)}><BtnText><FontAwesome name='ellipsis-h' /> </BtnText></Button>
 
-      )}
+      </Box>
     </>
   );
 }
@@ -111,19 +106,16 @@ const IsDoneBox = styled.TouchableOpacity`
 `;
 
 const TodoText = styled.Text`
-  color: greenyellow;
+  color: navy;
   font-size: 20px;
   width: 70%;
+  font-weight: bold;
 `;
 
 const BtnText = styled.Text`
   color: navy;
   font-weight: bold;
   text-align: center;
-`;
-
-const Tools = styled.View`
-  flex-direction: row;
 `;
 
 const Button = styled.TouchableOpacity`
