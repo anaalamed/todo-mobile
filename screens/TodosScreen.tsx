@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from 'styled-components/native';
 import { ScrollView, Image } from 'react-native';
 
-import AddTodo from '../components/TodosScreen/AddTodo';
+import AddTodo from '../components/TodosScreen/SearchTodo';
 import Todo from '../components/TodosScreen/Todo';
 import ModalAddTodo from '../components/TodosScreen/ModalAddTodo';
 
@@ -16,7 +16,7 @@ import { FontAwesome } from '@expo/vector-icons';
 
 export default function TodosScreen() {
   const dispatch = useDispatch();
-  const { todos, is_loading, error_msg } = useSelector((state: RootState) => state.todos);
+  const { todos, filteredTodos, is_loading, error_msg } = useSelector((state: RootState) => state.todos);
   const { me } = useSelector((state: RootState) => state.users);
 
   const [isModalAddVisible, setModalAddVisible] = useState(false);
@@ -43,12 +43,18 @@ export default function TodosScreen() {
     >
 
       <Box >
-        <Title >Todos</Title>
+        <Row>
+          <Title >Todos</Title>
+          {me.email ? (
+            <Button style={{ width: 40 }} onPress={() => setModalAddVisible(true)} >
+              <ButtonText><FontAwesome name='plus' style={{ fontSize: 20 }} /></ButtonText>
+            </Button>
+          ) : null}
+
+        </Row>
 
         {me.email !== undefined ? (
-          <Button onPress={() => setModalAddVisible(true)} >
-            <ButtonText><FontAwesome name='plus' style={{ fontSize: 30 }} /></ButtonText>
-          </Button>
+          <AddTodo></AddTodo>
         ) : null}
         {isModalAddVisible ? <ModalAddTodo isModalVisible={isModalAddVisible} setModalVisible={setModalAddVisible}></ModalAddTodo> : null}
 
@@ -59,10 +65,10 @@ export default function TodosScreen() {
             (
               <>
                 {/* <Title style={{ color: "navy" }}>To Do</Title> */}
-                {todos.filter(todo => todo.completed === false).map((todo, i) => (<Todo key={i} order={i} todo={todo}></Todo>))}
+                {filteredTodos.filter(todo => todo.completed === false).map((todo, i) => (<Todo key={i} order={i} todo={todo}></Todo>))}
                 {todos.length === 0 ? null : <Separator></Separator>}
                 {/* <Title style={{ color: "navy" }}>Done</Title> */}
-                {todos.filter(todo => todo.completed === true).map((todo, i) => (<Todo key={i} order={i} todo={todo}></Todo>))}
+                {filteredTodos.filter(todo => todo.completed === true).map((todo, i) => (<Todo key={i} order={i} todo={todo}></Todo>))}
               </>
             ) :
             (<MyText>Please log in to see your todos here! </MyText>)}
@@ -81,6 +87,15 @@ const Box = styled.View`
   align-items: center;
   justify-content: center;
   background: navy;
+`;
+
+const Row = styled.View`
+  flex-direction: row;
+  padding: 10px;
+  padding-bottom: 20px;
+  justify-content: space-between;
+  width: 50%;
+  margin-left: 25%;
 `;
 
 const Section = styled.View`
