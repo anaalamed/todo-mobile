@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import { useDispatch } from "react-redux";
 import { FontAwesome } from '@expo/vector-icons';
 
-import UpdateTodo from './UpdateTodo';
+import UpdateTodo from './ModalUpdateTodo';
 import ModalDelete from './ModalDeleteTodo';
 import { deleteTodo, toggleComplete } from "../../state/slices/todos.slice";
 import { deleteTodoFunc, toggleCompleteTodoFunc } from '../../initializeApp';
@@ -11,52 +11,53 @@ import { useRef } from 'react';
 import { useEffect } from 'react';
 
 interface Todo {
-    id: string
-    title: string
-    completed: boolean
-    userId: string
+  id: string
+  title: string
+  completed: boolean
+  userId: string
+  description?: string
 }
 
 interface Props {
-    todo: Todo
-    isMenuVisible: boolean
-    setMenuVisible(boolean): void
-    handleToggleComplete(): void
+  todo: Todo
+  isMenuVisible: boolean
+  setMenuVisible(boolean): void
+  handleToggleComplete(): void
 }
 
 const MenuTodo: React.FC<Props> = ({ todo, isMenuVisible, setMenuVisible, handleToggleComplete }) => {
 
-    const dispatch = useDispatch();
-    const [update, setUpdate] = useState(false);
-    const [isModalVisible, setModalVisible] = useState(false);
+  const dispatch = useDispatch();
+  const [update, setUpdate] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
 
-    const handleDelete = () => {
-        deleteTodoFunc(todo)
-            .then(res => {
-                dispatch(deleteTodo(todo.id));
-                setMenuVisible(false);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }
+  const handleDelete = () => {
+    deleteTodoFunc(todo)
+      .then(res => {
+        dispatch(deleteTodo(todo.id));
+        setMenuVisible(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
-    return (
-        <>
-            {update ? (<UpdateTodo id={todo.id} title={todo.title} setUpdate={setUpdate}></UpdateTodo>) : (
-                <Box >
-                    <Tools>
-                        <Button onPress={handleToggleComplete}><BtnText><FontAwesome name='check' /> </BtnText></Button>
-                        {/* <Button onPress={() => setUpdate(true)}><BtnText><FontAwesome name='pencil' /> </BtnText></Button> */}
-                        <Button onPress={() => setModalVisible(true)}><BtnText><FontAwesome name='trash' /> </BtnText></Button>
-                    </Tools>
+  return (
+    <>
+      {update ? (<UpdateTodo todo={todo} setMenuVisible={setMenuVisible} isModalVisible={update} setModalVisible={setUpdate}></UpdateTodo>) : (
+        <Box >
+          <Tools>
+            <Button onPress={handleToggleComplete}><BtnText><FontAwesome name='check' /> </BtnText></Button>
+            <Button onPress={() => setUpdate(true)}><BtnText><FontAwesome name='pencil' /> </BtnText></Button>
+            <Button onPress={() => setModalVisible(true)}><BtnText><FontAwesome name='trash' /> </BtnText></Button>
+          </Tools>
 
-                    {isModalVisible ? <ModalDelete isModalVisible={isModalVisible} setModalVisible={setModalVisible} handleDelete={handleDelete} title={todo.title}></ModalDelete> : null}
-                </Box>
+          {isModalVisible ? <ModalDelete isModalVisible={isModalVisible} setModalVisible={setModalVisible} setMenulVisible={setMenuVisible} handleDelete={handleDelete} title={todo.title}></ModalDelete> : null}
+        </Box>
 
-            )}
-        </>
-    );
+      )}
+    </>
+  );
 }
 
 export default MenuTodo;

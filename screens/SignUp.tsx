@@ -10,10 +10,8 @@ export default function SignupScreen({ navigation }) {
     const { control, handleSubmit, formState: { errors } } = useForm();
 
     const onSubmit = (data) => {
-        console.log(data);
         registerFunc(data)
             .then(res => {
-                console.log(res);
                 alert('registration successfuly')
                 navigation.push('Root');
             })

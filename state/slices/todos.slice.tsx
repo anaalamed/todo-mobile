@@ -38,10 +38,12 @@ const todos_slice = createSlice({
     toggleComplete: (state, action) => {
       const index = state.todos.findIndex(item => item.id === action.payload.id);
       state.todos[index].completed = action.payload.completed;
+      state.todos[index].updatedAt = action.payload.updatedAt;
+
     },
     updateTodo: (state, action) => {
       const index = state.todos.findIndex(item => item.id === action.payload.id);
-      state.todos[index].title = action.payload.title;
+      state.todos[index] = action.payload;
     },
     removeTodos: (state) => {
       state.todos = [];

@@ -6,11 +6,12 @@ import { ButtonForm, ButtonFormText, StyledText } from '../../constants/StyledCo
 interface Props {
     isModalVisible: boolean
     setModalVisible(data: boolean): void
+    setMenulVisible(data: boolean): void
     title: string
     handleDelete(): void
 }
 
-const ModalDeleteTodo: React.FC<Props> = ({ isModalVisible, setModalVisible, handleDelete, title }) => {
+const ModalDeleteTodo: React.FC<Props> = ({ isModalVisible, setMenulVisible, setModalVisible, handleDelete, title }) => {
 
     return (
         <View >
@@ -24,7 +25,7 @@ const ModalDeleteTodo: React.FC<Props> = ({ isModalVisible, setModalVisible, han
 
                         <Buttons>
                             <ButtonForm style={{ width: 90 }} onPress={() => { handleDelete(), setModalVisible(false) }} ><ButtonFormText>Yes</ButtonFormText></ButtonForm>
-                            <ButtonForm style={{ width: 90 }} onPress={() => { setModalVisible(false) }} ><ButtonFormText>No</ButtonFormText></ButtonForm>
+                            <ButtonForm style={{ width: 90 }} onPress={() => { setModalVisible(false), setMenulVisible(false) }} ><ButtonFormText>No</ButtonFormText></ButtonForm>
                         </Buttons>
 
                     </ModalView>

@@ -110,16 +110,4 @@ const Buttons = styled.View`
   width: 100%;
 `;
 
-const Button = styled.TouchableOpacity`
-  background: #6CBF40;
-  padding: 13px;
-
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 50px;
-`;
-
-const BtnText = styled.Text`
-  color: navy;
-  font-weight: bold;
-`;
 

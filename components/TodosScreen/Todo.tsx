@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 import { useDispatch } from "react-redux";
 import { FontAwesome } from '@expo/vector-icons';
 
-import UpdateTodo from './UpdateTodo';
+import UpdateTodo from './ModalUpdateTodo';
 import ModalDelete from './ModalDeleteTodo';
 import MenuTodo from './MenuTodo';
 
@@ -34,13 +34,12 @@ const Profile: React.FC<Props> = ({ todo, order }) => {
   const [isMenuVisible, setMenuVisible] = useState(false);
 
 
-  // console.log(order);
   const color = order % 2 ? "gainsboro" : "lightcyan"
 
   const handleToggleComplete = async () => {
     toggleCompleteTodoFunc(todo)
       .then(res => {
-        dispatch(toggleComplete({ id: todo.id, completed: !todo.completed }));
+        dispatch(toggleComplete({ id: todo.id, completed: !todo.completed, updatedAt: res.data.updatedAt }));
         setMenuVisible(false)
       })
       .catch((error) => {

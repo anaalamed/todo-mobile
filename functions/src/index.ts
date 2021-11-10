@@ -3,6 +3,14 @@ import * as admin from "firebase-admin";
 
 admin.initializeApp();
 
+const getTime = () => {
+  var today = new Date();
+  var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
+  var time = today.getHours() + 2 + ":" + today.getMinutes();
+  var dateTime = date + ' ' + time;
+  return dateTime;
+}
+
 // ------------------------------ Auth Functions ----------------------------------
 
 exports.register = functions.https.onCall((data, context) => {
@@ -72,7 +80,6 @@ exports.getTodos = functions.https.onRequest(async (req, res) => {
   res.send({ data: arr });
 });
 
-
 exports.addTodo = functions.https.onRequest(async (req, res) => {
   const { title, description, userId } = req.body.data;
 
@@ -83,13 +90,14 @@ exports.addTodo = functions.https.onRequest(async (req, res) => {
     description: description,
     userId: userId,
     completed: false,
-    createdAt: new Date()
+    createdAt: getTime()
   }
 
   admin.firestore().collection("todos").add(todo)
     .then(resp => {
       console.log(resp.id);
       const newTodo = { id: resp.id, ...todo };
+      // console.log(newTodo);
       res.send({ data: newTodo });
     })
     .catch(error => {
@@ -109,30 +117,30 @@ exports.deleteTodo = functions.https.onCall(async (data, context) => {
   return admin.firestore().collection("todos").doc(data.id).delete();
 });
 
-exports.updateTodo = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "unauthenticated",
-      "only authenticated users can update todos"
-    );
+exports.updateTodo = functions.https.onRequest(async (req, res) => {
+  const { id, title, description } = req.body.data;
+
+  const todo = {
+    title: title,
+    description: description,
+    updatedAt: getTime()
   }
 
-  return admin.firestore().collection("todos").doc(data.id).update({
-    title: data.title,
-  });
+  await admin.firestore().collection("todos").doc(id).update(todo);
+  const updatedTodo = await admin.firestore().collection("todos").doc(id).get();
+  res.send({ data: { id: id, ...updatedTodo.data() } });
 });
 
-exports.toggleCompleteTodo = functions.https.onCall(async (data, context) => {
-  if (!context.auth) {
-    throw new functions.https.HttpsError(
-      "unauthenticated",
-      "only authenticated users can toggle todos"
-    );
-  }
+exports.toggleCompleteTodo = functions.https.onRequest(async (req, res) => {
+  const { id, completed } = req.body.data;
 
-  return admin.firestore().collection("todos").doc(data.id).update({
-    completed: !data.completed,
+
+  await admin.firestore().collection("todos").doc(id).update({
+    completed: !completed,
+    updatedAt: getTime()
   });
+
+  res.send({ data: { updatedAt: getTime() } })
 });
 
 

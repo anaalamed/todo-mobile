@@ -34,8 +34,8 @@ const ModalTodoDetails: React.FC<Props> = ({ setModalVisible, todo }) => {
                         <Title style={{ color: "navy", textAlign: "center", paddingBottom: 20 }}> {todo.title}</Title>
                         {todo.description ? (<StyledText>Description: {todo.description}</StyledText>) : null}
                         <StyledText>Done: {todo.completed ? "Oh, yes..." : "Not yet..."}</StyledText>
-                        <StyledText>Created at: {dayjs(todo.createdAt).format('DD/MM/YY  HH:MM')}</StyledText>
-                        {todo.updatedAt ? (<StyledText>Updated at: {dayjs(todo.updatedAt).format('DD/MM/YY')}</StyledText>) : null}
+                        {todo.createdAt ? (<StyledText>Created at: {todo.createdAt}</StyledText>) : null}
+                        {todo.updatedAt ? (<StyledText>Updated at: {todo.updatedAt}</StyledText>) : null}
 
                         <Buttons>
                             <ButtonForm style={{ width: 90 }} onPress={() => { setModalVisible(false) }} ><ButtonFormText>Ok</ButtonFormText></ButtonForm>
@@ -56,7 +56,7 @@ const WrapperModal = styled.View`
 `;
 
 const ModalView = styled.View`
-  flex: 1;
+  /* flex: 1; */
   flex-direction: column;
   justify-content: center;
   /* align-items: flex-start; */
