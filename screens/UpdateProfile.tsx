@@ -3,11 +3,13 @@ import { Text, View, TextInput, Button, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import styled from 'styled-components/native';
 import { getAuth } from "firebase/auth";
-import { ButtonForm, ButtonFormText, Input } from '../constants/StyledComponents';
 import { useDispatch, useSelector } from "react-redux";
+
+import { ButtonForm, ButtonFormText, Input, InputContainer, InputIcon } from '../constants/StyledComponents';
 import { RootState } from "../state/root.reducer";
 import { updatedProfile } from "../state/slices/users.slice";
-import { updateUserFunc } from '../initializeApp'
+import { updateUserFunc } from '../initializeApp';
+import UploadPhoto from '../components/ProfileScreen/UploadPhoto'
 
 export default function UpdateProfileScreen({ navigation }) {
 
@@ -42,11 +44,14 @@ export default function UpdateProfileScreen({ navigation }) {
                         required: true,
                     }}
                     render={({ field: { onChange, value } }) => (
-                        <Input
-                            onChangeText={onChange}
-                            value={value}
-                            placeholder='name'
-                        />
+                        <InputContainer>
+                            <InputIcon name='user' style={{ fontSize: 23 }} />
+                            <Input
+                                onChangeText={onChange}
+                                value={value}
+                                placeholder='name'
+                            />
+                        </InputContainer>
                     )}
                     name="name"
                     defaultValue={me.name}
@@ -79,11 +84,14 @@ export default function UpdateProfileScreen({ navigation }) {
                         pattern: phoneRegex
                     }}
                     render={({ field: { onChange, value } }) => (
-                        <Input
-                            onChangeText={onChange}
-                            value={value}
-                            placeholder='mobile'
-                        />
+                        <InputContainer>
+                            <InputIcon name='mobile' />
+                            <Input
+                                onChangeText={onChange}
+                                value={value}
+                                placeholder='mobile'
+                            />
+                        </InputContainer>
                     )}
                     name="phoneNumber"
                     defaultValue={me.phoneNumber}
@@ -97,16 +105,41 @@ export default function UpdateProfileScreen({ navigation }) {
                         // pattern: urlRegex
                     }}
                     render={({ field: { onChange, value } }) => (
-                        <Input
-                            onChangeText={onChange}
-                            value={value}
-                            placeholder='avatar url'
-                        />
+                        <InputContainer>
+                            <InputIcon name='camera' />
+                            <Input
+                                onChangeText={onChange}
+                                value={value}
+                                placeholder='avatar url'
+                            />
+                        </InputContainer>
                     )}
                     name="photoURL"
                     defaultValue={me.photoURL}
                 />
                 {errors.photoURL && <Text>This is not valid.</Text>}
+
+                <Controller
+                    control={control}
+                    rules={{}}
+                    render={({ field: { onChange, value } }) => (
+                        <InputContainer>
+                            <InputIcon name='info' />
+                            <Input
+                                onChangeText={onChange}
+                                value={value}
+                                placeholder='about'
+                                multiline={true}
+                                numberOfLines={4}
+                            />
+                        </InputContainer>
+                    )}
+                    name="about"
+                    defaultValue={me.about}
+                />
+                {errors.about && <Text>This is not valid.</Text>}
+
+                {/* <UploadPhoto></UploadPhoto> */}
 
                 <ButtonForm title="Submit" onPress={handleSubmit(onSubmit)} ><ButtonFormText>Update</ButtonFormText></ButtonForm>
             </Form>

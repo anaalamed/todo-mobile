@@ -56,12 +56,13 @@ exports.updateUser = functions.https.onCall((data, context) => {
   console.log("update profile");
   console.log(data);
 
-  const {id, name, phoneNumber, photoURL} = data;
+  const {id, name, phoneNumber, photoURL, about} = data;
 
   return admin.firestore().collection("users").doc(id).update({
     name: name,
     phoneNumber: phoneNumber,
     photoURL: photoURL,
+    about: about,
   });
 });
 
@@ -152,3 +153,41 @@ exports.toggleCompleteTodo = functions.https.onRequest(async (req, res) => {
 //     return doc.delete();
 // });
 
+
+// const spawn = require('child-process-promise').spawn;
+// const path = require('path');
+// const os = require('os');
+// const fs = require('fs');
+
+// exports.uploadPhoto = functions.https.onRequest(async (req, res) => {
+//   const filePath = req.body.data;
+//   const fileName = 'photo';
+
+//   const fileBucket = object.bucket; // The Storage bucket that contains the file.
+//   const filePath = object.name; // File path in the bucket.
+//   const contentType = object.contentType; // File content type.
+//   const metageneration = object.metageneration; // Number of times metadata has been generated. New objects have a value of
+
+
+//   const bucket = admin.storage().bucket(fileBucket);
+//   const tempFilePath = path.join(os.tmpdir(), fileName);
+//   // const metadata = {
+//   //   contentType: contentType,
+//   // };
+//   await bucket.file(filePath).download({ destination: tempFilePath });
+//   functions.logger.log('Image downloaded locally to', tempFilePath);
+//   // Generate a thumbnail using ImageMagick.
+//   await spawn('convert', [tempFilePath, '-thumbnail', '200x200>', tempFilePath]);
+//   functions.logger.log('Thumbnail created at', tempFilePath);
+//   // We add a 'thumb_' prefix to thumbnails file name. That's where we'll upload the thumbnail.
+//   const thumbFileName = `thumb_${fileName}`;
+//   const thumbFilePath = path.join(path.dirname(filePath), thumbFileName);
+//   // Uploading the thumbnail.
+//   await bucket.upload(tempFilePath, {
+//     destination: thumbFilePath,
+//     // metadata: metadata,
+//   });
+//   // Once the thumbnail has been uploaded delete the local file to free up disk space.
+//   return fs.unlinkSync(tempFilePath);
+
+// })

@@ -14,7 +14,13 @@ import { getTodosFunc } from '../initializeApp';
 import { RootState } from '../state/root.reducer';
 import { FontAwesome } from '@expo/vector-icons';
 
+interface Props {
+  setModalAddVisible(boolean): void
+}
+
 export default function TodosScreen() {
+  // const TodosScreen: React.FC<Props> = ({ setModalAddVisible }) => {
+
   const dispatch = useDispatch();
   const { todos, filteredTodos, is_loading, error_msg } = useSelector((state: RootState) => state.todos);
   const { me } = useSelector((state: RootState) => state.users);
@@ -81,6 +87,8 @@ export default function TodosScreen() {
     </ScrollView>
   );
 }
+
+// export default TodosScreen;
 
 const Box = styled.View`
   display: flex;

@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName, Pressable, Image, Button, View } from 'react-native';
+import { ColorSchemeName, Pressable, Image, View } from 'react-native';
 
 import useColorScheme from '../hooks/useColorScheme';
 import NotFoundScreen from '../screens/NotFoundScreen';
@@ -13,11 +13,17 @@ import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../typ
 import LinkingConfiguration from './LinkingConfiguration';
 
 import { RootState } from '../state/root.reducer';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import HelloUser from '../components/HelloUser';
 import LogIn from '../screens/LogIn';
 import SignUp from '../screens/SignUp';
 import UpdateProfile from '../screens/UpdateProfile';
+import { ButtonText, Title, Button } from '../constants/StyledComponents';
+import ModalAddTodo from '../components/TodosScreen/ModalAddTodo';
+import { useState } from 'react';
+import { getAuth, signOut } from 'firebase/auth';
+import { loggedOut } from '../state/slices/users.slice';
+import { removeTodos } from '../state/slices/todos.slice';
 
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
@@ -70,8 +76,11 @@ function RootNavigator() {
         }
       }} />
 
-
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+
+      <Stack.Group screenOptions={{ presentation: "transparentModal" }}>
+        <Stack.Screen name="Modal" component={ModalAddTodo} />
+      </Stack.Group>
     </Stack.Navigator>
   );
 }
@@ -80,6 +89,20 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   const { me } = useSelector((state: RootState) => state.users);
+  const [isModalAddVisible, setModalAddVisible] = useState(false);
+
+  // const handleLogOut = () => {
+  //   const dispatch = useDispatch();
+  //   const auth = getAuth();
+
+  //   signOut(auth).then(() => {
+  //     dispatch(loggedOut());
+  //     dispatch(removeTodos());
+  //   }).catch((error) => {
+  //     console.log(error);
+  //   });
+  // }
+
 
   return (
     <BottomTab.Navigator
@@ -136,12 +159,25 @@ function BottomTabNavigator() {
           tabBarIcon: ({ }) => <TabBarIcon name="list" color='navy' />,
 
           headerLeft: () => (
-            <Image style={{ width: 30, height: 30, borderRadius: 50, margin: 10 }} source={require('../assets/images/todo.png')} />
+            me.email ?
+              <Pressable
+                // onPress={() => navigation.navigate("Modal")}
+                style={({ pressed }) => ({
+                  opacity: pressed ? 0.5 : 1,
+                  flexDirection: 'row'
+                })}>
+
+                <FontAwesome name='plus' style={{ fontSize: 20, marginLeft: 10 }} />
+              </Pressable>
+              :
+              <Image style={{ width: 30, height: 30, borderRadius: 50, margin: 10 }} source={require('../assets/images/todo.png')} />
           ),
 
           headerRight: () => (
             <Pressable
               onPress={() => navigation.navigate('Profile')}
+              // onPress={handleLogOut}
+
               style={({ pressed }) => ({
                 opacity: pressed ? 0.5 : 1,
                 flexDirection: 'row'

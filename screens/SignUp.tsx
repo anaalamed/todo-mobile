@@ -22,6 +22,8 @@ export default function SignupScreen({ navigation }) {
 
     const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+    const phoneRegex = /^[0-9()-]+$/;
+
 
     return (
         <Box>
@@ -92,6 +94,47 @@ export default function SignupScreen({ navigation }) {
 
                 />
                 {errors.password && <Text>This is not valid.</Text>}
+
+                {/* <Controller
+                    control={control}
+                    rules={{
+                        minLength: 8,
+                        pattern: phoneRegex
+                    }}
+                    render={({ field: { onChange, value } }) => (
+                        <InputContainer>
+                            <InputIcon name='mobile' />
+                            <Input
+                                onChangeText={onChange}
+                                value={value}
+                                placeholder='mobile'
+                            />
+                        </InputContainer>
+                    )}
+                    name="phoneNumber"
+                    defaultValue=""
+                />
+                {errors.phoneNumber && <Text>This is not valid.</Text>} */}
+
+                {/* <Controller
+                    control={control}
+                    rules={{}}
+                    render={({ field: { onChange, value } }) => (
+                        <InputContainer>
+                            <InputIcon name='info' />
+                            <Input
+                                onChangeText={onChange}
+                                value={value}
+                                placeholder='about'
+                                multiline={true}
+                                numberOfLines={4}
+                            />
+                        </InputContainer>
+                    )}
+                    name="about"
+                    defaultValue=""
+                />
+                {errors.about && <Text>This is not valid.</Text>} */}
 
 
                 <ButtonForm title="Submit" onPress={handleSubmit(onSubmit)} ><ButtonFormText>Sign Up</ButtonFormText></ButtonForm>

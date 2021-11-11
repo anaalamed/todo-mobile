@@ -35,6 +35,8 @@ const Profile: React.FC<Props> = ({ navigation }) => {
       <Field>Name: <ValueField>{me.name}</ValueField> </Field>
       <Field>Email: <ValueField>{me.email}</ValueField> </Field>
       <Field>Phone: <ValueField>{me.phoneNumber}</ValueField></Field>
+      <Field>About: <ValueField>{me.about}</ValueField></Field>
+
 
       <Buttons>
         <Button onPress={() => { navigation.push('UpdateProfile') }} ><ButtonTxt>Update</ButtonTxt></Button>

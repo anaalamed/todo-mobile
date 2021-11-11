@@ -19,9 +19,6 @@ const ModalAddTodo: React.FC<Props> = ({ setModalVisible, isModalVisible }) => {
   const [description, setDescription] = useState('');
   const [isUrgent, setUrgent] = useState(false);
 
-  console.log(isUrgent)
-
-
   const { me } = useSelector((state: RootState) => state.users);
   const dispatch = useDispatch();
 

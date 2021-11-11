@@ -6,6 +6,7 @@ interface User {
   name?: string
   phoneNumber?: string
   photoURL?: string
+  about?: string
 }
 
 interface UserState {

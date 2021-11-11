@@ -19,7 +19,7 @@ interface Props {
   todo: Todo
 }
 
-const ModalAddTodo: React.FC<Props> = ({ setModalVisible, setMenuVisible, isModalVisible, todo }) => {
+const ModalUpdateTodo: React.FC<Props> = ({ setModalVisible, setMenuVisible, isModalVisible, todo }) => {
   const [title, setTitle] = useState(todo.title || '');
   const [description, setDescription] = useState(todo.description || '');
   const [isUrgent, setUrgent] = useState(todo.important);
@@ -98,7 +98,7 @@ const ModalAddTodo: React.FC<Props> = ({ setModalVisible, setMenuVisible, isModa
   );
 }
 
-export default ModalAddTodo;
+export default ModalUpdateTodo;
 
 
 const Box = styled.View`
