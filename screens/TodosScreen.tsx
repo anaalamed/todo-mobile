@@ -101,7 +101,7 @@ const Row = styled.View`
 const Section = styled.View`
   /* background: greenyellow; */
   align-items: center;
-  width: 80%;
+  width: 95%;
   padding: 10px;
   margin: 10px;
   border: 1px solid navy;

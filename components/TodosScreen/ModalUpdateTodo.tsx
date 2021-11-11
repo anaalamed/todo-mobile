@@ -8,15 +8,9 @@ import { updateTodo } from '../../state/slices/todos.slice';
 import { RootState } from '../../state/root.reducer';
 import { updateTodoFunc } from '../../initializeApp'
 import { Modal, View } from 'react-native';
-import { ButtonForm, ButtonFormText, Input, Title } from '../../constants/StyledComponents';
+import { ButtonForm, ButtonFormText, Input, InputContainer, InputIcon, Row, StyledText, Title } from '../../constants/StyledComponents';
+import { Todo } from '../../types';
 
-interface Todo {
-  id: string
-  title: string
-  completed: boolean
-  userId: string
-  description?: string
-}
 
 interface Props {
   isModalVisible: boolean
@@ -28,13 +22,14 @@ interface Props {
 const ModalAddTodo: React.FC<Props> = ({ setModalVisible, setMenuVisible, isModalVisible, todo }) => {
   const [title, setTitle] = useState(todo.title || '');
   const [description, setDescription] = useState(todo.description || '');
+  const [isUrgent, setUrgent] = useState(todo.important);
 
   const { me } = useSelector((state: RootState) => state.users);
   const dispatch = useDispatch();
 
   let handleUpdate = async () => {
 
-    updateTodoFunc({ id: todo.id, title: title, description: description })
+    updateTodoFunc({ id: todo.id, title: title, description: description, important: isUrgent })
       .then(res => {
         const updatedTodo = res.data;
         dispatch(updateTodo(updatedTodo))
@@ -63,19 +58,32 @@ const ModalAddTodo: React.FC<Props> = ({ setModalVisible, setMenuVisible, isModa
       >
         <WrapperModal >
           <ModalView >
-            <Title>Edit todo: {todo.title}?</Title>
+            <Title>Update todo: "{todo.title}"?</Title>
             <Box>
-              <Input
-                placeholder="Title"
-                onChangeText={text => setTitle(text)}
-                defaultValue={todo.title}
-              />
+              <InputContainer>
+                <InputIcon name='plus' />
+                <Input
+                  placeholder="Title"
+                  onChangeText={text => setTitle(text)}
+                  defaultValue={todo.title}
+                />
+              </InputContainer>
 
-              <Input
-                placeholder="Description"
-                onChangeText={text => setDescription(text)}
-                defaultValue={todo.description}
-              />
+              <InputContainer>
+                <InputIcon name='comment' />
+                <Input
+                  placeholder="Description"
+                  onChangeText={text => setDescription(text)}
+                  defaultValue={todo.description}
+                />
+              </InputContainer>
+
+              <Row style={{ justifyContent: "flex-start" }}>
+                <IsImportantBox onPress={() => setUrgent(!isUrgent)}>
+                  {isUrgent ? (<BtnText><FontAwesome name='check' /> </BtnText>) : null}
+                </IsImportantBox>
+                <StyledText style={{ color: "greenyellow", fontSize: 18, marginTop: 10 }}>Important</StyledText>
+              </Row>
             </Box>
 
             <Buttons>
@@ -93,49 +101,17 @@ const ModalAddTodo: React.FC<Props> = ({ setModalVisible, setMenuVisible, isModa
 export default ModalAddTodo;
 
 
-
-
-
 const Box = styled.View`
   flex-direction: column;
   width: 100%;
   margin-bottom: 10px;
 `;
 
-// const Input = styled.TextInput`
-//   color: white;
-//   flex-direction: row;
-//   justify-content: space-between;
-//   background: #49499c;
-//   padding: 13px;
-//   padding-left: 20px;
-//   padding-right: 15px;
-//   width: 80%;
-
-//   border-top-left-radius: 50px;
-//   border-bottom-left-radius: 20px;
-// `;
-
 const Buttons = styled.View`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
   width: 100%;
-`;
-
-const Button = styled.TouchableOpacity`
-  background: #6CBF40;
-  background: navy;
-  width: 30px;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 50px;
-`;
-
-const BtnText = styled.Text`
-  color: #6CBF40;
-  font-weight: bold;
-  font-size: 25px;
-  text-align: center;
 `;
 
 const WrapperModal = styled.View`
@@ -158,4 +134,24 @@ const ModalView = styled.View`
   border-bottom-right-radius: 50px;
   border-top-left-radius: 50px;
   border-bottom-left-radius: 10px;
+`;
+
+const IsImportantBox = styled.TouchableOpacity`
+  background: ${props => (props.done ? "lightgreen" : "white")};
+  width: 30px;
+  height: 20px;
+  margin: 12px;
+  /* margin-left: 10px; */
+  align-self: flex-start;
+
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 50px;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 10px;
+`;
+
+const BtnText = styled.Text`
+  color: navy;
+  font-weight: bold;
+  text-align: center;
 `;

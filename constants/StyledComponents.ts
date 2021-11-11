@@ -80,7 +80,6 @@ export const Input = styled.TextInput`
   border-bottom-left-radius: 10px;
 
   box-shadow: 10px 5px 5px greenyellow;
-
 `;
 
 export const InputContainer = styled.View`
@@ -103,4 +102,9 @@ export const StyledText = styled.Text`
   color: navy;
   text-align: center;
   padding-bottom: 10px;
+`;
+
+export const Row = styled.View`
+  flex-direction: row;
+  justify-content: center;
 `;

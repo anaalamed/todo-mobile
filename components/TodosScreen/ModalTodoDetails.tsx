@@ -1,19 +1,9 @@
 import React from "react";
-import { Button, View, Modal } from "react-native";
+import { View, Modal } from "react-native";
 import styled from 'styled-components/native';
-import { ButtonForm, ButtonFormText, StyledText, Title } from '../../constants/StyledComponents'
-import todosSlice from "../../state/slices/todos.slice";
-import dayjs from 'dayjs';
+import { ButtonForm, ButtonFormText, StyledText, Title, Row } from '../../constants/StyledComponents'
+import { Todo } from '../../types'
 
-interface Todo {
-    id: string
-    title: string
-    completed: boolean
-    userId: string
-    description?: string
-    createdAt: Date
-    updatedAt?: Date
-}
 
 interface Props {
     // isModalVisible: boolean
@@ -31,7 +21,11 @@ const ModalTodoDetails: React.FC<Props> = ({ setModalVisible, todo }) => {
             >
                 <WrapperModal >
                     <ModalView >
-                        <Title style={{ color: "navy", textAlign: "center", paddingBottom: 20 }}> {todo.title}</Title>
+                        <Row>
+                            {todo.important ? <StyledText style={{ color: "red", fontSize: 25, paddingRight: 5 }}>!</StyledText> : null}
+                            <Title style={{ color: "navy", textAlign: "center", paddingBottom: 20 }}> {todo.title}</Title>
+                        </Row>
+
                         {todo.description ? (<StyledText>Description: {todo.description}</StyledText>) : null}
                         <StyledText>Done: {todo.completed ? "Oh, yes..." : "Not yet..."}</StyledText>
                         {todo.createdAt ? (<StyledText>Created at: {todo.createdAt}</StyledText>) : null}

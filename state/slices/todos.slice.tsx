@@ -1,14 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Todo } from '../../types'
 
-interface Todo {
-  id: string
-  title: string
-  completed: boolean
-  userId: string
-  description?: string
-  createdAt: Date
-  updatedAt?: Date
-}
 
 interface TodosState {
   todos: Array<Todo>

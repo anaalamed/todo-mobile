@@ -81,7 +81,7 @@ exports.getTodos = functions.https.onRequest(async (req, res) => {
 });
 
 exports.addTodo = functions.https.onRequest(async (req, res) => {
-  const {title, description, userId} = req.body.data;
+  const {title, description, userId, important} = req.body.data;
 
   console.log(title);
 
@@ -90,6 +90,7 @@ exports.addTodo = functions.https.onRequest(async (req, res) => {
     description: description,
     userId: userId,
     completed: false,
+    important: important || false,
     createdAt: getTime(),
   };
 
@@ -117,11 +118,12 @@ exports.deleteTodo = functions.https.onCall(async (data, context) => {
 });
 
 exports.updateTodo = functions.https.onRequest(async (req, res) => {
-  const {id, title, description} = req.body.data;
+  const {id, title, description, important} = req.body.data;
 
   const todo = {
     title: title,
     description: description,
+    important: important,
     updatedAt: getTime(),
   };
 

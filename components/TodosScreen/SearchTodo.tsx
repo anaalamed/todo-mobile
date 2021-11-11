@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import styled from 'styled-components/native';
 import { FontAwesome } from '@expo/vector-icons';
@@ -39,7 +39,7 @@ const Box = styled.View`
 `;
 
 const Input = styled.TextInput`
-  background: greenyellow;
+  background: #d5f6c6;
   color: navy;
   /* padding: 10px; */
   padding-left: 20px;
@@ -61,4 +61,3 @@ const BtnText = styled.Text`
   color: navy;
   font-weight: bold;
 `;
-

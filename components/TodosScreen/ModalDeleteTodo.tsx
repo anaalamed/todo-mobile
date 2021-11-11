@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, View, Modal } from "react-native";
+import { View, Modal } from "react-native";
 import styled from 'styled-components/native';
 import { ButtonForm, ButtonFormText, StyledText } from '../../constants/StyledComponents'
 

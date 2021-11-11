@@ -10,16 +10,8 @@ import MenuTodo from './MenuTodo';
 import { deleteTodo, toggleComplete } from "../../state/slices/todos.slice";
 import { deleteTodoFunc, toggleCompleteTodoFunc } from '../../initializeApp';
 import ModalTodoDetails from './ModalTodoDetails';
-
-interface Todo {
-  id: string
-  title: string
-  completed: boolean
-  userId: string
-  description?: string
-  createdAt: Date
-  updatedAt?: Date
-}
+import { Todo } from '../../types';
+import { StyledText } from '../../constants/StyledComponents';
 
 interface Props {
   todo: Todo
@@ -55,6 +47,8 @@ const Profile: React.FC<Props> = ({ todo, order }) => {
             {todo.completed ? (<BtnText><FontAwesome name='check' /> </BtnText>) : null}
           </IsDoneBox>
 
+          {todo.important ? <StyledText style={{ color: "red", fontSize: 30, paddingBottom: 0, paddingRight: 5 }}>!</StyledText> : null}
+
           <TodoText onPress={setModalVisible}>{todo.title} </TodoText>
         </Main>
 
@@ -79,7 +73,7 @@ const Box = styled.View`
   background: #49499c;
   background: ${props => props.color};
 
-  width: 100%;
+  width: 95%;
   padding: 10px;
   padding-left: 20px;
   padding-right: 15px;
@@ -98,16 +92,21 @@ const Main = styled.View`
 
 const IsDoneBox = styled.TouchableOpacity`
   background: ${props => (props.done ? "lightgreen" : "white")};
-  width: 20px;
+  width: 30px;
   height: 20px;
   border-radius: 10px;
   margin-right: 8px;
+
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 50px;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 10px;
 `;
 
 const TodoText = styled.Text`
   color: navy;
   font-size: 20px;
-  width: 70%;
+  width: 75%;
   font-weight: bold;
 `;
 
@@ -123,6 +122,11 @@ const Button = styled.TouchableOpacity`
   border-radius: 10px;
   width: 20px;
   margin-right: 5px;
+
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 50px;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 10px;
 `;
 
 
