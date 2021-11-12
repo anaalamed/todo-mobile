@@ -1,39 +1,38 @@
-import { FontAwesome } from '@expo/vector-icons';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { ColorSchemeName, Pressable, Image } from 'react-native';
 import * as React from 'react';
-import { ColorSchemeName, Pressable, Image, View } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
+import { Provider } from 'react-native-paper';
 
 import useColorScheme from '../hooks/useColorScheme';
-import NotFoundScreen from '../screens/NotFoundScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import TodosScreen from '../screens/TodosScreen';
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
-import LinkingConfiguration from './LinkingConfiguration';
 
 import { RootState } from '../state/root.reducer';
-import { useDispatch, useSelector } from 'react-redux';
-import HelloUser from '../components/HelloUser';
-import LogIn from '../screens/LogIn';
+import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
+import LinkingConfiguration from './LinkingConfiguration';
+import ProfileScreen from '../screens/ProfileScreen';
+import TodosScreen from '../screens/TodosScreen';
+import NotFoundScreen from '../screens/NotFoundScreen';
 import SignUp from '../screens/SignUp';
+import LogIn from '../screens/LogIn';
 import UpdateProfile from '../screens/UpdateProfile';
-import { ButtonText, Title, Button } from '../constants/StyledComponents';
+import HelloUser from '../components/HelloUser';
 import ModalAddTodo from '../components/TodosScreen/ModalAddTodo';
-import { useState } from 'react';
-import { getAuth, signOut } from 'firebase/auth';
-import { loggedOut } from '../state/slices/users.slice';
-import { removeTodos } from '../state/slices/todos.slice';
+import CustomMenu from './Menu'
 
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
-    <NavigationContainer
-      linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-    >
-      <RootNavigator />
-    </NavigationContainer >
+    <Provider>
+      <NavigationContainer
+        linking={LinkingConfiguration}
+        theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+      >
+        <RootNavigator />
+      </NavigationContainer >
+    </Provider>
   );
 }
 
@@ -73,20 +72,6 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   const { me } = useSelector((state: RootState) => state.users);
-  const [isModalAddVisible, setModalAddVisible] = useState(false);
-
-  // const handleLogOut = () => {
-  //   const dispatch = useDispatch();
-  //   const auth = getAuth();
-
-  //   signOut(auth).then(() => {
-  //     dispatch(loggedOut());
-  //     dispatch(removeTodos());
-  //   }).catch((error) => {
-  //     console.log(error);
-  //   });
-  // }
-
 
   return (
     <BottomTab.Navigator
@@ -108,30 +93,28 @@ function BottomTabNavigator() {
           tabBarIcon: ({ }) => <TabBarIcon name="user" color='navy' />,
           headerTitle: '',
 
-          headerLeft: () => (
-            <Image style={{ width: 30, height: 30, borderRadius: 50, margin: 10 }} source={require('../assets/images/todo.png')} />
-          ),
+          headerLeft: () => (<Image style={{ width: 30, height: 30, borderRadius: 50, margin: 10 }} source={require('../assets/images/todo.png')} />),
 
-          headerRight: () => (
-            // menu? 
-            <Pressable
-              onPress={() => navigation.navigate('Profile')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-                flexDirection: 'row'
-              })}>
-              <HelloUser></HelloUser>
-              {me.photoURL ? (
-                <Image style={{ width: 30, height: 30, borderRadius: 50, margin: 10 }} source={{ uri: me.photoURL }} />
-              ) : (
-                  <FontAwesome
-                    name="user-circle"
-                    size={25}
-                    style={{ marginRight: 15, marginLeft: 10 }}
-                  />
-                )}
-            </Pressable>
-          ),
+          // headerRight: () => (
+          //   <Pressable
+          //     onPress={() => navigation.navigate('Profile')}
+          //     style={({ pressed }) => ({
+          //       opacity: pressed ? 0.5 : 1,
+          //       flexDirection: 'row'
+          //     })}>
+          //     <HelloUser></HelloUser>
+          //     {me.photoURL ? (
+          //       <Image style={{ width: 30, height: 30, borderRadius: 50, margin: 10 }} source={{ uri: me.photoURL }} />
+          //     ) : (
+          //         <FontAwesome
+          //           name="user-circle"
+          //           size={25}
+          //           style={{ marginRight: 15, marginLeft: 10 }}
+          //         />
+          //       )}
+          //   </Pressable>
+          // ),
+          headerRight: () => <CustomMenu navigation={navigation} />,
         })}
 
       />
@@ -159,30 +142,7 @@ function BottomTabNavigator() {
               <Image style={{ width: 30, height: 30, borderRadius: 50, margin: 10 }} source={require('../assets/images/todo.png')} />
           ),
 
-          headerRight: () => (
-            // menu
-            <Pressable
-              onPress={() => navigation.navigate('Profile')}
-
-              // onPress={handleLogOut}
-
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-                flexDirection: 'row'
-              })}>
-              <HelloUser></HelloUser>
-              {me.photoURL ? (
-                <Image style={{ width: 30, height: 30, borderRadius: 50, margin: 10 }} source={{ uri: me.photoURL }} />
-              ) : (
-                  <FontAwesome
-                    name="user-circle"
-                    size={25}
-                    style={{ marginRight: 15, marginLeft: 10 }}
-                  />
-                )}
-            </Pressable>
-          ),
-
+          headerRight: () => <CustomMenu navigation={navigation} />,
         })}
       />
     </BottomTab.Navigator >

@@ -19,8 +19,7 @@ export default function TodosScreen() {
 
   const dispatch = useDispatch();
   const { todos, filteredTodos, is_loading, error_msg } = useSelector((state: RootState) => state.todos);
-  const { me } = useSelector((state: RootState) => state.users);
-
+  const { me, loggedIn } = useSelector((state: RootState) => state.users);
 
   useEffect(() => {
     if (me.email) {
@@ -37,7 +36,6 @@ export default function TodosScreen() {
     }
   }, [me]);
 
-
   return (
     <ScrollView style={{ backgroundColor: 'navy' }}
       centerContent={true}
@@ -50,7 +48,7 @@ export default function TodosScreen() {
 
         <Separator />
         <Section>
-          {me.email ?
+          {loggedIn ?
             (
               <>
                 {filteredTodos.length !== 0 ? (
@@ -67,7 +65,7 @@ export default function TodosScreen() {
             ) :
             (<MyText>Please log in to see your todos here! </MyText>)}
 
-          {me.email && todos.length === 0 ? <MyText>There is no to do yet... Please add!</MyText> : null}
+          {loggedIn && todos.length === 0 ? <MyText>There is no to do yet... Please add!</MyText> : null}
         </Section>
 
         <Image source={require('../assets/images/todo.png')} />
@@ -103,7 +101,7 @@ const Section = styled.View`
 
 const MyText = styled.Text`
   text-align: center;
-  color: navy;
+  color: greenyellow;
   font-weight: bold;
 `;
 
