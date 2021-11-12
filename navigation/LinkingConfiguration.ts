@@ -17,8 +17,11 @@ const linking: LinkingOptions<RootStackParamList> = {
         screens: {
           Profile: {
             screens: {
-              TabOneScreen: 'one',
-              // LogIn: 'LogIn'
+              // TabOneScreen: 'one',
+              ProfileScreen: "ProfileScreen",
+              SignUp: "SinUp",
+              Login: "Login",
+              UpdateProfile: "UpdateProfile"
             },
           },
           Todos: {

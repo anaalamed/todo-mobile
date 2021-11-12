@@ -6,6 +6,7 @@ export const Title = styled.Text`
   font-size: 25px;
   font-weight: bold;
   color: greenyellow;
+  margin: 5px;
 `;
 
 export const Button = styled.TouchableOpacity`
@@ -58,7 +59,7 @@ export const ButtonFormText = styled.Text`
 
 export const Separator = styled.View`
   margin: 10px;
-  height: 1px;
+  height: 2px;
   width: 80%;
   color: black;
   background: #7c7a7aaa;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import styled from 'styled-components/native';
 
@@ -9,39 +9,44 @@ import { View, Modal } from 'react-native';
 import { ButtonForm, ButtonFormText, Input, InputContainer, InputIcon, StyledText } from '../../constants/StyledComponents';
 import { FontAwesome } from '@expo/vector-icons';
 
-interface Props {
-  isModalVisible: boolean
-  setModalVisible(boolean): void
-}
 
-const ModalAddTodo: React.FC<Props> = ({ setModalVisible, isModalVisible }) => {
+export default function ModalAddTodo({ navigation }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [isUrgent, setUrgent] = useState(false);
+  const [isError, setError] = useState(false);
+
 
   const { me } = useSelector((state: RootState) => state.users);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (title) setError(false);
+  }, [title])
+
   const handleAddTodo = () => {
     const todo = { title: title, description: description, userId: me.email, important: isUrgent };
+    if (title === '') setError(true);
 
-    addTodoFunc(todo)
-      .then(res => {
-        const todo = res.data;
-        dispatch(addTodo(todo));
-        setTitle('');
-        setDescription('');
-        setModalVisible(false);
-      })
-      .catch((error) => {
-        alert("something went wrong")
-      });
+    if (title) {
+
+      addTodoFunc(todo)
+        .then(res => {
+          const todo = res.data;
+          dispatch(addTodo(todo));
+          setTitle('');
+          setDescription('');
+          navigation.goBack();
+        })
+        .catch((error) => {
+          alert("something went wrong")
+        });
+    }
   }
 
   return (
     <View >
       <Modal
-        visible={isModalVisible}
         transparent={true}
       >
         <WrapperModal >
@@ -73,8 +78,11 @@ const ModalAddTodo: React.FC<Props> = ({ setModalVisible, isModalVisible }) => {
               <StyledText style={{ color: "greenyellow", fontSize: 18, marginTop: 10 }}>Important</StyledText>
             </Row>
 
+            {isError ? <StyledText style={{ color: "red" }}>Title is required!</StyledText> : null}
+
             <Row>
-              <ButtonForm style={{ width: 90 }} onPress={() => setModalVisible(false)} ><ButtonFormText>Cancel</ButtonFormText></ButtonForm>
+              <ButtonForm style={{ width: 90 }} onPress={() => { navigation.goBack() }}
+              ><ButtonFormText>Cancel</ButtonFormText></ButtonForm>
               <ButtonForm style={{ width: 90 }} onPress={handleAddTodo} ><ButtonFormText>Add</ButtonFormText></ButtonForm>
             </Row>
 
@@ -85,7 +93,6 @@ const ModalAddTodo: React.FC<Props> = ({ setModalVisible, isModalVisible }) => {
   );
 }
 
-export default ModalAddTodo;
 
 const WrapperModal = styled.View`
   height: 100%;

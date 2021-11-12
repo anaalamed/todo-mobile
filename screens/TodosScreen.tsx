@@ -3,9 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import styled from 'styled-components/native';
 import { ScrollView, Image } from 'react-native';
 
-import AddTodo from '../components/TodosScreen/SearchTodo';
+import SearchTodo from '../components/TodosScreen/SearchTodo';
 import Todo from '../components/TodosScreen/Todo';
-import ModalAddTodo from '../components/TodosScreen/ModalAddTodo';
 
 import { Title, Separator, Button, ButtonText } from '../constants/StyledComponents';
 
@@ -14,18 +13,14 @@ import { getTodosFunc } from '../initializeApp';
 import { RootState } from '../state/root.reducer';
 import { FontAwesome } from '@expo/vector-icons';
 
-interface Props {
-  setModalAddVisible(boolean): void
-}
+
 
 export default function TodosScreen() {
-  // const TodosScreen: React.FC<Props> = ({ setModalAddVisible }) => {
 
   const dispatch = useDispatch();
   const { todos, filteredTodos, is_loading, error_msg } = useSelector((state: RootState) => state.todos);
   const { me } = useSelector((state: RootState) => state.users);
 
-  const [isModalAddVisible, setModalAddVisible] = useState(false);
 
   useEffect(() => {
     if (me.email) {
@@ -49,32 +44,25 @@ export default function TodosScreen() {
     >
 
       <Box >
-        <Row>
-          <Title >Todos</Title>
-          {me.email ? (
-            <Button style={{ width: 40 }} onPress={() => setModalAddVisible(true)} >
-              <ButtonText><FontAwesome name='plus' style={{ fontSize: 20 }} /></ButtonText>
-            </Button>
-          ) : null}
+        <Title >Todos</Title>
 
-        </Row>
-
-        {me.email !== undefined ? (
-          <AddTodo></AddTodo>
-        ) : null}
-        {isModalAddVisible ? <ModalAddTodo isModalVisible={isModalAddVisible} setModalVisible={setModalAddVisible}></ModalAddTodo> : null}
-
+        {me.email ? (<SearchTodo></SearchTodo>) : null}
 
         <Separator />
         <Section>
-          {me.email && todos.length !== 0 ?
+          {me.email ?
             (
               <>
-                {/* <Title style={{ color: "navy" }}>To Do</Title> */}
-                {filteredTodos.filter(todo => todo.completed === false).map((todo, i) => (<Todo key={i} order={i} todo={todo}></Todo>))}
-                {todos.length === 0 ? null : <Separator></Separator>}
-                {/* <Title style={{ color: "navy" }}>Done</Title> */}
-                {filteredTodos.filter(todo => todo.completed === true).map((todo, i) => (<Todo key={i} order={i} todo={todo}></Todo>))}
+                {filteredTodos.length !== 0 ? (
+                  <>
+                    <Title style={{ fontSize: 20 }}>Wait To Do...</Title>
+                    {filteredTodos.filter(todo => todo.completed === false).map((todo, i) => (<Todo key={i} order={i} todo={todo}></Todo>))}
+                    {todos.length === 0 ? null : <Separator></Separator>}
+
+                    <Title style={{ fontSize: 20 }}>Done!</Title>
+                    {filteredTodos.filter(todo => todo.completed === true).map((todo, i) => (<Todo key={i} order={i} todo={todo}></Todo>))}
+                  </>
+                ) : null}
               </>
             ) :
             (<MyText>Please log in to see your todos here! </MyText>)}
@@ -88,7 +76,6 @@ export default function TodosScreen() {
   );
 }
 
-// export default TodosScreen;
 
 const Box = styled.View`
   display: flex;
@@ -97,20 +84,12 @@ const Box = styled.View`
   background: navy;
 `;
 
-const Row = styled.View`
-  flex-direction: row;
-  padding: 10px;
-  padding-bottom: 20px;
-  justify-content: space-between;
-  width: 50%;
-  margin-left: 25%;
-`;
-
 const Section = styled.View`
   /* background: greenyellow; */
   align-items: center;
   width: 95%;
-  padding: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
   margin: 10px;
   border: 1px solid navy;
 

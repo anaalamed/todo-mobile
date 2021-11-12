@@ -43,7 +43,7 @@ const WrapperModal = styled.View`
 `;
 
 const ModalView = styled.View`
-  flex: 1;
+  /* flex: 1; */
   flex-direction: column;
   justify-content: center;
   align-items: center;

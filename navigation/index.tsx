@@ -1,7 +1,7 @@
 import { FontAwesome } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as React from 'react';
 import { ColorSchemeName, Pressable, Image, View } from 'react-native';
 
@@ -41,49 +41,33 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: 'greenyellow',
+        },
+        headerTintColor: 'navy',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        }
+      }}>
+
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="LogIn" component={LogIn} options={{
-        title: 'Log In',
-        headerStyle: {
-          backgroundColor: 'greenyellow',
-        },
-        headerTintColor: 'navy',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        }
-      }} />
 
-      <Stack.Screen name="SignUp" component={SignUp} options={{
-        title: 'Registration',
-        headerStyle: {
-          backgroundColor: 'greenyellow',
-        },
-        headerTintColor: 'navy',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        }
-      }} />
-
-      <Stack.Screen name="UpdateProfile" component={UpdateProfile} options={{
-        title: 'Update Profile',
-        headerStyle: {
-          backgroundColor: 'greenyellow',
-        },
-        headerTintColor: 'navy',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        }
-      }} />
+      <Stack.Screen name="LogIn" component={LogIn} options={{ title: 'Log In' }} />
+      <Stack.Screen name="SignUp" component={SignUp} options={{ title: 'Registration' }} />
+      <Stack.Screen name="UpdateProfile" component={UpdateProfile} options={{ title: 'Update Profile' }} />
 
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
 
       <Stack.Group screenOptions={{ presentation: "transparentModal" }}>
-        <Stack.Screen name="Modal" component={ModalAddTodo} />
+        <Stack.Screen name="ModalAddTodo" component={ModalAddTodo} options={{ title: 'Create new Todo!' }} />
       </Stack.Group>
     </Stack.Navigator>
   );
 }
+
+// ----------------------------------- Bottom Tab Navigator -----------------------------------
 
 const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
@@ -112,7 +96,8 @@ function BottomTabNavigator() {
         tabBarInactiveTintColor: "gray",
         tabBarActiveBackgroundColor: "greenyellow",
         tabBarInactiveBackgroundColor: "#6CBF40"
-      }}>
+      }}
+    >
 
       <BottomTab.Screen
         name="Profile"
@@ -128,6 +113,7 @@ function BottomTabNavigator() {
           ),
 
           headerRight: () => (
+            // menu? 
             <Pressable
               onPress={() => navigation.navigate('Profile')}
               style={({ pressed }) => ({
@@ -161,7 +147,7 @@ function BottomTabNavigator() {
           headerLeft: () => (
             me.email ?
               <Pressable
-                // onPress={() => navigation.navigate("Modal")}
+                onPress={() => navigation.navigate("ModalAddTodo")}
                 style={({ pressed }) => ({
                   opacity: pressed ? 0.5 : 1,
                   flexDirection: 'row'
@@ -174,8 +160,10 @@ function BottomTabNavigator() {
           ),
 
           headerRight: () => (
+            // menu
             <Pressable
               onPress={() => navigation.navigate('Profile')}
+
               // onPress={handleLogOut}
 
               style={({ pressed }) => ({
