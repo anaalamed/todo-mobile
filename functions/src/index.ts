@@ -82,16 +82,17 @@ exports.getTodos = functions.https.onRequest(async (req, res) => {
 });
 
 exports.addTodo = functions.https.onRequest(async (req, res) => {
-  const {title, description, userId, important} = req.body.data;
+  const {title, description, userId, important, color} = req.body.data;
 
   console.log(title);
 
   const todo = {
     title: title,
     description: description,
-    userId: userId,
     completed: false,
     important: important || false,
+    color: color,
+    userId: userId,
     createdAt: getTime(),
   };
 
@@ -119,12 +120,13 @@ exports.deleteTodo = functions.https.onCall(async (data, context) => {
 });
 
 exports.updateTodo = functions.https.onRequest(async (req, res) => {
-  const {id, title, description, important} = req.body.data;
+  const {id, title, description, important, color} = req.body.data;
 
   const todo = {
     title: title,
     description: description,
     important: important,
+    color: color,
     updatedAt: getTime(),
   };
 
