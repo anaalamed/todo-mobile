@@ -86,11 +86,11 @@ export const Input = styled.TextInput`
 export const InputContainer = styled.View`
   flex-direction: row;
   justify-content: center;
+
 `;
 
 export const InputIcon = styled(FontAwesome)`
   position: absolute;
-  /* top: 10px; */
   z-index: 100;
   top: 23px;
   font-size: 20px;

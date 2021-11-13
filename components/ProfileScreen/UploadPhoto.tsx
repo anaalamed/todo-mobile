@@ -42,13 +42,14 @@ export default function ImagePickerExample() {
         const uploadUri = Platform.OS === "ios" ? imageUri.replace("file://", "") : imageUri;
 
         // const storageRef = ref(storage);
-        // const imagesRef = ref(storageRef, '../../assets/images');
         console.log(uploadUri);
 
         const storage = getStorage();
-        console.log(storage);
-        const pic = ref(storage, '../../assets/images/todo.png');
-        // const pic = ref(storage, uploadUri);
+        // console.log(storage);
+
+        const pic = ref(storage, 'todo.png');
+
+        // const picRef = ref(storage, uploadUri);
         // const pic = ref(storage, '');
 
 
@@ -57,10 +58,17 @@ export default function ImagePickerExample() {
 
         // let file = put(pic);
 
+        const bytes = new Uint8Array([0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c, 0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21]);
+        var file = new File(bytes, uploadUri, {
+            type: "image/jpeg",
+        });
 
-        // uploadBytes(pic, file).then(snapshot => {
-        //     console.log('Uploaded a blob or file!');
-        // })
+        console.log(file);
+
+
+        uploadBytes(pic, file).then(snapshot => {
+            console.log('Uploaded a blob or file!');
+        })
 
 
 

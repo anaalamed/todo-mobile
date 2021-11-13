@@ -38,7 +38,7 @@ export default function TodosScreen() {
 
   return (
     <ScrollView style={{ backgroundColor: 'navy' }}
-      centerContent={true}
+    // centerContent={true}
     >
 
       <Box >

@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, TextInput, Button, Alert } from "react-native";
+import { Text, View, TextInput, Button, Alert, ScrollView } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import styled from 'styled-components/native';
 import { getAuth } from "firebase/auth";
@@ -36,29 +36,32 @@ export default function UpdateProfileScreen({ navigation }) {
     }
 
     return (
-        <Box>
-            <Form>
-                <Controller
-                    control={control}
-                    rules={{
-                        required: true,
-                    }}
-                    render={({ field: { onChange, value } }) => (
-                        <InputContainer>
-                            <InputIcon name='user' style={{ fontSize: 23 }} />
-                            <Input
-                                onChangeText={onChange}
-                                value={value}
-                                placeholder='name'
-                            />
-                        </InputContainer>
-                    )}
-                    name="name"
-                    defaultValue={me.name}
-                />
-                {errors.name && <Text>This is not valid.</Text>}
+        <ScrollView style={{ backgroundColor: 'navy' }}
+        // centerContent={true}
+        >
+            <Box>
+                <Form>
+                    <Controller
+                        control={control}
+                        rules={{
+                            required: true,
+                        }}
+                        render={({ field: { onChange, value } }) => (
+                            <InputContainer>
+                                <InputIcon name='user' style={{ fontSize: 23 }} />
+                                <Input
+                                    onChangeText={onChange}
+                                    value={value}
+                                    placeholder='name'
+                                />
+                            </InputContainer>
+                        )}
+                        name="name"
+                        defaultValue={me.name}
+                    />
+                    {errors.name && <Text>This is not valid.</Text>}
 
-                {/* <Controller
+                    {/* <Controller
                 control={control}
                 rules={{
                     required: true,
@@ -77,73 +80,74 @@ export default function UpdateProfileScreen({ navigation }) {
             />
             {errors.email && <Text>This is not valid.</Text>} */}
 
-                <Controller
-                    control={control}
-                    rules={{
-                        minLength: 8,
-                        pattern: phoneRegex
-                    }}
-                    render={({ field: { onChange, value } }) => (
-                        <InputContainer>
-                            <InputIcon name='mobile' />
-                            <Input
-                                onChangeText={onChange}
-                                value={value}
-                                placeholder='mobile'
-                            />
-                        </InputContainer>
-                    )}
-                    name="phoneNumber"
-                    defaultValue={me.phoneNumber}
-                />
-                {errors.phoneNumber && <Text>This is not valid.</Text>}
+                    <Controller
+                        control={control}
+                        rules={{
+                            minLength: 8,
+                            pattern: phoneRegex
+                        }}
+                        render={({ field: { onChange, value } }) => (
+                            <InputContainer>
+                                <InputIcon name='mobile' />
+                                <Input
+                                    onChangeText={onChange}
+                                    value={value}
+                                    placeholder='mobile'
+                                />
+                            </InputContainer>
+                        )}
+                        name="phoneNumber"
+                        defaultValue={me.phoneNumber}
+                    />
+                    {errors.phoneNumber && <Text>This is not valid.</Text>}
 
-                <Controller
-                    control={control}
-                    rules={{
-                        minLength: 8,
-                        // pattern: urlRegex
-                    }}
-                    render={({ field: { onChange, value } }) => (
-                        <InputContainer>
-                            <InputIcon name='camera' />
-                            <Input
-                                onChangeText={onChange}
-                                value={value}
-                                placeholder='avatar url'
-                            />
-                        </InputContainer>
-                    )}
-                    name="photoURL"
-                    defaultValue={me.photoURL}
-                />
-                {errors.photoURL && <Text>This is not valid.</Text>}
+                    {/* <Controller
+                        control={control}
+                        rules={{
+                            minLength: 8,
+                            // pattern: urlRegex
+                        }}
+                        render={({ field: { onChange, value } }) => (
+                            <InputContainer>
+                                <InputIcon name='camera' />
+                                <Input
+                                    onChangeText={onChange}
+                                    value={value}
+                                    placeholder='avatar url'
+                                />
+                            </InputContainer>
+                        )}
+                        name="photoURL"
+                        defaultValue={me.photoURL}
+                    />
+                    {errors.photoURL && <Text>This is not valid.</Text>} */}
 
-                <Controller
-                    control={control}
-                    rules={{}}
-                    render={({ field: { onChange, value } }) => (
-                        <InputContainer>
-                            <InputIcon name='info' />
-                            <Input
-                                onChangeText={onChange}
-                                value={value}
-                                placeholder='about'
-                                multiline={true}
-                                numberOfLines={4}
-                            />
-                        </InputContainer>
-                    )}
-                    name="about"
-                    defaultValue={me.about}
-                />
-                {errors.about && <Text>This is not valid.</Text>}
+                    <Controller
+                        control={control}
+                        rules={{}}
+                        render={({ field: { onChange, value } }) => (
+                            <InputContainer>
+                                <InputIcon name='info' />
+                                <Input
+                                    onChangeText={onChange}
+                                    value={value}
+                                    placeholder='about'
+                                    multiline={true}
+                                    numberOfLines={4}
+                                />
+                            </InputContainer>
+                        )}
+                        name="about"
+                        defaultValue={me.about}
+                    />
+                    {errors.about && <Text>This is not valid.</Text>}
 
-                {/* <UploadPhoto></UploadPhoto> */}
+                    {/* <UploadPhoto></UploadPhoto> */}
 
-                <ButtonForm title="Submit" onPress={handleSubmit(onSubmit)} ><ButtonFormText>Update</ButtonFormText></ButtonForm>
-            </Form>
-        </Box>
+                    <ButtonForm title="Submit" onPress={handleSubmit(onSubmit)} ><ButtonFormText>Update</ButtonFormText></ButtonForm>
+                </Form>
+            </Box>
+        </ScrollView>
     );
 }
 

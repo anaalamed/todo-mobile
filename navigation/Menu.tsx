@@ -32,6 +32,7 @@ const CustomMenu = ({ navigation }) => {
             <StyledMenu
                 visible={showMenu}
                 onDismiss={() => setShowMenu(false)}
+                statusBarHeight={1000}
                 anchor={
                     <TouchableOpacity onPress={() => setShowMenu(true)}
                         style={{ flexDirection: 'row' }} >
@@ -43,7 +44,7 @@ const CustomMenu = ({ navigation }) => {
                                 <FontAwesome
                                     name="user-circle"
                                     size={25}
-                                    style={{ marginRight: 15, marginLeft: 10 }}
+                                    style={{ marginRight: 15, marginLeft: 10, color: "navy" }}
                                 />
                             )}
 
@@ -72,10 +73,12 @@ export default CustomMenu;
 
 const StyledMenu = styled(Menu)`
   position: absolute;
-  right: 0;
-  top: 63px;
+  /* right: 30px; */
+  top: 9.5%;
+  top: 10%;
+  width: 150px;
   /* border: 1px solid navy; */
-  background: navy;
+  /* background: navy; */
 `;
 
 const styles = StyleSheet.create({

@@ -50,8 +50,8 @@ const ModalView = styled.View`
   background: greenyellow;
   padding: 20px;
   margin: 50px;
-  margin-top: 250;
-  margin-bottom: 250;
+  margin-top: 250px;
+  margin-bottom: 250px;
 
   border-top-right-radius: 10px;
   border-bottom-right-radius: 50px;

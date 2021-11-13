@@ -18,7 +18,7 @@ const functions = getFunctions();
 // const functions = getFunctions(getApp());
 // connectFunctionsEmulator(functions, "localhost", 5001);
 
-const storage = getStorage(app);
+const storage = getStorage();
 
 
 export const registerFunc = httpsCallable(functions, 'register');

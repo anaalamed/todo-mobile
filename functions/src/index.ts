@@ -6,7 +6,7 @@ admin.initializeApp();
 const getTime = () => {
   const today = new Date();
   const date = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate();
-  const time = today.getHours() + 2 + ":" + today.getMinutes();
+  const time = today.getHours() + 2 + ":" + (today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes());
   const dateTime = date + " " + time;
   return dateTime;
 };
@@ -160,20 +160,14 @@ exports.toggleCompleteTodo = functions.https.onRequest(async (req, res) => {
 // const fs = require('fs');
 
 // exports.uploadPhoto = functions.https.onRequest(async (req, res) => {
-//   const filePath = req.body.data;
-//   const fileName = 'photo';
-
-//   const fileBucket = object.bucket; // The Storage bucket that contains the file.
-//   const filePath = object.name; // File path in the bucket.
-//   const contentType = object.contentType; // File content type.
-//   const metageneration = object.metageneration; // Number of times metadata has been generated. New objects have a value of
-
-
+//   const fileName = 'name';
+//   const contentType = 'image/png'
 //   const bucket = admin.storage().bucket(fileBucket);
 //   const tempFilePath = path.join(os.tmpdir(), fileName);
-//   // const metadata = {
-//   //   contentType: contentType,
-//   // };
+//   const metadata = {
+//     contentType: contentType,
+//   };
+
 //   await bucket.file(filePath).download({ destination: tempFilePath });
 //   functions.logger.log('Image downloaded locally to', tempFilePath);
 //   // Generate a thumbnail using ImageMagick.
@@ -185,7 +179,7 @@ exports.toggleCompleteTodo = functions.https.onRequest(async (req, res) => {
 //   // Uploading the thumbnail.
 //   await bucket.upload(tempFilePath, {
 //     destination: thumbFilePath,
-//     // metadata: metadata,
+//     metadata: metadata,
 //   });
 //   // Once the thumbnail has been uploaded delete the local file to free up disk space.
 //   return fs.unlinkSync(tempFilePath);

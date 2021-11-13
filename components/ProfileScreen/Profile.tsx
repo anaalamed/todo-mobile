@@ -51,7 +51,7 @@ export default Profile;
 const Box = styled.View`
   color: white;
   justify-content: space-between;
-  align-items: center;
+  /* align-items: center; */
   width: 100%;
   padding: 10px;
   margin-bottom: 5px;
@@ -62,7 +62,8 @@ const StyledImage = styled.Image`
   height: 100px;
   width: 100px;
   margin-bottom: 10px;
-  border-radius: 50;
+  border-radius: 50px;
+  align-self: center;
 `;
 
 const Field = styled.Text`
@@ -77,6 +78,7 @@ const Buttons = styled.View`
   flex-direction: row;
   width: 90%;
   justify-content: space-around;
+  align-self: center;
 `;
 
 const Button = styled(ButtonForm)`
