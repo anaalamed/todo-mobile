@@ -6,7 +6,7 @@ import { getAuth, signOut } from "firebase/auth";
 import { loggedOut } from "../../state/slices/users.slice";
 import { removeTodos } from "../../state/slices/todos.slice";
 import { RootState } from '../../state/root.reducer';
-import { ButtonForm, ButtonFormText } from '../../constants/StyledComponents';
+import { ButtonForm, ButtonFormText, Buttons } from '../../constants/StyledComponents';
 
 interface Props {
   navigation: any
@@ -74,12 +74,12 @@ const ValueField = styled.Text`
   font-size: 25px;
 `;
 
-const Buttons = styled.View`
-  flex-direction: row;
-  width: 90%;
-  justify-content: space-around;
-  align-self: center;
-`;
+// const Buttons = styled.View`
+//   flex-direction: row;
+//   width: 90%;
+//   justify-content: space-around;
+//   align-self: center;
+// `;
 
 const Button = styled(ButtonForm)`
   background: navy;

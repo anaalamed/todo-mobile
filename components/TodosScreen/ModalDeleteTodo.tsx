@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Modal } from "react-native";
 import styled from 'styled-components/native';
-import { ButtonForm, ButtonFormText, StyledText } from '../../constants/StyledComponents'
+import { ButtonForm, ButtonFormText, Buttons, ModalView, StyledText, WrapperModal } from '../../constants/StyledComponents'
 
 interface Props {
     isModalVisible: boolean
@@ -24,8 +24,8 @@ const ModalDeleteTodo: React.FC<Props> = ({ isModalVisible, setMenulVisible, set
                         <StyledText>Are you sure you want to delete this todo: {title}?</StyledText>
 
                         <Buttons>
+                            <ButtonForm style={{ width: 90, backgroundColor: "grey" }} onPress={() => { setModalVisible(false), setMenulVisible(false) }} ><ButtonFormText>No</ButtonFormText></ButtonForm>
                             <ButtonForm style={{ width: 90 }} onPress={() => { handleDelete(), setModalVisible(false) }} ><ButtonFormText>Yes</ButtonFormText></ButtonForm>
-                            <ButtonForm style={{ width: 90 }} onPress={() => { setModalVisible(false), setMenulVisible(false) }} ><ButtonFormText>No</ButtonFormText></ButtonForm>
                         </Buttons>
 
                     </ModalView>
@@ -36,32 +36,3 @@ const ModalDeleteTodo: React.FC<Props> = ({ isModalVisible, setMenulVisible, set
 }
 
 export default ModalDeleteTodo;
-
-const WrapperModal = styled.View`
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-`;
-
-const ModalView = styled.View`
-  /* flex: 1; */
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: greenyellow;
-  padding: 20px;
-  margin: 50px;
-  margin-top: 250px;
-  margin-bottom: 250px;
-
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 50px;
-  border-top-left-radius: 50px;
-  border-bottom-left-radius: 10px;
-`;
-
-const Buttons = styled.View`
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-`;

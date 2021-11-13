@@ -6,7 +6,7 @@ import { addTodo } from '../../state/slices/todos.slice';
 import { RootState } from '../../state/root.reducer';
 import { addTodoFunc } from '../../initializeApp'
 import { View, Modal } from 'react-native';
-import { ButtonForm, ButtonFormText, Input, InputContainer, InputIcon, StyledText } from '../../constants/StyledComponents';
+import { ButtonForm, ButtonFormText, Input, InputContainer, InputIcon, ModalView, StyledText, WrapperModal } from '../../constants/StyledComponents';
 import { FontAwesome } from '@expo/vector-icons';
 
 
@@ -51,25 +51,23 @@ export default function ModalAddTodo({ navigation }) {
       >
         <WrapperModal >
           <ModalView >
-            <Box>
-              <InputContainer>
-                <InputIcon name='plus' />
-                <Input
-                  placeholder="Title"
-                  onChangeText={text => setTitle(text)}
-                  defaultValue={title}
-                />
-              </InputContainer>
+            <InputContainer>
+              <InputIcon name='plus' />
+              <Input
+                placeholder="Title"
+                onChangeText={text => setTitle(text)}
+                defaultValue={title}
+              />
+            </InputContainer>
 
-              <InputContainer>
-                <InputIcon name='comment' />
-                <Input
-                  placeholder="Description"
-                  onChangeText={text => setDescription(text)}
-                  defaultValue={description}
-                />
-              </InputContainer>
-            </Box>
+            <InputContainer>
+              <InputIcon name='comment' />
+              <Input
+                placeholder="Description"
+                onChangeText={text => setDescription(text)}
+                defaultValue={description}
+              />
+            </InputContainer>
 
             <Row style={{ justifyContent: "flex-start" }}>
               <IsImportantBox onPress={() => setUrgent(!isUrgent)}>
@@ -81,7 +79,7 @@ export default function ModalAddTodo({ navigation }) {
             {isError ? <StyledText style={{ color: "red" }}>Title is required!</StyledText> : null}
 
             <Row>
-              <ButtonForm style={{ width: 90 }} onPress={() => { navigation.goBack() }}
+              <ButtonForm style={{ width: 90, backgroundColor: "grey" }} onPress={() => { navigation.goBack() }}
               ><ButtonFormText>Cancel</ButtonFormText></ButtonForm>
               <ButtonForm style={{ width: 90 }} onPress={handleAddTodo} ><ButtonFormText>Add</ButtonFormText></ButtonForm>
             </Row>
@@ -93,35 +91,6 @@ export default function ModalAddTodo({ navigation }) {
   );
 }
 
-
-const WrapperModal = styled.View`
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-`;
-
-const ModalView = styled.View`
-  /* flex: 1; */
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: navy;
-  padding: 20px;
-  margin: 50px;
-  margin-top: 150px;
-  margin-bottom: 150px;
-
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 50px;
-  border-top-left-radius: 50px;
-  border-bottom-left-radius: 10px;
-`;
-
-
-const Box = styled.View`
-  color: white;
-  flex-direction: column;
-  width: 100%;
-`;
 
 const Row = styled.View`
   flex-direction: row;

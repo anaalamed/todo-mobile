@@ -100,7 +100,7 @@ export const InputIcon = styled(FontAwesome)`
 
 export const StyledText = styled.Text`
   font-weight: bold;
-  color: navy;
+  color: greenyellow;
   text-align: center;
   padding-bottom: 10px;
 `;
@@ -108,4 +108,35 @@ export const StyledText = styled.Text`
 export const Row = styled.View`
   flex-direction: row;
   justify-content: center;
+`;
+
+
+// ------------------------------------ Modal ------------------------------------
+export const WrapperModal = styled.View`
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+`;
+
+export const ModalView = styled.View`
+  /* flex: 1; */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: navy;
+  padding: 20px;
+  margin: 50px;
+  margin-top: 150px;
+  margin-bottom: 150px;
+
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 50px;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 10px;
+`;
+
+export const Buttons = styled.View`
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
 `;

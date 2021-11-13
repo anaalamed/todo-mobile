@@ -8,7 +8,7 @@ import { updateTodo } from '../../state/slices/todos.slice';
 import { RootState } from '../../state/root.reducer';
 import { updateTodoFunc } from '../../initializeApp'
 import { Modal, View } from 'react-native';
-import { ButtonForm, ButtonFormText, Input, InputContainer, InputIcon, Row, StyledText, Title } from '../../constants/StyledComponents';
+import { ButtonForm, ButtonFormText, Buttons, Input, InputContainer, InputIcon, ModalView, Row, StyledText, Title, WrapperModal } from '../../constants/StyledComponents';
 import { Todo } from '../../types';
 
 
@@ -59,35 +59,33 @@ const ModalUpdateTodo: React.FC<Props> = ({ setModalVisible, setMenuVisible, isM
         <WrapperModal >
           <ModalView >
             <Title>Update todo: "{todo.title}"?</Title>
-            <Box>
-              <InputContainer>
-                <InputIcon name='plus' />
-                <Input
-                  placeholder="Title"
-                  onChangeText={text => setTitle(text)}
-                  defaultValue={todo.title}
-                />
-              </InputContainer>
+            <InputContainer>
+              <InputIcon name='plus' />
+              <Input
+                placeholder="Title"
+                onChangeText={text => setTitle(text)}
+                defaultValue={todo.title}
+              />
+            </InputContainer>
 
-              <InputContainer>
-                <InputIcon name='comment' />
-                <Input
-                  placeholder="Description"
-                  onChangeText={text => setDescription(text)}
-                  defaultValue={todo.description}
-                />
-              </InputContainer>
+            <InputContainer>
+              <InputIcon name='comment' />
+              <Input
+                placeholder="Description"
+                onChangeText={text => setDescription(text)}
+                defaultValue={todo.description}
+              />
+            </InputContainer>
 
-              <Row style={{ justifyContent: "flex-start" }}>
-                <IsImportantBox onPress={() => setUrgent(!isUrgent)}>
-                  {isUrgent ? (<BtnText><FontAwesome name='check' /> </BtnText>) : null}
-                </IsImportantBox>
-                <StyledText style={{ color: "greenyellow", fontSize: 18, marginTop: 10 }}>Important</StyledText>
-              </Row>
-            </Box>
+            <Row style={{ justifyContent: "flex-start" }}>
+              <IsImportantBox onPress={() => setUrgent(!isUrgent)}>
+                {isUrgent ? (<BtnText><FontAwesome name='check' /> </BtnText>) : null}
+              </IsImportantBox>
+              <StyledText style={{ color: "greenyellow", fontSize: 18, marginTop: 10 }}>Important</StyledText>
+            </Row>
 
             <Buttons>
-              <ButtonForm style={{ width: 90 }} onPress={() => { setModalVisible(false), setMenuVisible(false) }} ><ButtonFormText>Cancel</ButtonFormText></ButtonForm>
+              <ButtonForm style={{ width: 90, backgroundColor: "grey" }} onPress={() => { setModalVisible(false), setMenuVisible(false) }} ><ButtonFormText>Cancel</ButtonFormText></ButtonForm>
               <ButtonForm style={{ width: 90 }} onPress={handleUpdate} ><ButtonFormText>Update</ButtonFormText></ButtonForm>
             </Buttons>
 
@@ -100,41 +98,6 @@ const ModalUpdateTodo: React.FC<Props> = ({ setModalVisible, setMenuVisible, isM
 
 export default ModalUpdateTodo;
 
-
-const Box = styled.View`
-  flex-direction: column;
-  width: 100%;
-  margin-bottom: 10px;
-`;
-
-const Buttons = styled.View`
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-`;
-
-const WrapperModal = styled.View`
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-`;
-
-const ModalView = styled.View`
-  /* flex: 1; */
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: navy;
-  padding: 20px;
-  margin: 50px;
-  margin-top: 150px;
-  margin-bottom: 150px;
-
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 50px;
-  border-top-left-radius: 50px;
-  border-bottom-left-radius: 10px;
-`;
 
 const IsImportantBox = styled.TouchableOpacity`
   background: ${props => (props.done ? "lightgreen" : "white")};
