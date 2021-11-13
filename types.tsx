@@ -44,6 +44,7 @@ export interface Todo {
   description?: string
   completed: boolean
   important: boolean
+  color: string
   userId: string
   createdAt: Date
   updatedAt?: Date

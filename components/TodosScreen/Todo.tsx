@@ -25,9 +25,6 @@ const Profile: React.FC<Props> = ({ todo, order }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isMenuVisible, setMenuVisible] = useState(false);
 
-
-  const color = order % 2 ? "gainsboro" : "lightcyan"
-
   const handleToggleComplete = async () => {
     toggleCompleteTodoFunc(todo)
       .then(res => {
@@ -41,7 +38,7 @@ const Profile: React.FC<Props> = ({ todo, order }) => {
 
   return (
     <>
-      <Box color={color}>
+      <Box color={todo.color || "lightcyan"}>
         <Main>
           <IsDoneBox done={todo.completed} onPress={handleToggleComplete}>
             {todo.completed ? (<BtnText><FontAwesome name='check' /> </BtnText>) : null}
@@ -96,6 +93,7 @@ const IsDoneBox = styled.TouchableOpacity`
   height: 20px;
   border-radius: 10px;
   margin-right: 8px;
+  border: 1px solid navy;
 
   border-top-right-radius: 10px;
   border-bottom-right-radius: 50px;

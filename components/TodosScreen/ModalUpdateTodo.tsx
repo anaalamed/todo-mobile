@@ -10,6 +10,7 @@ import { updateTodoFunc } from '../../initializeApp'
 import { Modal, View } from 'react-native';
 import { ButtonForm, ButtonFormText, Buttons, Input, InputContainer, InputIcon, ModalView, Row, StyledText, Title, WrapperModal } from '../../constants/StyledComponents';
 import { Todo } from '../../types';
+import ChooseColor from './ChooseColor';
 
 
 interface Props {
@@ -23,13 +24,14 @@ const ModalUpdateTodo: React.FC<Props> = ({ setModalVisible, setMenuVisible, isM
   const [title, setTitle] = useState(todo.title || '');
   const [description, setDescription] = useState(todo.description || '');
   const [isUrgent, setUrgent] = useState(todo.important);
+  const [color, setColor] = useState(todo.color);
 
   const { me } = useSelector((state: RootState) => state.users);
   const dispatch = useDispatch();
 
   let handleUpdate = async () => {
 
-    updateTodoFunc({ id: todo.id, title: title, description: description, important: isUrgent })
+    updateTodoFunc({ id: todo.id, title: title, description: description, important: isUrgent, color: color })
       .then(res => {
         const updatedTodo = res.data;
         dispatch(updateTodo(updatedTodo))
@@ -83,6 +85,8 @@ const ModalUpdateTodo: React.FC<Props> = ({ setModalVisible, setMenuVisible, isM
               </IsImportantBox>
               <StyledText style={{ color: "greenyellow", fontSize: 18, marginTop: 10 }}>Important</StyledText>
             </Row>
+
+            <ChooseColor setColor={setColor} currentColor={color}></ChooseColor>
 
             <Buttons>
               <ButtonForm style={{ width: 90, backgroundColor: "grey" }} onPress={() => { setModalVisible(false), setMenuVisible(false) }} ><ButtonFormText>Cancel</ButtonFormText></ButtonForm>

@@ -6,8 +6,9 @@ import { addTodo } from '../../state/slices/todos.slice';
 import { RootState } from '../../state/root.reducer';
 import { addTodoFunc } from '../../initializeApp'
 import { View, Modal } from 'react-native';
-import { ButtonForm, ButtonFormText, Input, InputContainer, InputIcon, ModalView, StyledText, WrapperModal } from '../../constants/StyledComponents';
+import { ButtonForm, ButtonFormText, Input, InputContainer, InputIcon, ModalView, Row, StyledText, WrapperModal } from '../../constants/StyledComponents';
 import { FontAwesome } from '@expo/vector-icons';
+import ChooseColor from './ChooseColor'
 
 
 export default function ModalAddTodo({ navigation }) {
@@ -15,6 +16,7 @@ export default function ModalAddTodo({ navigation }) {
   const [description, setDescription] = useState('');
   const [isUrgent, setUrgent] = useState(false);
   const [isError, setError] = useState(false);
+  const [color, setColor] = useState('lightcyan');
 
 
   const { me } = useSelector((state: RootState) => state.users);
@@ -25,7 +27,7 @@ export default function ModalAddTodo({ navigation }) {
   }, [title])
 
   const handleAddTodo = () => {
-    const todo = { title: title, description: description, userId: me.email, important: isUrgent };
+    const todo = { title: title, description: description, userId: me.email, important: isUrgent, color: color };
     if (title === '') setError(true);
 
     if (title) {
@@ -76,6 +78,8 @@ export default function ModalAddTodo({ navigation }) {
               <StyledText style={{ color: "greenyellow", fontSize: 18, marginTop: 10 }}>Important</StyledText>
             </Row>
 
+            <ChooseColor currentColor={color} setColor={setColor}></ChooseColor>
+
             {isError ? <StyledText style={{ color: "red" }}>Title is required!</StyledText> : null}
 
             <Row>
@@ -90,14 +94,6 @@ export default function ModalAddTodo({ navigation }) {
     </View >
   );
 }
-
-
-const Row = styled.View`
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  width: 100%;
-`;
 
 const IsImportantBox = styled.TouchableOpacity`
   background: ${props => (props.done ? "lightgreen" : "white")};

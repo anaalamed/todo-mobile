@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Todo } from '../../types'
 
-
 interface TodosState {
   todos: Array<Todo>
   filteredTodos: Array<Todo>
