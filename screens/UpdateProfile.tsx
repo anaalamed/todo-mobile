@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, View, TextInput, Button, Alert, ScrollView } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import styled from 'styled-components/native';
@@ -7,15 +7,19 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { ButtonForm, ButtonFormText, Input, InputContainer, InputIcon } from '../constants/StyledComponents';
 import { RootState } from "../state/root.reducer";
-import { updatedProfile } from "../state/slices/users.slice";
+import { updatedProfile, bgColorChoosen } from "../state/slices/users.slice";
 import { updateUserFunc } from '../initializeApp';
-import UploadPhoto from '../components/ProfileScreen/UploadPhoto'
+import UploadPhoto from '../components/ProfileScreen/UploadPhoto';
+import ColorPicker from '../components/ProfileScreen/ColorPicker';
+
 
 export default function UpdateProfileScreen({ navigation }) {
 
     const dispatch = useDispatch();
     const { control, handleSubmit, formState: { errors } } = useForm();
-    const { me } = useSelector((state: RootState) => state.users);
+    const { me, bgColor } = useSelector((state: RootState) => state.users);
+    const [color, setColor] = useState(bgColor);
+    console.log(color)
 
     const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
@@ -25,9 +29,10 @@ export default function UpdateProfileScreen({ navigation }) {
     const onSubmit = (data) => {
         const auth = getAuth();
 
-        updateUserFunc({ id: me.id, ...data })
+        updateUserFunc({ id: me.id, bgColor: color, ...data })
             .then(res => {
                 dispatch(updatedProfile({ id: me.id, email: me.email, ...data }))
+                dispatch(bgColorChoosen(color));
                 navigation.push('Root');
             })
             .catch((error) => {
@@ -101,7 +106,7 @@ export default function UpdateProfileScreen({ navigation }) {
                     />
                     {errors.phoneNumber && <Text>This is not valid.</Text>}
 
-                    {/* <Controller
+                    <Controller
                         control={control}
                         rules={{
                             minLength: 8,
@@ -120,7 +125,7 @@ export default function UpdateProfileScreen({ navigation }) {
                         name="photoURL"
                         defaultValue={me.photoURL}
                     />
-                    {errors.photoURL && <Text>This is not valid.</Text>} */}
+                    {errors.photoURL && <Text>This is not valid.</Text>}
 
                     <Controller
                         control={control}
@@ -143,6 +148,8 @@ export default function UpdateProfileScreen({ navigation }) {
                     {errors.about && <Text>This is not valid.</Text>}
 
                     {/* <UploadPhoto></UploadPhoto> */}
+
+                    <ColorPicker currentColor={color} setColor={setColor}></ColorPicker>
 
                     <ButtonForm title="Submit" onPress={handleSubmit(onSubmit)} ><ButtonFormText>Update</ButtonFormText></ButtonForm>
                 </Form>

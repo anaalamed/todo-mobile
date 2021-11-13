@@ -69,6 +69,8 @@ const Box = styled.View`
   align-items: center;
   background: #49499c;
   background: ${props => props.color};
+  border: 1px solid navy;
+
 
   width: 95%;
   padding: 10px;
@@ -120,6 +122,7 @@ const Button = styled.TouchableOpacity`
   border-radius: 10px;
   width: 20px;
   margin-right: 5px;
+  border: 1px solid navy;
 
   border-top-right-radius: 10px;
   border-bottom-right-radius: 50px;

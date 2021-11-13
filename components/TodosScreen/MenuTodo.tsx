@@ -85,6 +85,7 @@ const BtnText = styled.Text`
 const Tools = styled.View`
   /* flex-direction: row; */
   /* z-index: 100; */
+
 `;
 
 const Button = styled.TouchableOpacity`

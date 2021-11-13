@@ -14,17 +14,17 @@ const getTime = () => {
 // ------------------------------ Auth Functions ----------------------------------
 
 exports.register = functions.https.onCall((data, context) => {
-  const {email, password, name} = data;
+  const { email, password, name } = data;
   // console.log("register")
 
-  return admin.auth().createUser({email, password, displayName: name})
-      .then((userRecord) => {
-        console.log({userRecord});
-        return {id: userRecord.uid};
-      })
-      .catch((error) => {
-        return {error: error.message};
-      });
+  return admin.auth().createUser({ email, password, displayName: name })
+    .then((userRecord) => {
+      console.log({ userRecord });
+      return { id: userRecord.uid };
+    })
+    .catch((error) => {
+      return { error: error.message };
+    });
 });
 
 // auth trigger - sign up
@@ -46,23 +46,24 @@ exports.getUser = functions.https.onRequest(async (req, res) => {
 
   let user = {};
   doc.forEach((doc) => {
-    user = {id: doc.id, ...doc.data()};
+    user = { id: doc.id, ...doc.data() };
   });
   console.log(user);
-  res.send({data: user});
+  res.send({ data: user });
 });
 
 exports.updateUser = functions.https.onCall((data, context) => {
   console.log("update profile");
   console.log(data);
 
-  const {id, name, phoneNumber, photoURL, about} = data;
+  const { id, name, phoneNumber, photoURL, about, bgColor } = data;
 
   return admin.firestore().collection("users").doc(id).update({
     name: name,
     phoneNumber: phoneNumber,
     photoURL: photoURL,
     about: about,
+    bgColor: bgColor
   });
 });
 
@@ -76,13 +77,13 @@ exports.getTodos = functions.https.onRequest(async (req, res) => {
   const arr: any = [];
 
   snapshot.forEach((doc) => {
-    arr.push({id: doc.id, ...doc.data()});
+    arr.push({ id: doc.id, ...doc.data() });
   });
-  res.send({data: arr});
+  res.send({ data: arr });
 });
 
 exports.addTodo = functions.https.onRequest(async (req, res) => {
-  const {title, description, userId, important, color} = req.body.data;
+  const { title, description, userId, important, color } = req.body.data;
 
   console.log(title);
 
@@ -97,22 +98,22 @@ exports.addTodo = functions.https.onRequest(async (req, res) => {
   };
 
   admin.firestore().collection("todos").add(todo)
-      .then((resp) => {
-        console.log(resp.id);
-        const newTodo = {id: resp.id, ...todo};
-        // console.log(newTodo);
-        res.send({data: newTodo});
-      })
-      .catch((error) => {
-        res.send({message: "something went wrong"});
-      });
+    .then((resp) => {
+      console.log(resp.id);
+      const newTodo = { id: resp.id, ...todo };
+      // console.log(newTodo);
+      res.send({ data: newTodo });
+    })
+    .catch((error) => {
+      res.send({ message: "something went wrong" });
+    });
 });
 
 exports.deleteTodo = functions.https.onCall(async (data, context) => {
   if (!context.auth) {
     throw new functions.https.HttpsError(
-        "unauthenticated",
-        "only authenticated users can delete todos"
+      "unauthenticated",
+      "only authenticated users can delete todos"
     );
   }
 
@@ -120,7 +121,7 @@ exports.deleteTodo = functions.https.onCall(async (data, context) => {
 });
 
 exports.updateTodo = functions.https.onRequest(async (req, res) => {
-  const {id, title, description, important, color} = req.body.data;
+  const { id, title, description, important, color } = req.body.data;
 
   const todo = {
     title: title,
@@ -132,11 +133,11 @@ exports.updateTodo = functions.https.onRequest(async (req, res) => {
 
   await admin.firestore().collection("todos").doc(id).update(todo);
   const updatedTodo = await admin.firestore().collection("todos").doc(id).get();
-  res.send({data: {id: id, ...updatedTodo.data()}});
+  res.send({ data: { id: id, ...updatedTodo.data() } });
 });
 
 exports.toggleCompleteTodo = functions.https.onRequest(async (req, res) => {
-  const {id, completed} = req.body.data;
+  const { id, completed } = req.body.data;
 
 
   await admin.firestore().collection("todos").doc(id).update({
@@ -144,7 +145,7 @@ exports.toggleCompleteTodo = functions.https.onRequest(async (req, res) => {
     updatedAt: getTime(),
   });
 
-  res.send({data: {updatedAt: getTime()}});
+  res.send({ data: { updatedAt: getTime() } });
 });
 
 

@@ -11,13 +11,15 @@ interface User {
 
 interface UserState {
   me: User
-  loggedIn: boolean
+  loggedIn: boolean,
+  bgColor: string
 }
 
 
 const initialState: UserState = {
   me: {},
-  loggedIn: false
+  loggedIn: false,
+  bgColor: "navy"
 }
 
 const users_slice = createSlice({
@@ -34,12 +36,15 @@ const users_slice = createSlice({
     },
     updatedProfile: (state, action) => {
       state.me = action.payload;
-    }
+    },
+    bgColorChoosen: (state, action) => {
+      state.bgColor = action.payload;
+    },
   }
 });
 
 export default users_slice.reducer;
-export const { loggedIn, loggedOut, updatedProfile } = users_slice.actions;
+export const { loggedIn, loggedOut, updatedProfile, bgColorChoosen } = users_slice.actions;
 
 
 

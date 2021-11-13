@@ -19,7 +19,7 @@ export default function TodosScreen() {
 
   const dispatch = useDispatch();
   const { todos, filteredTodos, is_loading, error_msg } = useSelector((state: RootState) => state.todos);
-  const { me, loggedIn } = useSelector((state: RootState) => state.users);
+  const { me, loggedIn, bgColor } = useSelector((state: RootState) => state.users);
 
   useEffect(() => {
     if (me.email) {
@@ -38,10 +38,10 @@ export default function TodosScreen() {
 
   return (
     <ScrollView style={{ backgroundColor: 'navy' }}
-      centerContent={true}
+    // centerContent={true}
     >
 
-      <Box >
+      <Box color={bgColor}>
         <Title >Todos</Title>
 
         {me.email ? (<SearchTodo></SearchTodo>) : null}
@@ -79,7 +79,7 @@ const Box = styled.View`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: navy;
+  background: ${(props) => props.color || "navy"};
 `;
 
 const Section = styled.View`
@@ -89,7 +89,7 @@ const Section = styled.View`
   padding-left: 10px;
   padding-right: 10px;
   margin: 10px;
-  border: 1px solid navy;
+  /* border: 1px solid navy; */
 
   border-top-right-radius: 10px;
   border-bottom-right-radius: 50px;

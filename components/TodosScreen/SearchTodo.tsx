@@ -36,6 +36,7 @@ export default function SearchTodo() {
 const Box = styled.View`
   color: white;
   flex-direction: row;
+
 `;
 
 const Input = styled.TextInput`
@@ -44,6 +45,8 @@ const Input = styled.TextInput`
   /* padding: 10px; */
   padding-left: 20px;
   width: 70%;
+  border: 1px solid navy;
+
 
   border-top-left-radius: 50px;
   border-bottom-left-radius: 20px;
@@ -52,6 +55,8 @@ const Input = styled.TextInput`
 const Button = styled.TouchableOpacity`
   background: #6CBF40;
   padding: 10px;
+  border: 1px solid navy;
+
 
   border-top-right-radius: 20px;
   border-bottom-right-radius: 50px;
