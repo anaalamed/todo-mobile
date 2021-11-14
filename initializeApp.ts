@@ -13,10 +13,10 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-// const functions = getFunctions();
+const functions = getFunctions();
 
-const functions = getFunctions(getApp());
-connectFunctionsEmulator(functions, "localhost", 5001);
+// const functions = getFunctions(getApp());
+// connectFunctionsEmulator(functions, "localhost", 5001);
 
 const storage = getStorage();
 
@@ -24,6 +24,8 @@ const storage = getStorage();
 export const registerFunc = httpsCallable(functions, 'register');
 export const getUserFunc = httpsCallable(functions, 'getUser');
 export const updateUserFunc = httpsCallable(functions, 'updateUser');
+export const uploadPhotoFunc = httpsCallable(functions, 'uploadPhoto');
+
 
 export const getTodosFunc = httpsCallable(functions, 'getTodos');
 export const addTodoFunc = httpsCallable(functions, 'addTodo');

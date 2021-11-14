@@ -37,8 +37,8 @@ export default function TodosScreen() {
   }, [me]);
 
   return (
-    <ScrollView style={{ backgroundColor: 'navy' }}
-    // centerContent={true}
+    <ScrollView style={{ backgroundColor: bgColor }}
+      centerContent={true}
     >
 
       <Box color={bgColor}>
@@ -68,7 +68,7 @@ export default function TodosScreen() {
           {loggedIn && todos.length === 0 ? <MyText>There is no to do yet... Please add!</MyText> : null}
         </Section>
 
-        <Image source={require('../assets/images/todo.png')} />
+        <Image source={require('../assets/images/logoTransp.png')} />
       </Box>
     </ScrollView>
   );
@@ -83,20 +83,17 @@ const Box = styled.View`
 `;
 
 const Section = styled.View`
-  /* background: greenyellow; */
   align-items: center;
   width: 95%;
   padding-left: 10px;
   padding-right: 10px;
   margin: 10px;
-  /* border: 1px solid navy; */
 
   border-top-right-radius: 10px;
   border-bottom-right-radius: 50px;
   border-top-left-radius: 50px;
   border-bottom-left-radius: 10px;
 
-  /* box-shadow: 10px 5px 5px yellow; */
 `;
 
 const MyText = styled.Text`
@@ -104,18 +101,4 @@ const MyText = styled.Text`
   color: greenyellow;
   font-weight: bold;
 `;
-
-
-// const Button = styled.TouchableOpacity`
-//   background: #6CBF40;
-//   padding: 13px;
-
-//   border-top-right-radius: 20px;
-//   border-bottom-right-radius: 50px;
-// `;
-
-// const BtnText = styled.Text`
-//   color: navy;
-//   font-weight: bold;
-// `;
 

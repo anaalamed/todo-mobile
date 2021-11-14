@@ -49,7 +49,8 @@ function RootNavigator() {
         headerTitleStyle: {
           fontWeight: 'bold',
         }
-      }}>
+      }}
+    >
 
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
 
@@ -62,7 +63,7 @@ function RootNavigator() {
       <Stack.Group screenOptions={{ presentation: "transparentModal" }}>
         <Stack.Screen name="ModalAddTodo" component={ModalAddTodo} options={{ title: 'Create new Todo!' }} />
       </Stack.Group>
-    </Stack.Navigator>
+    </Stack.Navigator >
   );
 }
 

@@ -19,7 +19,8 @@ export default function UpdateProfileScreen({ navigation }) {
     const { control, handleSubmit, formState: { errors } } = useForm();
     const { me, bgColor } = useSelector((state: RootState) => state.users);
     const [color, setColor] = useState(bgColor);
-    console.log(color)
+    const [photoUrl, setPhotoUrl] = useState(me.photoURL || 'https://sharedigitalcard.com/user/uploads/user.png');
+
 
     const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
@@ -29,9 +30,9 @@ export default function UpdateProfileScreen({ navigation }) {
     const onSubmit = (data) => {
         const auth = getAuth();
 
-        updateUserFunc({ id: me.id, bgColor: color, ...data })
+        updateUserFunc({ id: me.id, bgColor: color, photoURL: photoUrl, ...data })
             .then(res => {
-                dispatch(updatedProfile({ id: me.id, email: me.email, ...data }))
+                dispatch(updatedProfile({ id: me.id, email: me.email, photoURL: photoUrl, ...data }))
                 dispatch(bgColorChoosen(color));
                 navigation.push('Root');
             })
@@ -45,7 +46,9 @@ export default function UpdateProfileScreen({ navigation }) {
         // centerContent={true}
         >
             <Box>
+                <UploadPhoto photoUrl={photoUrl} setPhotoUrl={setPhotoUrl}></UploadPhoto>
                 <Form>
+
                     <Controller
                         control={control}
                         rules={{
@@ -106,7 +109,7 @@ export default function UpdateProfileScreen({ navigation }) {
                     />
                     {errors.phoneNumber && <Text>This is not valid.</Text>}
 
-                    <Controller
+                    {/* <Controller
                         control={control}
                         rules={{
                             minLength: 8,
@@ -125,7 +128,7 @@ export default function UpdateProfileScreen({ navigation }) {
                         name="photoURL"
                         defaultValue={me.photoURL}
                     />
-                    {errors.photoURL && <Text>This is not valid.</Text>}
+                    {errors.photoURL && <Text>This is not valid.</Text>} */}
 
                     <Controller
                         control={control}
@@ -147,7 +150,6 @@ export default function UpdateProfileScreen({ navigation }) {
                     />
                     {errors.about && <Text>This is not valid.</Text>}
 
-                    {/* <UploadPhoto></UploadPhoto> */}
 
                     <ColorPicker currentColor={color} setColor={setColor}></ColorPicker>
 
@@ -170,7 +172,6 @@ const Box = styled.View`
 `;
 
 const Form = styled.View`
-  margin-top: 100px;
   width: 90%;
   align-items: center;
 `;

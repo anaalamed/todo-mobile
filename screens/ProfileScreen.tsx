@@ -8,6 +8,7 @@ import { Title, Button, ButtonText, Separator } from '../constants/StyledCompone
 
 import { RootState } from '../state/root.reducer';
 import { Text } from '../components/Themed'; // learn about it ! 
+import UploadPhoto from '../components/ProfileScreen/UploadPhoto';
 
 
 export default function ProfileScreen({ navigation }) {
@@ -32,7 +33,7 @@ export default function ProfileScreen({ navigation }) {
           <Profile navigation={navigation}></Profile>
         </Section>
 
-        <Image source={require('../assets/images/todo.png')} />
+        <Image source={require('../assets/images/logoTransp.png')} />
       </Box>
     </ScrollView >
   );

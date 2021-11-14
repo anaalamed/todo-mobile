@@ -1,14 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Image, View, Platform, Alert } from 'react-native';
+import { Image, View, Platform, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import styled from 'styled-components/native';
 
-import { getStorage, ref, uploadBytes } from "firebase/storage";
 
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import { uploadPhotoFunc } from '../../initializeApp'
+import { firebase } from '@react-native-firebase/storage';
+import { Button, ButtonForm, ButtonText, Row, StyledImage, StyledText } from '../../constants/StyledComponents';
+import { UIImagePickerPresentationStyle } from 'expo-image-picker/build/ImagePicker.types';
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../state/root.reducer';
 
-export default function ImagePickerExample() {
+interface Props {
+    photoUrl: string
+    setPhotoUrl(string): void,
+}
+
+const UserImagePicker: React.FC<Props> = ({ setPhotoUrl, photoUrl }) => {
     const [imageUri, setImage] = useState(null);
-    const [uploading, setUploading] = useState(false);
-    const [transferred, setTransferred] = useState(0);
+    const [showProgress, setShowProgress] = useState(0);
+    const { id } = useSelector((state: RootState) => state.users.me);
 
     useEffect(() => {
         (async () => {
@@ -22,66 +35,85 @@ export default function ImagePickerExample() {
     }, []);
 
     const pickImage = async () => {
+        // choose image
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
+            aspect: [2, 2],
+            quality: 0.5,
         });
 
-        console.log(result);
-
+        //resize image
         if (!result.cancelled) {
-            setImage(result.uri);
-        }
-    };
+            const manipResult = await manipulateAsync(
+                result.uri,
+                [
+                    { resize: { width: 200, height: 200 } }
+                ],
+                { compress: 1, format: SaveFormat.PNG }
+            );
+            setImage(manipResult.uri);
+            uploadImage(manipResult.uri);
+        };
+    }
 
-    const uploadImage = async () => {
-        console.log(imageUri);
-        const filename = imageUri.substring(imageUri.lastIndexOf("/") + 1);
-        const uploadUri = Platform.OS === "ios" ? imageUri.replace("file://", "") : imageUri;
-
-        // const storageRef = ref(storage);
-        console.log(uploadUri);
-
+    const uploadImage = async (imageUri) => {
         const storage = getStorage();
-        // console.log(storage);
+        const pic = ref(storage, `profilePhotos/${id}-profile.png`);
 
-        const pic = ref(storage, 'todo.png');
+        const uploadUri = imageUri.replace("file://", "");
 
-        // const picRef = ref(storage, uploadUri);
-        // const pic = ref(storage, '');
+        // blob
+        const response = await fetch(uploadUri)
+        const blob = await response.blob();
 
+        const uploadTask = uploadBytesResumable(pic, blob);
 
-        // console.log(storage);
-        // console.log(pic);
-
-        // let file = put(pic);
-
-        const bytes = new Uint8Array([0x48, 0x65, 0x6c, 0x6c, 0x6f, 0x2c, 0x20, 0x77, 0x6f, 0x72, 0x6c, 0x64, 0x21]);
-        var file = new File(bytes, uploadUri, {
-            type: "image/jpeg",
-        });
-
-        console.log(file);
-
-
-        uploadBytes(pic, file).then(snapshot => {
-            console.log('Uploaded a blob or file!');
-        })
-
-
-
-
+        uploadTask.on('state_changed',
+            (snapshot) => {
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                setShowProgress(progress);
+                switch (snapshot.state) {
+                    case 'paused':
+                        // console.log('Upload is paused');
+                        break;
+                    case 'running':
+                        // console.log('Upload is running');
+                        break;
+                }
+            },
+            (error) => {
+                console.log(error);
+            },
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    // console.log('File available at', downloadURL);
+                    setPhotoUrl(downloadURL);
+                });
+            }
+        );
     };
 
     return (
         <View >
-            <Button title="Pick an image from camera roll" onPress={pickImage} />
-            {imageUri && <Image source={{ uri: imageUri || '' }} style={{ width: 200, height: 200 }} />}
-            {/* <Image source={require('../../assets/images/todo.png')} /> */}
-            <Button title="Upload" onPress={uploadImage} />
+            <Row>
+                <StyledImage source={{ uri: photoUrl }} style={{ alignSelf: "flex-start" }} />
+                <Column>
+                    <Button onPress={pickImage} style={{ boxShadow: "none", width: 150, marginBottom: 10 }}>
+                        <ButtonText>Pick an image</ButtonText>
+                    </Button>
+                    {showProgress !== 0 ? <StyledText>Upload is {showProgress.toFixed(0)}% done</StyledText> : null}
+
+                </Column>
+            </Row>
 
         </View>
     );
 }
+
+export default UserImagePicker;
+
+const Column = styled.View`
+  flex-direction: column;
+`;
+
