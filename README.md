@@ -10,11 +10,13 @@ Expo publish - <a href="https://expo.dev/@anaalamed/todo">link</a>
 
 Some Screenshots:  
 <p align="center">
-    <img alt="start" src="assets/images/start.png" width="33%">
-      <img alt="login" src="assets/images/login.png" width="33%">
-      <img alt="profile" src="assets/images/profile.png" width="33%">
-      <img alt="updateProfile" src="assets/images/updateProfile.png" width="33%">
-      <img alt="todos" src="assets/images/todos.png" width="33%">
-      <img alt="addTodo" src="assets/images/addTodo.png" width="33%">
+    <img alt="start" src="assets/images/start.png" width="30%">
+      <img alt="login" src="assets/images/login.png" width="30%">
+      <img alt="profile" src="assets/images/profile.png" width="30%">
+      <img alt="updateProfile" src="assets/images/updateProfile.png" width="30%">
+      <img alt="todos" src="assets/images/todos.png" width="30%">
+      <img alt="addTodo" src="assets/images/addTodo.png" width="30%">
 </p>
+
+<img alt='times' src="https://firebasestorage.googleapis.com/v0/b/anaalamed-todo-mobile.appspot.com/o/times.png?alt=media&token=63d04594-20a1-45bc-b985-37043bb7a522" />
 
