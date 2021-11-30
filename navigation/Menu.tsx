@@ -75,7 +75,7 @@ const StyledMenu = styled(Menu)`
   position: absolute;
   /* right: 30px; */
   top: 9.5%;
-  top: 10%;
+  top: 9%;
   width: 150px;
   /* border: 1px solid navy; */
   /* background: navy; */

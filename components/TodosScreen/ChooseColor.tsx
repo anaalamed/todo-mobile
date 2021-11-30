@@ -15,8 +15,8 @@ const ChooseColor: React.FC<Props> = ({ setColor, currentColor }) => {
         <>
             <StyledText>Choose Todo color:  </StyledText>
             <Box>
-                {colorsArr.map((color) =>
-                    <Button
+                {colorsArr.map((color, i) =>
+                    <Button key={i}
                         onPress={() => setColor(color)}
                         border={currentColor === color}
                         style={{ backgroundColor: color }}

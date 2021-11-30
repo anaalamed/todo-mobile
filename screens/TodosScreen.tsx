@@ -37,11 +37,11 @@ export default function TodosScreen() {
   }, [me]);
 
   return (
-    <ScrollView style={{ backgroundColor: bgColor }}
+    <ScrollView style={{ backgroundColor: me.bgColor || "navy" }}
       centerContent={true}
     >
 
-      <Box color={bgColor}>
+      <Box color={me.bgColor || "navy"}>
         <Title >Todos</Title>
 
         {me.email ? (<SearchTodo></SearchTodo>) : null}

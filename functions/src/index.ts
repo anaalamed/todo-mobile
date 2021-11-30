@@ -1,5 +1,10 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
+import * as cors from "cors";
+
+const corsHandler = cors({
+  origin: true,
+});
 
 admin.initializeApp();
 
@@ -43,19 +48,21 @@ exports.userJoined = functions.auth.user().onCreate((user) => {
 });
 
 exports.getUser = functions.https.onRequest(async (req, res) => {
-  console.log("get user");
+  corsHandler(req, res, async () => {
+    console.log("get user");
 
-  const email = req.body.data;
+    const email = req.body.data;
 
-  const doc = await admin.firestore().collection("users").where("email", "==", email).get();
-  // console.log(doc);
+    const doc = await admin.firestore().collection("users").where("email", "==", email).get();
+    // console.log(doc);
 
-  let user = {};
-  doc.forEach((doc) => {
-    user = {id: doc.id, ...doc.data()};
+    let user = {};
+    doc.forEach((doc) => {
+      user = {id: doc.id, ...doc.data()};
+    });
+    console.log(user);
+    res.send({data: user});
   });
-  console.log(user);
-  res.send({data: user});
 });
 
 exports.updateUser = functions.https.onCall((data, context) => {
@@ -76,43 +83,47 @@ exports.updateUser = functions.https.onCall((data, context) => {
 
 // ------------------------------ Todos Functions ----------------------------------
 
-exports.getTodos = functions.https.onRequest(async (req, res) => {
-  const email = req.body.data.email;
-  console.log(email);
-  const snapshot = await admin.firestore().collection("todos").where("userId", "==", email).get();
-  const arr: any = [];
+exports.getTodos = functions.https.onRequest((req, res) => {
+  corsHandler(req, res, async () => {
+    const email = req.body.data.email;
+    console.log(email);
+    const snapshot = await admin.firestore().collection("todos").where("userId", "==", email).get();
+    const arr: any = [];
 
-  snapshot.forEach((doc) => {
-    arr.push({id: doc.id, ...doc.data()});
+    snapshot.forEach((doc) => {
+      arr.push({id: doc.id, ...doc.data()});
+    });
+    res.send({data: arr});
   });
-  res.send({data: arr});
 });
 
-exports.addTodo = functions.https.onRequest(async (req, res) => {
-  const {title, description, userId, important, color} = req.body.data;
+exports.addTodo = functions.https.onRequest((req, res) => {
+  corsHandler(req, res, async () => {
+    const {title, description, userId, important, color} = req.body.data;
 
-  console.log(title);
+    console.log(title);
 
-  const todo = {
-    title: title,
-    description: description,
-    completed: false,
-    important: important || false,
-    color: color,
-    userId: userId,
-    createdAt: getTime(),
-  };
+    const todo = {
+      title: title,
+      description: description,
+      completed: false,
+      important: important || false,
+      color: color,
+      userId: userId,
+      createdAt: getTime(),
+    };
 
-  admin.firestore().collection("todos").add(todo)
-      .then((resp) => {
-        console.log(resp.id);
-        const newTodo = {id: resp.id, ...todo};
-        // console.log(newTodo);
-        res.send({data: newTodo});
-      })
-      .catch((error) => {
-        res.send({message: "something went wrong"});
-      });
+    admin.firestore().collection("todos").add(todo)
+        .then((resp) => {
+          console.log(resp.id);
+          const newTodo = {id: resp.id, ...todo};
+          // console.log(newTodo);
+          res.send({data: newTodo});
+        })
+        .catch((error) => {
+          res.send({message: "something went wrong"});
+        });
+  });
 });
 
 exports.deleteTodo = functions.https.onCall(async (data, context) => {
@@ -127,31 +138,34 @@ exports.deleteTodo = functions.https.onCall(async (data, context) => {
 });
 
 exports.updateTodo = functions.https.onRequest(async (req, res) => {
-  const {id, title, description, important, color} = req.body.data;
+  corsHandler(req, res, async () => {
+    const {id, title, description, important, color} = req.body.data;
 
-  const todo = {
-    title: title,
-    description: description,
-    important: important,
-    color: color,
-    updatedAt: getTime(),
-  };
+    const todo = {
+      title: title,
+      description: description,
+      important: important,
+      color: color,
+      updatedAt: getTime(),
+    };
 
-  await admin.firestore().collection("todos").doc(id).update(todo);
-  const updatedTodo = await admin.firestore().collection("todos").doc(id).get();
-  res.send({data: {id: id, ...updatedTodo.data()}});
+    await admin.firestore().collection("todos").doc(id).update(todo);
+    const updatedTodo = await admin.firestore().collection("todos").doc(id).get();
+    res.send({data: {id: id, ...updatedTodo.data()}});
+  });
 });
 
 exports.toggleCompleteTodo = functions.https.onRequest(async (req, res) => {
-  const {id, completed} = req.body.data;
+  corsHandler(req, res, async () => {
+    const {id, completed} = req.body.data;
 
+    await admin.firestore().collection("todos").doc(id).update({
+      completed: !completed,
+      updatedAt: getTime(),
+    });
 
-  await admin.firestore().collection("todos").doc(id).update({
-    completed: !completed,
-    updatedAt: getTime(),
+    res.send({data: {updatedAt: getTime()}});
   });
-
-  res.send({data: {updatedAt: getTime()}});
 });
 
 

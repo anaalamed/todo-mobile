@@ -17,8 +17,8 @@ export default function UpdateProfileScreen({ navigation }) {
 
     const dispatch = useDispatch();
     const { control, handleSubmit, formState: { errors } } = useForm();
-    const { me, bgColor } = useSelector((state: RootState) => state.users);
-    const [color, setColor] = useState(bgColor);
+    const { me } = useSelector((state: RootState) => state.users);
+    const [color, setColor] = useState(me.bgColor);
     const [photoUrl, setPhotoUrl] = useState(me.photoURL || 'https://sharedigitalcard.com/user/uploads/user.png');
 
 

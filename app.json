@@ -26,7 +26,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/todo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anaalamed.todo"
     },
     "web": {
       "favicon": "./assets/images/todo.png"

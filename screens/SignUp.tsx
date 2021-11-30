@@ -2,7 +2,7 @@ import React from "react";
 import { Text, View, TextInput, Button, Alert } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import styled from 'styled-components/native';
-import { ButtonForm, ButtonFormText, Input, InputContainer, InputIcon } from '../constants/StyledComponents';
+import { ButtonForm, ButtonFormText, Input, InputContainer, InputIcon, StyledText } from '../constants/StyledComponents';
 import { registerFunc } from '../initializeApp'
 
 export default function SignupScreen({ navigation }) {
@@ -12,6 +12,7 @@ export default function SignupScreen({ navigation }) {
     const onSubmit = (data) => {
         registerFunc(data)
             .then(res => {
+                console.log(res);
                 alert('registration successfuly')
                 navigation.push('Root');
             })
@@ -33,7 +34,7 @@ export default function SignupScreen({ navigation }) {
                     defaultValue=""
                     control={control}
                     rules={{
-                        // required: true,
+                        required: true,
                     }}
                     render={({ field: { onChange, value } }) => (
                         <InputContainer>
@@ -45,18 +46,17 @@ export default function SignupScreen({ navigation }) {
                             />
                         </InputContainer>
                     )}
-
                 />
-                {errors.name && <Text>This is not valid.</Text>}
+                {errors.name && <Error>Name is required.</Error>}
 
                 <Controller
                     name="email"
                     defaultValue=""
                     control={control}
                     rules={{
-                        // required: true,
-                        // minLength: 8,
-                        // pattern: emailRegex
+                        required: true,
+                        minLength: 8,
+                        pattern: emailRegex
                     }}
                     render={({ field: { onChange, value } }) => (
                         <InputContainer>
@@ -70,16 +70,16 @@ export default function SignupScreen({ navigation }) {
                     )}
 
                 />
-                {errors.email && <Text>This is not valid.</Text>}
+                {errors.email && <Error>This is not valid.</Error>}
 
                 <Controller
                     name="password"
                     defaultValue=""
                     control={control}
                     rules={{
-                        // required: true,
-                        // maxLength: 100,
-                        // pattern: passwordRegex
+                        required: true,
+                        maxLength: 100,
+                        pattern: passwordRegex
                     }}
                     render={({ field: { onChange, value } }) => (
                         <InputContainer>
@@ -93,57 +93,13 @@ export default function SignupScreen({ navigation }) {
                     )}
 
                 />
-                {errors.password && <Text>This is not valid.</Text>}
-
-                {/* <Controller
-                    control={control}
-                    rules={{
-                        minLength: 8,
-                        pattern: phoneRegex
-                    }}
-                    render={({ field: { onChange, value } }) => (
-                        <InputContainer>
-                            <InputIcon name='mobile' />
-                            <Input
-                                onChangeText={onChange}
-                                value={value}
-                                placeholder='mobile'
-                            />
-                        </InputContainer>
-                    )}
-                    name="phoneNumber"
-                    defaultValue=""
-                />
-                {errors.phoneNumber && <Text>This is not valid.</Text>} */}
-
-                {/* <Controller
-                    control={control}
-                    rules={{}}
-                    render={({ field: { onChange, value } }) => (
-                        <InputContainer>
-                            <InputIcon name='info' />
-                            <Input
-                                onChangeText={onChange}
-                                value={value}
-                                placeholder='about'
-                                multiline={true}
-                                numberOfLines={4}
-                            />
-                        </InputContainer>
-                    )}
-                    name="about"
-                    defaultValue=""
-                />
-                {errors.about && <Text>This is not valid.</Text>} */}
-
+                {errors.password && <Error>Password must be at least 6 characters long, contain at least one number and one letter.</Error>}
 
                 <ButtonForm title="Submit" onPress={handleSubmit(onSubmit)} ><ButtonFormText>Sign Up</ButtonFormText></ButtonForm>
             </Form>
         </Box>
     );
 }
-
-// export default SignUp;
 
 
 const Box = styled.View`
@@ -160,8 +116,7 @@ const Form = styled.View`
   align-items: center;
 `;
 
-const Title = styled.Text`
-  font-size: 20px;
-  font-weight: bold;
+const Error = styled(StyledText)`
+  color: red;
 `;
 

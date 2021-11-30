@@ -6,7 +6,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useDispatch } from "react-redux";
 
 import { loggedIn } from '../state/slices/users.slice'
-import { ButtonForm, ButtonFormText, Input, InputContainer, InputIcon } from '../constants/StyledComponents';
+import { ButtonForm, ButtonFormText, Input, InputContainer, InputIcon, StyledText } from '../constants/StyledComponents';
 import { getUserFunc } from '../initializeApp'
 import { FontAwesome } from "@expo/vector-icons";
 
@@ -47,7 +47,6 @@ export default function LoginScreen({ navigation }) {
                     control={control}
                     rules={{
                         required: true,
-                        minLength: 8,
                         pattern: emailRegex
                     }}
                     render={({ field: { onChange, value } }) => (
@@ -61,7 +60,7 @@ export default function LoginScreen({ navigation }) {
                         </InputContainer>
                     )}
                 />
-                {errors.email && <Text>This is not valid.</Text>}
+                {errors.email && <Error>This is not valid.</Error>}
 
                 <Controller
                     name="password"
@@ -69,7 +68,6 @@ export default function LoginScreen({ navigation }) {
                     control={control}
                     rules={{
                         required: true,
-                        maxLength: 100,
                     }}
                     render={({ field: { onChange, value } }) => (
                         <InputContainer>
@@ -82,7 +80,7 @@ export default function LoginScreen({ navigation }) {
                         </InputContainer>
                     )}
                 />
-                {errors.password && <Text>This is not valid.</Text>}
+                {errors.password && <Error>Password is required.</Error>}
 
                 <ButtonForm title="Submit" onPress={handleSubmit(onSubmit)} ><ButtonFormText>Log In</ButtonFormText></ButtonForm>
             </Form>
@@ -104,4 +102,8 @@ const Form = styled.View`
   margin-top: 100px;
   width: 90%;
   align-items: center;
+`;
+
+const Error = styled(StyledText)`
+  color: red;
 `;
